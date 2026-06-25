@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createServer } from "vite";
 import { createBriefScene } from "../server/briefSceneGenerator.js";
 
-function assertBriefScene(scene, { floorCount, minRoomCount, minOpeningCount }) {
+function assertBriefScene(scene, { floorCount, minRoomCount, minOpeningCount, originalBrief, sanitizedBrief, selectedTemplate }) {
   assert.equal(scene.source, "ploton-brief-scene");
   assert.equal(scene.activeWorkflowMode, "build");
   assert.equal(scene.cameraView, "orbit");
@@ -16,6 +16,24 @@ function assertBriefScene(scene, { floorCount, minRoomCount, minOpeningCount }) 
   assert.equal(openings.length >= minOpeningCount, true);
   assert.equal(openings.some((opening) => opening.type === "door"), true);
   assert.equal(openings.some((opening) => opening.type === "window"), true);
+
+  assert.equal(typeof scene.decisionAudit, "object");
+  assert.equal(scene.decisionAudit.generatorVersion, "brief-scene-generator-v1");
+  assert.equal(scene.decisionAudit.sanitizedBrief, sanitizedBrief ?? scene.summary.brief);
+  assert.deepEqual(scene.decisionAudit.parsedIntent, scene.summary.intent);
+  assert.deepEqual(scene.decisionAudit.generatedObjectIds, scene.objects.map((object) => object.id));
+  assert.equal(Array.isArray(scene.decisionAudit.limitations), true);
+  assert.equal(scene.decisionAudit.limitations.length > 0, true);
+  assert.equal(typeof scene.decisionAudit.nextStep, "string");
+  assert.equal(scene.decisionAudit.nextStep.length > 0, true);
+  assert.equal(typeof scene.decisionAudit.selectedTemplate, "string");
+
+  if (originalBrief) {
+    assert.equal(scene.decisionAudit.originalBrief, originalBrief);
+  }
+  if (selectedTemplate) {
+    assert.equal(scene.decisionAudit.selectedTemplate, selectedTemplate);
+  }
 }
 
 assert.throws(
@@ -23,16 +41,20 @@ assert.throws(
   (error) => error?.statusCode === 400
 );
 
-assertBriefScene(createBriefScene({ brief: "모던 2층 단독주택 정원" }), {
+assertBriefScene(createBriefScene({ brief: "  모던   2층 단독주택 정원  " }), {
   floorCount: 2,
   minOpeningCount: 6,
-  minRoomCount: 2
+  minRoomCount: 2,
+  originalBrief: "  모던   2층 단독주택 정원  ",
+  sanitizedBrief: "모던 2층 단독주택 정원",
+  selectedTemplate: "two-story-house-with-garden"
 });
 
 assertBriefScene(createBriefScene({ brief: "작은 목재 스튜디오 주택" }), {
   floorCount: 1,
   minOpeningCount: 4,
-  minRoomCount: 1
+  minRoomCount: 1,
+  selectedTemplate: "compact-studio-house"
 });
 
 const server = await createServer({

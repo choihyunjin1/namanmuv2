@@ -1,6 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
 
 const SCHEMA_VERSION = 3;
+const GENERATOR_VERSION = "brief-scene-generator-v1";
 const FLOOR_HEIGHT = 2.7;
 const WALL_THICKNESS = 0.16;
 
@@ -31,6 +32,37 @@ function parseBriefIntent(brief) {
     style: modern ? "modern" : warm ? "warm-natural" : "neutral",
     warm
   };
+}
+
+function selectTemplate(intent) {
+  if (intent.floors >= 3) {
+    return "stacked-three-story-house";
+  }
+  if (intent.floors >= 2) {
+    return intent.garden ? "two-story-house-with-garden" : "two-story-house";
+  }
+  if (intent.compact) {
+    return "compact-studio-house";
+  }
+  return intent.garden ? "single-story-house-with-garden" : "single-story-house";
+}
+
+function describeLimitations(intent) {
+  const limitations = [
+    "deterministic starter massing only; no structural analysis",
+    "room layout is approximate and not code-compliance checked",
+    "asset choices use built-in starter components"
+  ];
+
+  if (intent.floors > 2) {
+    limitations.push("three-story output uses simplified stacked volumes");
+  }
+
+  if (intent.garden) {
+    limitations.push("garden boundary is represented as a simple fence marker");
+  }
+
+  return limitations;
 }
 
 function opening(id, wall, offset, options = {}) {
@@ -219,15 +251,18 @@ function createStarterObjects(brief, intent, seed) {
 }
 
 export function createBriefScene(payload = {}) {
-  const brief = sanitizeBrief(payload.brief ?? payload.prompt);
+  const originalBrief = String(payload.brief ?? payload.prompt ?? "");
+  const brief = sanitizeBrief(originalBrief);
   if (!brief) {
     throw Object.assign(new Error("집 초안 생성을 위한 brief가 필요합니다."), { statusCode: 400 });
   }
 
   const intent = parseBriefIntent(brief);
+  const selectedTemplate = selectTemplate(intent);
   const seed = `${briefHash(brief)}-${randomUUID().slice(0, 6)}`;
   const objects = createStarterObjects(brief, intent, seed);
   const createdAt = new Date().toISOString();
+  const generatedObjectIds = objects.map((object) => object.id);
 
   return {
     activeCategoryId: "wall-tool",
@@ -235,6 +270,16 @@ export function createBriefScene(payload = {}) {
     activeWorkflowMode: "build",
     cameraView: "orbit",
     createdAt,
+    decisionAudit: {
+      generatedObjectIds,
+      generatorVersion: GENERATOR_VERSION,
+      limitations: describeLimitations(intent),
+      nextStep: "Review the starter scene in studio-editor, then refine rooms, openings, and recommended assets.",
+      originalBrief,
+      parsedIntent: intent,
+      sanitizedBrief: brief,
+      selectedTemplate
+    },
     generator: {
       adapter: "ploton-brief-scene",
       inspiredBy: "pascal-create-house-from-brief",
