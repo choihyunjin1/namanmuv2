@@ -50,6 +50,27 @@ try {
   await page.getByText("1층 생활공간").waitFor({ state: "visible" });
   await page.getByText("2침실 상부 매스").waitFor({ state: "visible" });
 
+  const catalogBrief = "카탈로그 검색형 모던 단층 주택";
+  await page.getByLabel("자산 검색").fill(catalogBrief);
+  const catalogAiTile = page.locator(".studio-catalog-ai-leading-tile");
+  await catalogAiTile.waitFor({ state: "visible" });
+  assert.match(await catalogAiTile.getAttribute("aria-label"), new RegExp(catalogBrief));
+  assert.match(await catalogAiTile.getAttribute("title"), /semantic command plan/);
+
+  const catalogTileResponsePromise = page.waitForResponse(
+    (response) => getPathname(response.url()) === "/api/scenes/from-brief" && response.status() === 200
+  );
+  await catalogAiTile.click();
+  const catalogTileResponse = await catalogTileResponsePromise;
+  const catalogTilePayload = await catalogTileResponse.json();
+  assert.equal(catalogTilePayload.ok, true);
+  assert.equal(catalogTilePayload.data.summary.floorCount, 1);
+  assert.equal(
+    catalogTilePayload.data.decisionAudit.semanticCommandPlan.strategy,
+    "pascal-style-tool-command-plan"
+  );
+  await page.getByText(/집 초안 생성 완료/).waitFor({ state: "visible" });
+
   assert.deepEqual(
     pageErrors.map((error) => error.message),
     [],

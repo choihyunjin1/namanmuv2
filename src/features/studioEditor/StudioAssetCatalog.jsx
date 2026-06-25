@@ -4,6 +4,7 @@ import {
   STUDIO_CATALOG_CATEGORIES,
   getCatalogAssetsByCategory
 } from "./studioCatalog.js";
+import { StudioAssetAiLeadingTile } from "./StudioAssetAiLeadingTile.jsx";
 import { StudioAssetCatalogCard } from "./StudioAssetCatalogCard.jsx";
 import { StudioAssetCategoryRail } from "./StudioAssetCategoryRail.jsx";
 import { StudioAssetCatalogSearchHeader } from "./StudioAssetCatalogSearchHeader.jsx";
@@ -278,6 +279,11 @@ export function StudioAssetCatalog({
           </div>
 
           <div className="studio-catalog-assets" aria-label="카테고리 자산">
+            <StudioAssetAiLeadingTile
+              generationStatus={generationStatus}
+              onGenerateSceneFromBrief={onGenerateSceneFromBrief}
+              prompt={searchTerm}
+            />
             {assets.map((asset) => {
               const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
               return (
