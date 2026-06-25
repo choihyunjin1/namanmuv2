@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { compactBriefSceneCommand, createBriefSceneCommandPlan } from "./briefSceneSemanticCommands.js";
 
 const SCHEMA_VERSION = 3;
 const GENERATOR_VERSION = "brief-scene-generator-v1";
@@ -85,6 +86,16 @@ function opening(id, wall, offset, options = {}) {
   };
 }
 
+function openingFromCommand(openingCommand) {
+  return opening(openingCommand.id, openingCommand.wall, openingCommand.offset, {
+    height: openingCommand.height,
+    label: openingCommand.label,
+    sillHeight: openingCommand.sillHeight,
+    type: openingCommand.type,
+    width: openingCommand.width
+  });
+}
+
 function room(id, name, position, size, openings, metadata = {}) {
   return {
     id,
@@ -165,89 +176,72 @@ function gardenFence(prefix, z, width) {
   ];
 }
 
+function materializeBriefSceneCommand(command) {
+  if (command.type === "create_room_shell") {
+    return [room(
+      command.targetId,
+      command.name,
+      command.position,
+      command.size,
+      (command.openings ?? []).map(openingFromCommand),
+      {
+        floor: command.floor,
+        brief: command.sourceBrief,
+        color: command.materialHints?.color,
+        semanticCommandId: command.id,
+        style: command.materialHints?.style
+      }
+    )];
+  }
+
+  if (command.type === "attach_roof") {
+    const [width, depth] = command.footprintSize ?? [command.size?.[0] ?? 1, command.size?.[2] ?? 1];
+    return [roof(
+      command.targetId,
+      command.hostRoomId,
+      command.floor,
+      command.position?.[1] ?? 0,
+      width,
+      depth,
+      command.roofStyle
+    )].map((object) => ({
+      ...object,
+      metadata: {
+        ...object.metadata,
+        semanticCommandId: command.id
+      }
+    }));
+  }
+
+  if (command.type === "place_garden_fence") {
+    return gardenFence(command.targetId, command.position?.[2] ?? 0, command.size?.[0] ?? 1)
+      .map((object) => ({
+        ...object,
+        metadata: {
+          ...object.metadata,
+          semanticCommandId: command.id
+        }
+      }));
+  }
+
+  return [];
+}
+
+function materializeBriefSceneCommandPlan(commandPlan) {
+  return commandPlan.commands.flatMap(materializeBriefSceneCommand);
+}
+
 function createStarterObjects(brief, intent, seed) {
-  const baseWidth = intent.compact ? 7 : intent.bedroomCount >= 3 ? 11 : 9;
-  const baseDepth = intent.compact ? 5.5 : intent.garden ? 7 : 6.5;
-  const objects = [];
-
-  const firstRoomId = `brief-room-1-${seed}`;
-  objects.push(room(
-    firstRoomId,
-    intent.bedroomCount <= 1 ? "오픈 스튜디오" : "1층 생활공간",
-    [0, 0, 0],
-    [baseWidth, FLOOR_HEIGHT, baseDepth],
-    [
-      opening(`brief-door-front-${seed}`, "south", 0, { label: "현관문", type: "door", width: 1.05 }),
-      opening(`brief-window-south-left-${seed}`, "south", -baseWidth * 0.28),
-      opening(`brief-window-south-right-${seed}`, "south", baseWidth * 0.28),
-      opening(`brief-window-east-${seed}`, "east", 0.8),
-      ...(intent.garden ? [opening(`brief-door-garden-${seed}`, "north", 0, { label: "정원문", type: "door", width: 1.45 })] : [])
-    ],
-    {
-      floor: 1,
-      brief,
-      color: intent.warm ? "#c8b59b" : intent.modern ? "#b9c8c7" : "#a9c9bd",
-      style: intent.style
-    }
-  ));
-
-  if (intent.floors >= 2) {
-    const upperWidth = Math.max(5.5, baseWidth - 1.2);
-    const upperDepth = Math.max(4.8, baseDepth - 1.0);
-    objects.push(room(
-      `brief-room-2-${seed}`,
-      `${intent.bedroomCount}침실 상부 매스`,
-      [0, FLOOR_HEIGHT, 0],
-      [upperWidth, FLOOR_HEIGHT, upperDepth],
-      [
-        opening(`brief-window-2-south-${seed}`, "south", 0, { width: 1.6 }),
-        opening(`brief-window-2-east-${seed}`, "east", 0.4),
-        opening(`brief-window-2-west-${seed}`, "west", -0.4)
-      ],
-      {
-        floor: 2,
-        brief,
-        color: intent.warm ? "#d3c0a8" : "#c4d0ce",
-        style: intent.style
-      }
-    ));
-  }
-
-  if (intent.floors >= 3) {
-    objects.push(room(
-      `brief-room-3-${seed}`,
-      "3층 스튜디오",
-      [0, FLOOR_HEIGHT * 2, 0],
-      [Math.max(4.8, baseWidth - 2.2), FLOOR_HEIGHT, Math.max(4.2, baseDepth - 2.0)],
-      [opening(`brief-window-3-south-${seed}`, "south", 0, { width: 1.4 })],
-      {
-        floor: 3,
-        brief,
-        color: "#d8ddd8",
-        style: intent.style
-      }
-    ));
-  }
-
-  const topFloor = intent.floors;
-  const topRoomId = `brief-room-${topFloor}-${seed}`;
-  const topWidth = topFloor === 1 ? baseWidth : topFloor === 2 ? Math.max(5.5, baseWidth - 1.2) : Math.max(4.8, baseWidth - 2.2);
-  const topDepth = topFloor === 1 ? baseDepth : topFloor === 2 ? Math.max(4.8, baseDepth - 1.0) : Math.max(4.2, baseDepth - 2.0);
-  objects.push(roof(
-    `brief-roof-${seed}`,
-    topRoomId,
-    topFloor,
-    FLOOR_HEIGHT * (topFloor - 1) + FLOOR_HEIGHT + (intent.style === "modern" ? 0.18 : 0.62),
-    topWidth,
-    topDepth,
-    intent.style
-  ));
-
-  if (intent.garden) {
-    objects.push(...gardenFence(`brief-garden-${seed}`, -baseDepth / 2 - 3, baseWidth + 1.2));
-  }
-
-  return objects;
+  const commandPlan = createBriefSceneCommandPlan({
+    brief,
+    floorHeight: FLOOR_HEIGHT,
+    intent,
+    seed
+  });
+  return {
+    commandPlan,
+    objects: materializeBriefSceneCommandPlan(commandPlan)
+  };
 }
 
 export function createBriefScene(payload = {}) {
@@ -260,7 +254,7 @@ export function createBriefScene(payload = {}) {
   const intent = parseBriefIntent(brief);
   const selectedTemplate = selectTemplate(intent);
   const seed = `${briefHash(brief)}-${randomUUID().slice(0, 6)}`;
-  const objects = createStarterObjects(brief, intent, seed);
+  const { commandPlan, objects } = createStarterObjects(brief, intent, seed);
   const createdAt = new Date().toISOString();
   const generatedObjectIds = objects.map((object) => object.id);
 
@@ -277,13 +271,21 @@ export function createBriefScene(payload = {}) {
       nextStep: "Review the starter scene in studio-editor, then refine rooms, openings, and recommended assets.",
       originalBrief,
       parsedIntent: intent,
+      plannedActions: commandPlan.commands.map(compactBriefSceneCommand),
       sanitizedBrief: brief,
+      semanticCommandPlan: {
+        schemaVersion: commandPlan.schemaVersion,
+        source: commandPlan.source,
+        strategy: commandPlan.strategy,
+        summary: commandPlan.summary
+      },
       selectedTemplate
     },
     generator: {
       adapter: "ploton-brief-scene",
       inspiredBy: "pascal-create-house-from-brief",
-      mode: "deterministic-template-starter"
+      mode: "deterministic-template-starter",
+      orchestration: "brief-semantic-command-plan"
     },
     gridVisible: true,
     objects,

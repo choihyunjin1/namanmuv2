@@ -27,6 +27,22 @@ function assertBriefScene(scene, { floorCount, minRoomCount, minOpeningCount, or
   assert.equal(typeof scene.decisionAudit.nextStep, "string");
   assert.equal(scene.decisionAudit.nextStep.length > 0, true);
   assert.equal(typeof scene.decisionAudit.selectedTemplate, "string");
+  assert.equal(Array.isArray(scene.decisionAudit.plannedActions), true);
+  assert.equal(scene.decisionAudit.plannedActions.length > 0, true);
+  assert.equal(scene.decisionAudit.plannedActions.some((action) => action.type === "create_room_shell"), true);
+  assert.equal(scene.decisionAudit.plannedActions.some((action) => action.type === "attach_roof"), true);
+  assert.equal(typeof scene.decisionAudit.semanticCommandPlan, "object");
+  assert.equal(scene.decisionAudit.semanticCommandPlan.source, "ploton-brief-semantic-command-plan");
+  assert.equal(scene.decisionAudit.semanticCommandPlan.strategy, "pascal-style-tool-command-plan");
+  assert.equal(
+    scene.decisionAudit.semanticCommandPlan.summary.commandCount,
+    scene.decisionAudit.plannedActions.length
+  );
+  assert.equal(
+    scene.objects.some((object) => object.metadata?.semanticCommandId),
+    true,
+    "generated objects should keep semantic command trace metadata"
+  );
 
   if (originalBrief) {
     assert.equal(scene.decisionAudit.originalBrief, originalBrief);
