@@ -41,6 +41,12 @@ try {
   assert.equal(payload.data.summary.roomCount, 2);
 
   await page.getByText(/집 초안 생성 완료/).waitFor({ state: "visible" });
+  const generationAudit = page.getByLabel("AI 생성 작업 내역");
+  await generationAudit.waitFor({ state: "visible" });
+  await generationAudit.getByText(/Plan/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/actions/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/pascal-style-tool-command-plan/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/asset slots/).waitFor({ state: "visible" });
   await page.getByText("1층 생활공간").waitFor({ state: "visible" });
   await page.getByText("2침실 상부 매스").waitFor({ state: "visible" });
 

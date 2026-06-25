@@ -829,7 +829,7 @@ export function StudioEditorPage() {
   const generateCatalogAssetFromPrompt = async (prompt) => {
     const trimmedPrompt = String(prompt ?? "").trim();
     if (!trimmedPrompt) return { ok: false };
-    setGenerationStatus({ message: "Text-to-CAD 작업 요청 중", state: "loading" });
+    setGenerationStatus({ audit: null, message: "Text-to-CAD 작업 요청 중", state: "loading" });
 
     try {
       const response = await fetch("/api/text-to-cad/jobs", {
@@ -851,10 +851,10 @@ export function StudioEditorPage() {
       setActiveWorkflowMode("items");
       setActiveCategoryId(nextAsset.categoryId);
       setActiveBuildAsset(nextAsset.placementMode ? nextAsset : null);
-      setGenerationStatus({ message: `${nextAsset.label} 생성 완료`, state: "ready" });
+      setGenerationStatus({ audit: null, message: `${nextAsset.label} 생성 완료`, state: "ready" });
       return { asset: nextAsset, ok: true };
     } catch (error) {
-      setGenerationStatus({ message: error.message ?? "생성 실패", state: "error" });
+      setGenerationStatus({ audit: null, message: error.message ?? "생성 실패", state: "error" });
       return { ok: false };
     }
   };
@@ -862,7 +862,7 @@ export function StudioEditorPage() {
   const generateSceneFromBrief = async (brief) => {
     const trimmedBrief = String(brief ?? "").trim();
     if (!trimmedBrief) return { ok: false };
-    setGenerationStatus({ message: "AI 집 초안 생성 중", state: "loading" });
+    setGenerationStatus({ audit: null, message: "AI 집 초안 생성 중", state: "loading" });
 
     try {
       const response = await fetch("/api/scenes/from-brief", {
@@ -881,12 +881,18 @@ export function StudioEditorPage() {
         cameraView: "orbit"
       });
       setGenerationStatus({
+        audit: {
+          attachedAssetSlots: result.data?.assetRecommendations?.attachedSlots ?? [],
+          plannedActions: result.data?.decisionAudit?.plannedActions ?? [],
+          selectedTemplate: result.data?.decisionAudit?.selectedTemplate ?? null,
+          semanticCommandPlan: result.data?.decisionAudit?.semanticCommandPlan ?? null
+        },
         message: `집 초안 생성 완료 · ${result.data?.summary?.roomCount ?? 0} rooms`,
         state: "ready"
       });
       return { ok: true, scene: result.data };
     } catch (error) {
-      setGenerationStatus({ message: error.message ?? "집 초안 생성 실패", state: "error" });
+      setGenerationStatus({ audit: null, message: error.message ?? "집 초안 생성 실패", state: "error" });
       return { ok: false };
     }
   };

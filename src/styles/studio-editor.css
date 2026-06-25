@@ -2344,6 +2344,85 @@
   white-space: nowrap;
 }
 
+.studio-generation-audit {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  border: 1px solid rgba(216, 243, 106, 0.14);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(216, 243, 106, 0.075), rgba(255, 255, 255, 0.035)),
+    rgba(13, 17, 18, 0.74);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.studio-generation-audit > div:first-child {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.studio-generation-audit strong {
+  color: rgba(246, 255, 216, 0.95);
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.studio-generation-audit span,
+.studio-generation-audit b {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 8px;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-generation-audit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.studio-generation-audit em {
+  max-width: 100%;
+  min-height: 18px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.studio-generation-audit ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.studio-generation-audit li {
+  min-width: 0;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 0 7px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
 .studio-catalog-recommendations {
   min-height: 32px;
   border-color: rgba(216, 243, 106, 0.16);
