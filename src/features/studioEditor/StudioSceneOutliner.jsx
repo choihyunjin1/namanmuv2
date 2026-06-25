@@ -12,6 +12,7 @@ function getObjectFloor(object) {
 function getObjectKindLabel(object) {
   if (object?.type === "room") return "room";
   if (isStructuralWallObject(object)) return "wall";
+  if (object?.modelUrl) return "glb";
   if (object?.supportKind === "column") return "column";
   if (object?.placementMode?.includes("roof")) return "roof";
   return "object";

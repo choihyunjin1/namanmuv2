@@ -281,6 +281,48 @@ function formatInspectorMeters(value) {
   return `${Number(value ?? 0).toFixed(2).replace(/\.?0+$/, "")}m`;
 }
 
+function formatInspectorBytes(value) {
+  const bytes = Number(value);
+  if (!Number.isFinite(bytes) || bytes <= 0) return null;
+  if (bytes >= 1024 * 1024) return `${Number((bytes / (1024 * 1024)).toFixed(2))}MB`;
+  if (bytes >= 1024) return `${Number((bytes / 1024).toFixed(1))}KB`;
+  return `${Math.round(bytes)}B`;
+}
+
+function formatInspectorKrw(value) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  return `${Math.round(amount).toLocaleString("ko-KR")}원`;
+}
+
+function getAssetFileName(url) {
+  if (!url) return null;
+  return String(url).split(/[?#]/)[0].split("/").filter(Boolean).at(-1) ?? String(url);
+}
+
+function getObjectAssetDetails(object) {
+  if (!object?.modelUrl && !object?.metadata?.sourceAssetId && !object?.metadata?.cost) return null;
+  const runtime = object.metadata?.runtime ?? object.runtime ?? {};
+  const sourceMetadata = object.metadata?.sourceAssetMetadata ?? {};
+  const cost = object.metadata?.cost ?? object.cost ?? null;
+  const primaryCost = cost?.primary?.unitPriceKrw ?? cost?.defaultRoughCostKrw ?? null;
+  const sourceId = object.metadata?.sourceAssetId ?? object.assetId ?? object.id;
+  const sourceLabel = object.metadata?.sourceAssetLabel ?? object.metadata?.sourceLabel ?? object.name ?? sourceId;
+  const quality = [
+    object.metadata?.previewQuality,
+    sourceMetadata.technicalGrade ? `grade ${sourceMetadata.technicalGrade}` : null,
+    sourceMetadata.bimType ?? object.metadata?.sourceType
+  ].filter(Boolean).join(" · ");
+
+  return {
+    costEstimate: formatInspectorKrw(primaryCost),
+    fileName: getAssetFileName(object.modelUrl ?? object.metadata?.modelUrl),
+    modelSize: formatInspectorBytes(runtime.sizeBytes ?? runtime.originalSizeBytes ?? runtime.optimizedSizeBytes),
+    quality,
+    source: [sourceLabel, sourceId && sourceId !== sourceLabel ? sourceId : null].filter(Boolean).join(" · ")
+  };
+}
+
 function getObjectSizeLabel(object) {
   if (!object) return "none";
   if (isStructuralWallObject(object)) {
@@ -842,6 +884,7 @@ function StudioEditorInspector({
         placementMode: selectedObject.placementMode
       })
     : null;
+  const selectedObjectAssetDetails = selectedObject ? getObjectAssetDetails(selectedObject) : null;
   const selection = selectedOpeningObject
     ? {
         kind: selectedOpeningObject.type === "door" ? "문 개구부" : "창문 개구부",
@@ -882,7 +925,12 @@ function StudioEditorInspector({
             state: `${selectedObjectHidden ? "hidden" : "visible"} · ${selectedObjectLocked ? "locked" : "editable"}`,
             size: getObjectSizeLabel(selectedObject),
             taxonomy: selectedObjectPolicy?.taxonomy,
-            transform: selectedTransformLabel
+            transform: selectedTransformLabel,
+            assetSource: selectedObjectAssetDetails?.source,
+            modelFile: selectedObjectAssetDetails?.fileName,
+            modelSize: selectedObjectAssetDetails?.modelSize,
+            assetQuality: selectedObjectAssetDetails?.quality,
+            costEstimate: selectedObjectAssetDetails?.costEstimate
           }
         : null;
   const hasObjectBatchSelection = selectedObjects.length > 0 && !selectedOpeningObject && !selectedAttachmentObject;
@@ -982,6 +1030,36 @@ function StudioEditorInspector({
               <div>
                 <dt>분류</dt>
                 <dd>{selection.taxonomy}</dd>
+              </div>
+            ) : null}
+            {selection.assetSource ? (
+              <div>
+                <dt>자산 출처</dt>
+                <dd>{selection.assetSource}</dd>
+              </div>
+            ) : null}
+            {selection.modelFile ? (
+              <div>
+                <dt>모델 파일</dt>
+                <dd>{selection.modelFile}</dd>
+              </div>
+            ) : null}
+            {selection.modelSize ? (
+              <div>
+                <dt>파일 크기</dt>
+                <dd>{selection.modelSize}</dd>
+              </div>
+            ) : null}
+            {selection.assetQuality ? (
+              <div>
+                <dt>자산 품질</dt>
+                <dd>{selection.assetQuality}</dd>
+              </div>
+            ) : null}
+            {selection.costEstimate ? (
+              <div>
+                <dt>가격 근거</dt>
+                <dd>{selection.costEstimate}</dd>
               </div>
             ) : null}
             {selection.allowedHosts ? (
@@ -3097,6 +3175,8 @@ export function StudioEditorPage() {
         placementSource,
         previewQuality: asset.previewQuality,
         runtime: asset.runtime,
+        cost: asset.cost,
+        componentKind: asset.componentKind,
         stair: stairObjectMetadata,
         stairRun: asset.stairRun,
         stairRise: asset.stairRise,
@@ -3108,6 +3188,7 @@ export function StudioEditorPage() {
         sourceAssetMetadata: asset.metadata,
         sourceLabel: asset.sourceLabel,
         sourceType: asset.sourceType,
+        sourceAssetType: asset.type,
         wallOrientation: asset.wallOrientation ?? "x",
         source: asset.modelUrl ? "studio-glb-catalog" : "studio-editor-test-placement"
       }
