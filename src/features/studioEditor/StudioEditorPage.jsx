@@ -9,7 +9,6 @@ import {
 } from "./editorDefaults.js";
 import { getEditorInteractionMode } from "./editorInteractionMode.js";
 import { isObjectHidden, isObjectLocked } from "./editorObjectState.js";
-import { EditorViewport } from "./EditorViewport.jsx";
 import { collectAttachmentNodes, findAttachmentNode, summarizeAttachmentNodes } from "./attachmentNodeRules.js";
 import { normalizeAssetCatalogTaxonomy, summarizeAssetTaxonomy } from "./assetTaxonomyRules.js";
 import { validateCatalogPolicy } from "./catalogPolicyRules.js";
@@ -81,6 +80,9 @@ const STUDIO_EDITOR_PROJECT_ID = "studio-editor-default";
 const STUDIO_EDITOR_STORAGE_KEY = "ploton:studio-editor:default";
 const STUDIO_EDITOR_SCHEMA_VERSION = 2;
 const STUDIO_PROJECT_EXPORT_SCHEMA_VERSION = 1;
+const EditorViewport = React.lazy(() => import("./EditorViewport.jsx").then((module) => ({
+  default: module.EditorViewport
+})));
 const INTERACTION_MODE_LABELS = {
   "attach-roof": "roof attach",
   "draw-room": "room draw",
@@ -3801,64 +3803,73 @@ export function StudioEditorPage() {
               transformLabel={selectedTransformLabel}
             />
           ) : null}
-          <EditorViewport
-            activeFloor={activeFloor}
-            activeFloorBaseY={activeFloorBaseY}
-            activeRoofAsset={activeRoofAsset}
-            activeRoomAsset={activeRoomAsset}
-            activeWallAttachmentAsset={activeWallAttachmentAsset}
-            activeWallDrawAsset={activeWallDrawAsset}
-            activeWallOpeningAsset={activeWallOpeningAsset}
-            activeTool={activeTool}
-            cameraView={cameraView}
-            dropRequest={dropRequest}
-            gridVisible={gridVisible}
-            movingAttachment={movingAttachment}
-            movingOpening={movingOpening}
-            objects={objects}
-            onAttachRoof={attachRoofToRoom}
-            onDeleteObject={deleteObject}
-            onDeleteAttachment={deleteAttachment}
-            onDeleteOpening={deleteOpening}
-            onDeleteRoomWall={deleteRoomWall}
-            onDuplicateObject={duplicateSelectedObject}
-            onDragObject={moveObjectToPosition}
-            onDragSelectedObjects={moveSelectedObjectsByAnchor}
-            onDropPointResolved={placeDroppedAsset}
-            onGroundPointerDown={handleGroundPointerDown}
-            onGroundMarqueeSelect={handleGroundMarqueeSelect}
-            onMoveWallNormal={moveWallNormal}
-            onRequestMoveObject={() => handleToolChange("move")}
-            onAttachmentDragStart={startAttachmentDrag}
-            onOpeningDragStart={startOpeningDrag}
-            onAttachmentMoveEnd={endAttachmentMove}
-            onOpeningMoveEnd={endOpeningMove}
-            onResizeRoom={resizeRoomByWall}
-            onResizeWallEndpoint={resizeWallEndpoint}
-            onRotateObject={rotateObjectToRotation}
-            onRoomDraftChange={handleRoomDraftChange}
-            onRoomDraftCommit={handleRoomDraftCommit}
-            onScaleObject={scaleObjectToSize}
-            onSelectAttachment={selectAttachment}
-            onSelectObject={selectObject}
-            onSelectOpening={selectOpening}
-            onWallDraftChange={handleWallDraftChange}
-            onWallDraftCommit={handleWallDraftCommit}
-            onWallAttachmentCommit={commitWallAttachment}
-            onWallAttachmentPreview={handleWallAttachmentPreview}
-            onWallOpeningCommit={commitWallOpening}
-            onWallOpeningPreview={handleWallOpeningPreview}
-            roomDraft={roomDraft}
-            resizeHandleHostRoomId={selectedResizeHostRoomId}
-            selectedAttachmentId={selectedAttachment?.attachmentId}
-            selectedObjectId={selectedObjectId}
-            selectedObjectIds={selectedObjectIds}
-            selectedOpeningId={selectedOpening?.openingId}
-            wallDraft={wallDraft}
-            wallAttachmentPreview={wallAttachmentPreview}
-            wallOpeningPreview={wallOpeningPreview}
-            wallViewMode={wallViewMode}
-          />
+          <React.Suspense
+            fallback={(
+              <div className="studio-editor-viewport-loading" role="status">
+                <strong>3D viewport loading</strong>
+                <span>Three.js 런타임과 GLB 렌더러를 불러옵니다.</span>
+              </div>
+            )}
+          >
+            <EditorViewport
+              activeFloor={activeFloor}
+              activeFloorBaseY={activeFloorBaseY}
+              activeRoofAsset={activeRoofAsset}
+              activeRoomAsset={activeRoomAsset}
+              activeWallAttachmentAsset={activeWallAttachmentAsset}
+              activeWallDrawAsset={activeWallDrawAsset}
+              activeWallOpeningAsset={activeWallOpeningAsset}
+              activeTool={activeTool}
+              cameraView={cameraView}
+              dropRequest={dropRequest}
+              gridVisible={gridVisible}
+              movingAttachment={movingAttachment}
+              movingOpening={movingOpening}
+              objects={objects}
+              onAttachRoof={attachRoofToRoom}
+              onDeleteObject={deleteObject}
+              onDeleteAttachment={deleteAttachment}
+              onDeleteOpening={deleteOpening}
+              onDeleteRoomWall={deleteRoomWall}
+              onDuplicateObject={duplicateSelectedObject}
+              onDragObject={moveObjectToPosition}
+              onDragSelectedObjects={moveSelectedObjectsByAnchor}
+              onDropPointResolved={placeDroppedAsset}
+              onGroundPointerDown={handleGroundPointerDown}
+              onGroundMarqueeSelect={handleGroundMarqueeSelect}
+              onMoveWallNormal={moveWallNormal}
+              onRequestMoveObject={() => handleToolChange("move")}
+              onAttachmentDragStart={startAttachmentDrag}
+              onOpeningDragStart={startOpeningDrag}
+              onAttachmentMoveEnd={endAttachmentMove}
+              onOpeningMoveEnd={endOpeningMove}
+              onResizeRoom={resizeRoomByWall}
+              onResizeWallEndpoint={resizeWallEndpoint}
+              onRotateObject={rotateObjectToRotation}
+              onRoomDraftChange={handleRoomDraftChange}
+              onRoomDraftCommit={handleRoomDraftCommit}
+              onScaleObject={scaleObjectToSize}
+              onSelectAttachment={selectAttachment}
+              onSelectObject={selectObject}
+              onSelectOpening={selectOpening}
+              onWallDraftChange={handleWallDraftChange}
+              onWallDraftCommit={handleWallDraftCommit}
+              onWallAttachmentCommit={commitWallAttachment}
+              onWallAttachmentPreview={handleWallAttachmentPreview}
+              onWallOpeningCommit={commitWallOpening}
+              onWallOpeningPreview={handleWallOpeningPreview}
+              roomDraft={roomDraft}
+              resizeHandleHostRoomId={selectedResizeHostRoomId}
+              selectedAttachmentId={selectedAttachment?.attachmentId}
+              selectedObjectId={selectedObjectId}
+              selectedObjectIds={selectedObjectIds}
+              selectedOpeningId={selectedOpening?.openingId}
+              wallDraft={wallDraft}
+              wallAttachmentPreview={wallAttachmentPreview}
+              wallOpeningPreview={wallOpeningPreview}
+              wallViewMode={wallViewMode}
+            />
+          </React.Suspense>
           <div className="studio-editor-viewport-badge">
             <span>m</span>
             <strong>{activeToolLabel}</strong>

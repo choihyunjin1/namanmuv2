@@ -4146,6 +4146,40 @@
   pointer-events: none;
 }
 
+.studio-editor-viewport-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(216, 243, 106, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(18, 22, 22, 0.92), rgba(10, 14, 14, 0.96));
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+}
+
+.studio-editor-viewport-loading strong,
+.studio-editor-viewport-loading span {
+  max-width: min(320px, 72vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-editor-viewport-loading strong {
+  color: rgba(246, 255, 216, 0.96);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.studio-editor-viewport-loading span {
+  font-size: 10px;
+  font-weight: 850;
+}
+
 .studio-editor-viewport.is-plan-mode {
   background:
     radial-gradient(circle at 52% 30%, rgba(216, 243, 106, 0.08), transparent 24%),
