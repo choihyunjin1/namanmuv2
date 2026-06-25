@@ -30,6 +30,7 @@
     "test:studio-generated-scene-plan": "node scripts/test_studio_generated_scene_plan.mjs",
     "test:studio-text-to-cad-ui": "node scripts/test_studio_text_to_cad_ui.mjs",
     "test:studio-project-io": "node scripts/test_studio_editor_project_io.mjs",
+    "test:studio-asset-recommendation-strip-states-ui": "node scripts/test_studio_asset_recommendation_strip_states_ui.mjs",
     "test:text-to-cad-generator": "node scripts/test_text_to_cad_generator.mjs"
   },
   "dependencies": {

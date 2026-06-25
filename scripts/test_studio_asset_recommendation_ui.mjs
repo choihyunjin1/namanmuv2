@@ -49,6 +49,8 @@ try {
 
   const recommendationPanel = page.locator('[aria-label="프롬프트와 토지조건 기반 추천 자산"]');
   await recommendationPanel.waitFor({ state: "visible" });
+  assert.equal(await recommendationPanel.getAttribute("data-state"), "idle");
+  assert.match(await recommendationPanel.getAttribute("title"), /토지조건:/);
 
   const recommendationResponsePromise = page.waitForResponse(
     (response) => getPathname(response.url()) === "/api/assets/recommend" && response.status() === 200,
@@ -66,6 +68,7 @@ try {
   );
 
   await recommendationPanel.getByText(/개 추천/).waitFor({ state: "visible" });
+  assert.equal(await recommendationPanel.getAttribute("data-state"), "ready");
   const resultButtons = recommendationPanel.locator(`button[title*="prompt: ${prompt}"]`);
   await resultButtons.first().waitFor({ state: "visible" });
 
@@ -80,6 +83,10 @@ try {
     "true",
     "recommendation result buttons should support catalog drag-and-drop placement"
   );
+  const firstResultTitle = await resultButtons.first().getAttribute("title");
+  assert.match(firstResultTitle, /score \d/);
+  assert.match(firstResultTitle, /parcel:/);
+  assert.match(firstResultTitle, /prompt: 모던 단독주택/);
 
   assert.deepEqual(
     pageErrors.map((error) => error.message),

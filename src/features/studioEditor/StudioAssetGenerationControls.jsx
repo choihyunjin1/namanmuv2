@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { WandSparkles } from "lucide-react";
 import { EDITOR_GRID } from "./editorDefaults.js";
+import { StudioAssetRecommendationStrip } from "./StudioAssetRecommendationStrip.jsx";
 
 const DEFAULT_RECOMMENDATION_LIMIT = 5;
 const DEFAULT_RECOMMENDATION_PARCEL = {
@@ -39,11 +40,6 @@ function getAssetRecommendations(payload) {
       };
     })
     .filter(Boolean);
-}
-
-function getRecommendationScoreLabel(score) {
-  if (!Number.isFinite(score)) return null;
-  return `score ${Number(score.toFixed(2))}`;
 }
 
 function getGenerationAudit(status) {
@@ -116,15 +112,6 @@ export function StudioAssetGenerationControls({
       `${DEFAULT_RECOMMENDATION_PARCEL.zone} · ${DEFAULT_RECOMMENDATION_PARCEL.widthM}x${DEFAULT_RECOMMENDATION_PARCEL.depthM}m · BCR ${Math.round(DEFAULT_RECOMMENDATION_PARCEL.maxBuildingCoverageRatio * 100)}% · FAR ${Math.round(DEFAULT_RECOMMENDATION_PARCEL.maxFloorAreaRatio * 100)}%`,
     []
   );
-  const recommendationStatusLabel = assetRecommendation.status === "loading"
-    ? "프롬프트/토지조건 기반 추천 중"
-    : assetRecommendation.status === "ready"
-      ? `${assetRecommendation.recommendations.length}개 추천 · 프롬프트/토지조건 기반`
-      : assetRecommendation.status === "empty"
-        ? "추천 결과 없음 · 기존 카탈로그 사용 가능"
-        : assetRecommendation.status === "offline"
-          ? "추천 API offline · 기존 카탈로그 사용 가능"
-          : "프롬프트/토지조건 기반 추천";
   const canGenerateAsset = Boolean(onGenerateAsset) && generationPromptValue.length > 0 && generationStatus?.state !== "loading";
   const canGenerateBriefScene = Boolean(onGenerateSceneFromBrief) && generationPromptValue.length > 0 && generationStatus?.state !== "loading";
   const canRecommendAssets = recommendationPrompt.length > 0 && assetRecommendation.status !== "loading";
@@ -216,50 +203,15 @@ export function StudioAssetGenerationControls({
         {generationStatus?.message ? <span>{generationStatus.message}</span> : null}
       </form>
       <StudioGenerationAudit status={generationStatus} />
-      <div
-        className="studio-catalog-recent studio-catalog-recommendations"
-        aria-label="프롬프트와 토지조건 기반 추천 자산"
-        data-state={assetRecommendation.status}
-        title={`프롬프트: ${recommendationPrompt || "입력 필요"} · 토지조건: ${recommendationParcelLabel}`}
-      >
-        <WandSparkles size={14} />
-        <button disabled={!canRecommendAssets} onClick={handleRecommendAssets} type="button">
-          {assetRecommendation.status === "loading" ? "추천중" : "추천"}
-        </button>
-        <span role="status">
-          {recommendationStatusLabel}
-        </span>
-        {assetRecommendation.recommendations.map((recommendation) => {
-          const { asset } = recommendation;
-          const reason = recommendation.reasons[0];
-          const scoreLabel = getRecommendationScoreLabel(recommendation.score);
-          return (
-            <button
-              className="studio-catalog-recommendation-result"
-              draggable
-              key={asset.id}
-              onClick={() => onAssetPick?.(asset)}
-              onDragEnd={() => onDragAssetStart?.(null)}
-              onDragStart={(event) => {
-                onAssetPick?.(asset.placementMode ? asset : null);
-                event.dataTransfer.effectAllowed = "copy";
-                event.dataTransfer.setData("application/x-ploton-asset", asset.id);
-                onDragAssetStart?.(asset);
-              }}
-              title={[
-                asset.label ?? asset.id,
-                scoreLabel,
-                reason,
-                assetRecommendation.prompt ? `prompt: ${assetRecommendation.prompt}` : null,
-                `parcel: ${recommendationParcelLabel}`
-              ].filter(Boolean).join(" · ")}
-              type="button"
-            >
-              {asset.label ?? asset.id}
-            </button>
-          );
-        })}
-      </div>
+      <StudioAssetRecommendationStrip
+        canRecommendAssets={canRecommendAssets}
+        onAssetPick={onAssetPick}
+        onDragAssetStart={onDragAssetStart}
+        onRecommendAssets={handleRecommendAssets}
+        recommendation={assetRecommendation}
+        recommendationParcelLabel={recommendationParcelLabel}
+        recommendationPrompt={recommendationPrompt}
+      />
     </>
   );
 }
