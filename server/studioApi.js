@@ -1,3 +1,4 @@
+import { searchAssetCatalog } from "./assetCatalogSearch.js";
 import { readProject, writeProject } from "./projectStore.js";
 import { listTextToCadJobs, readTextToCadJob, submitTextToCadJob } from "./textToCadGenerator.js";
 
@@ -35,6 +36,27 @@ function readJsonBody(req) {
 }
 
 export function installStudioApi(server, env = {}) {
+  server.middlewares.use("/api/assets/search", async (req, res) => {
+    const url = new URL(req.url ?? "", "http://127.0.0.1");
+    const query = url.searchParams.get("q") ?? url.searchParams.get("query") ?? "";
+
+    try {
+      if (req.method === "GET") {
+        sendJson(res, 200, await searchAssetCatalog(query));
+        return;
+      }
+
+      sendJson(res, 405, { ok: false, message: "GET만 지원합니다." });
+    } catch (error) {
+      sendJson(res, 200, {
+        ok: false,
+        code: "ASSET_SEARCH_ERROR",
+        message: error.message,
+        data: { query, total: 0, results: [] }
+      });
+    }
+  });
+
   server.middlewares.use("/api/projects", async (req, res) => {
     const url = new URL(req.url ?? "", "http://127.0.0.1");
     const projectId = decodeURIComponent(url.pathname.replace(/^\/+/, ""));

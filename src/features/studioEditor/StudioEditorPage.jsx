@@ -45,6 +45,7 @@ import {
   upsertStudioGeneratedAsset
 } from "./studioGeneratedAssetLibrary.js";
 import { STUDIO_CATALOG_ASSETS, STUDIO_CATALOG_CATEGORIES, getCatalogAsset } from "./studioCatalog.js";
+import { loadStudioGlbCatalog } from "./studioGlbCatalog.js";
 import {
   collectJoinableWalls,
   getWallEndpoints,
@@ -1447,6 +1448,7 @@ export function StudioEditorPage() {
   const [movingOpening, setMovingOpening] = useState(null);
   const [generatedAssets, setGeneratedAssets] = useState(() => loadStudioGeneratedAssets());
   const [generationStatus, setGenerationStatus] = useState({ message: "", state: "idle" });
+  const [glbCatalogAssets, setGlbCatalogAssets] = useState([]);
   const [libraryAssets, setLibraryAssets] = useState(() => loadStudioAssetLibrary());
   const [objectHistory, setObjectHistory] = useState({ past: [], present: [], future: [] });
   const [recentAssetIds, setRecentAssetIds] = useState([]);
@@ -1468,8 +1470,8 @@ export function StudioEditorPage() {
   const activeFloorBaseY = useMemo(() => getFloorBaseY(activeFloor), [activeFloor]);
   const objects = objectHistory.present;
   const allCatalogAssets = useMemo(
-    () => [...STUDIO_CATALOG_ASSETS, ...generatedAssets, ...libraryAssets],
-    [generatedAssets, libraryAssets]
+    () => [...STUDIO_CATALOG_ASSETS, ...glbCatalogAssets, ...generatedAssets, ...libraryAssets],
+    [generatedAssets, glbCatalogAssets, libraryAssets]
   );
   const findCatalogAsset = useMemo(() => {
     const catalogMap = new Map(allCatalogAssets.map((asset) => [asset.id, asset]));
@@ -1559,6 +1561,21 @@ export function StudioEditorPage() {
       setSelectedOpening(null);
     }
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    loadStudioGlbCatalog()
+      .then((assets) => {
+        if (!cancelled) setGlbCatalogAssets(assets);
+      })
+      .catch((error) => {
+        console.warn("GLB catalog could not be loaded.", error);
+        if (!cancelled) setGlbCatalogAssets([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const clearHostedToolState = () => {
     setActiveBuildAsset(null);
@@ -3053,7 +3070,11 @@ export function StudioEditorPage() {
       categoryId: asset.categoryId,
       name: `${asset.label} ${nextIndex}`,
       color: asset.color,
+      format: asset.format,
       floor: activeFloor,
+      modelUrl: asset.modelUrl,
+      optimizedModelUrl: asset.optimizedModelUrl,
+      originalModelUrl: asset.originalModelUrl,
       position: nextPosition,
       placementMode: asset.placementMode ?? "floor-free",
       rotation: [0, 0, 0],
@@ -3072,16 +3093,23 @@ export function StudioEditorPage() {
         gridUnit: `${EDITOR_GRID.snapStep}m`,
         hostEligibility: floorHostEligibility,
         landingDepth: asset.landingDepth,
+        modelUrl: asset.modelUrl,
         placementSource,
+        previewQuality: asset.previewQuality,
+        runtime: asset.runtime,
         stair: stairObjectMetadata,
         stairRun: asset.stairRun,
         stairRise: asset.stairRise,
         stairType: asset.stairType,
         stepCount: asset.stepCount,
         supportKind: asset.supportKind,
+        sourceAssetId: asset.assetSourceId ?? asset.id,
         sourceAssetLabel: asset.label,
+        sourceAssetMetadata: asset.metadata,
+        sourceLabel: asset.sourceLabel,
+        sourceType: asset.sourceType,
         wallOrientation: asset.wallOrientation ?? "x",
-        source: "studio-editor-test-placement"
+        source: asset.modelUrl ? "studio-glb-catalog" : "studio-editor-test-placement"
       }
     };
 

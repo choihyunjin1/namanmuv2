@@ -14,6 +14,7 @@
     "assets:export-components": "node scripts/export_component_glb_assets.mjs",
     "assets:export-ifc-components": "python scripts/export_ifc_component_assets.py",
     "test:catalog-policy-rules": "node scripts/test_studio_editor_catalog_policy_rules.mjs",
+    "test:studio-project-io": "node scripts/test_studio_editor_project_io.mjs",
     "test:text-to-cad-generator": "node scripts/test_text_to_cad_generator.mjs"
   },
   "dependencies": {
