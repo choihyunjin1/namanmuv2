@@ -43,9 +43,18 @@ try {
   await page.getByText(/집 초안 생성 완료/).waitFor({ state: "visible" });
   const generationAudit = page.getByLabel("AI 생성 작업 내역");
   await generationAudit.waitFor({ state: "visible" });
+  assert.equal(await page.locator(".studio-generation-audit").count(), 1);
+  const generationAuditChips = generationAudit.locator(".studio-generation-audit-chips");
+  assert.equal(await generationAuditChips.count(), 1);
   await generationAudit.getByText(/Plan/).waitFor({ state: "visible" });
   await generationAudit.getByText(/actions/).waitFor({ state: "visible" });
   await generationAudit.getByText(/pascal-style-tool-command-plan/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/validated/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/count verified/).waitFor({ state: "visible" });
+  await generationAuditChips.getByText("2F", { exact: true }).waitFor({ state: "visible" });
+  await generationAuditChips.getByText("2 rooms", { exact: true }).waitFor({ state: "visible" });
+  await generationAudit.getByRole("listitem").filter({ hasText: "방" }).first().waitFor({ state: "visible" });
+  await generationAudit.getByRole("listitem").filter({ hasText: "지붕" }).first().waitFor({ state: "visible" });
   await generationAudit.getByText(/asset slots/).waitFor({ state: "visible" });
   await page.getByText("1층 생활공간").waitFor({ state: "visible" });
   await page.getByText("2침실 상부 매스").waitFor({ state: "visible" });

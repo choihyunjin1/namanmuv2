@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { WandSparkles } from "lucide-react";
 import { EDITOR_GRID } from "./editorDefaults.js";
 import { StudioAssetRecommendationStrip } from "./StudioAssetRecommendationStrip.jsx";
+import { StudioBriefCommandPlanAudit } from "./StudioBriefCommandPlanAudit.jsx";
 
 const DEFAULT_RECOMMENDATION_LIMIT = 5;
 const DEFAULT_RECOMMENDATION_PARCEL = {
@@ -12,12 +13,6 @@ const DEFAULT_RECOMMENDATION_PARCEL = {
   widthM: EDITOR_GRID.parcelWidth,
   zone: "제1종일반주거지역"
 };
-const ACTION_LABELS = {
-  attach_roof: "지붕",
-  create_room_shell: "방",
-  place_garden_fence: "외부"
-};
-
 function getAssetRecommendations(payload) {
   const recommendations = Array.isArray(payload?.data?.recommendations)
     ? payload.data.recommendations
@@ -40,52 +35,6 @@ function getAssetRecommendations(payload) {
       };
     })
     .filter(Boolean);
-}
-
-function getGenerationAudit(status) {
-  const audit = status?.audit;
-  if (!audit || typeof audit !== "object") return null;
-
-  const actions = Array.isArray(audit.plannedActions) ? audit.plannedActions : [];
-  const summary = audit.semanticCommandPlan?.summary ?? {};
-  const attachedSlots = Array.isArray(audit.attachedAssetSlots) ? audit.attachedAssetSlots : [];
-  return {
-    actions: actions.slice(0, 4),
-    attachedSlots,
-    commandCount: summary.commandCount ?? actions.length,
-    floorCount: summary.floorCount ?? null,
-    roomCommandCount: summary.roomCommandCount ?? null,
-    strategy: audit.semanticCommandPlan?.strategy ?? "pascal-style-tool-command-plan",
-    template: audit.selectedTemplate ?? null
-  };
-}
-
-function StudioGenerationAudit({ status }) {
-  const audit = getGenerationAudit(status);
-  if (!audit) return null;
-
-  return (
-    <div className="studio-generation-audit" aria-label="AI 생성 작업 내역">
-      <div>
-        <strong>Plan</strong>
-        <span>{audit.commandCount} actions · {audit.strategy}</span>
-      </div>
-      <div className="studio-generation-audit-chips">
-        {audit.floorCount ? <em>{audit.floorCount}F</em> : null}
-        {audit.roomCommandCount ? <em>{audit.roomCommandCount} rooms</em> : null}
-        {audit.attachedSlots.length ? <em>{audit.attachedSlots.length} asset slots</em> : null}
-        {audit.template ? <em>{audit.template}</em> : null}
-      </div>
-      <ol>
-        {audit.actions.map((action) => (
-          <li key={action.id}>
-            <span>{ACTION_LABELS[action.type] ?? action.type}</span>
-            <b>{action.floor ? `${action.floor}F` : "scene"}</b>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
 }
 
 export function StudioAssetGenerationControls({
@@ -202,7 +151,7 @@ export function StudioAssetGenerationControls({
         </button>
         {generationStatus?.message ? <span>{generationStatus.message}</span> : null}
       </form>
-      <StudioGenerationAudit status={generationStatus} />
+      <StudioBriefCommandPlanAudit status={generationStatus} />
       <StudioAssetRecommendationStrip
         canRecommendAssets={canRecommendAssets}
         onAssetPick={onAssetPick}
