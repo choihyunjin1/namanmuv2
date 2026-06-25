@@ -49,8 +49,9 @@ try {
   await generationAudit.getByText(/Plan/).waitFor({ state: "visible" });
   await generationAudit.getByText(/actions/).waitFor({ state: "visible" });
   await generationAudit.getByText(/pascal-style-tool-command-plan/).waitFor({ state: "visible" });
-  await generationAudit.getByText(/validated/).waitFor({ state: "visible" });
+  await generationAudit.getByText("validated", { exact: true }).waitFor({ state: "visible" });
   await generationAudit.getByText(/count verified/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/scene validated/).waitFor({ state: "visible" });
   await generationAuditChips.getByText("2F", { exact: true }).waitFor({ state: "visible" });
   await generationAuditChips.getByText("2 rooms", { exact: true }).waitFor({ state: "visible" });
   await generationAudit.getByRole("listitem").filter({ hasText: "방" }).first().waitFor({ state: "visible" });

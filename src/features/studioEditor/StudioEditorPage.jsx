@@ -27,6 +27,7 @@ import {
 import { buildStudioPascalSceneGraph } from "./pascalSceneGraph.js";
 import { createRoofAccessoryObjectForRoom, createRoofObjectForRoom } from "./roofPlacementRules.js";
 import { summarizeSceneCostEstimate } from "./sceneCostEstimate.js";
+import { validateBriefScenePayload } from "./studioBriefSceneValidation.js";
 import { validateStraightStairPlacement } from "./stairPlacementRules.js";
 import { StudioEditorHeader } from "./StudioEditorHeader.jsx";
 import { StudioEditorInspector } from "./StudioEditorInspector.jsx";
@@ -957,14 +958,25 @@ export function StudioEditorPage() {
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.message ?? "집 초안 생성 실패");
 
-      applyScenePayload({
+      const sceneValidation = validateBriefScenePayload(result.data);
+      if (!sceneValidation.ok) {
+        throw new Error(`집 초안 검증 실패 · ${sceneValidation.issues[0]?.message ?? "scene payload invalid"}`);
+      }
+
+      const nextScenePayload = {
         ...result.data,
         activeWorkflowMode: "build",
-        cameraView: "orbit"
-      });
+        cameraView: "orbit",
+        decisionAudit: {
+          ...(result.data?.decisionAudit ?? {}),
+          clientValidation: sceneValidation
+        }
+      };
+      applyScenePayload(nextScenePayload);
       setGenerationStatus({
         audit: {
           attachedAssetSlots: result.data?.assetRecommendations?.attachedSlots ?? [],
+          clientValidation: sceneValidation,
           plannedActions: result.data?.decisionAudit?.plannedActions ?? [],
           selectedTemplate: result.data?.decisionAudit?.selectedTemplate ?? null,
           semanticCommandPlan: result.data?.decisionAudit?.semanticCommandPlan ?? null
@@ -972,7 +984,7 @@ export function StudioEditorPage() {
         message: `집 초안 생성 완료 · ${result.data?.summary?.roomCount ?? 0} rooms`,
         state: "ready"
       });
-      return { ok: true, scene: result.data };
+      return { ok: true, scene: nextScenePayload };
     } catch (error) {
       setGenerationStatus({ audit: null, message: error.message ?? "집 초안 생성 실패", state: "error" });
       return { ok: false };
