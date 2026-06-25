@@ -68,6 +68,10 @@ try {
   await catalogAiTile.waitFor({ state: "visible" });
   assert.match(await catalogAiTile.getAttribute("aria-label"), new RegExp(catalogBrief));
   assert.match(await catalogAiTile.getAttribute("title"), /semantic command plan/);
+  const catalogAiTileBadges = catalogAiTile.getByLabel("최근 AI 생성 검증 상태");
+  await catalogAiTileBadges.getByText(/actions/).waitFor({ state: "visible" });
+  await catalogAiTileBadges.getByText(/scene ok/).waitFor({ state: "visible" });
+  await catalogAiTileBadges.getByText(/slots/).waitFor({ state: "visible" });
 
   const catalogTileResponsePromise = page.waitForResponse(
     (response) => getPathname(response.url()) === "/api/scenes/from-brief" && response.status() === 200

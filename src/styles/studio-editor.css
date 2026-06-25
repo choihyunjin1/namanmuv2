@@ -2907,6 +2907,32 @@
   font-weight: 900;
 }
 
+.studio-catalog-ai-leading-badges {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.studio-catalog-ai-leading-badges i {
+  max-width: 100%;
+  min-height: 15px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 5px;
+  overflow: hidden;
+  border: 1px solid rgba(216, 243, 106, 0.14);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(216, 243, 106, 0.82);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .studio-catalog-asset-mode {
   position: absolute;
   top: 6px;
