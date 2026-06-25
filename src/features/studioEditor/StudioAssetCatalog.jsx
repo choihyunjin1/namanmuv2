@@ -6,11 +6,11 @@ import {
   getCatalogAssetsByCategory
 } from "./studioCatalog.js";
 import { StudioAssetCatalogCard } from "./StudioAssetCatalogCard.jsx";
+import { StudioAssetCategoryRail } from "./StudioAssetCategoryRail.jsx";
 import { StudioAssetGenerationControls } from "./StudioAssetGenerationControls.jsx";
 import { CATALOG_SOURCE_TABS, StudioAssetCatalogSourceTabs } from "./StudioAssetCatalogSourceTabs.jsx";
 import { StudioAssetRecentStrip } from "./StudioAssetRecentStrip.jsx";
 import {
-  STUDIO_CATALOG_HOME_ICON_SRC,
   getCategoryPlacementBadgeSummary,
   getCategoryPlacementSummary,
   getStairCardDescriptor
@@ -217,24 +217,12 @@ export function StudioAssetCatalog({
         .slice(0, 6),
     [catalogAssets, recentAssetIds, sourceFilter]
   );
-  const [hoveredCategoryId, setHoveredCategoryId] = useState(null);
   const activeCategory = useMemo(
     () =>
       STUDIO_CATALOG_CATEGORIES.find((category) => category.id === activeCategoryId) ??
       STUDIO_CATALOG_CATEGORIES[0],
     [activeCategoryId]
   );
-  const hoveredCategory = useMemo(
-    () => STUDIO_CATALOG_CATEGORIES.find((category) => category.id === hoveredCategoryId),
-    [hoveredCategoryId]
-  );
-  const categoryReadout = hoveredCategory?.label ?? activeCategory?.label ?? "자산";
-  const categoryReadoutCount = hoveredCategory
-    ? categoryCounts[hoveredCategory.id] ?? 0
-    : categoryAssets.length;
-  const categoryReadoutPolicy = hoveredCategory
-    ? categorySummaries[hoveredCategory.id]?.policyBadge ?? "asset"
-    : categorySummaries[activeCategory?.id]?.policyBadge ?? "asset";
   const crumbLabel = normalizedSearch ? "전체 검색" : activeCategory?.label ?? "자산";
   const categoryPolicySummary = useMemo(() => getCategoryPlacementSummary(categoryAssets), [categoryAssets]);
   const activeCategoryPolicyBadge = categorySummaries[activeCategory?.id]?.policyBadge ?? "asset";
@@ -250,66 +238,15 @@ export function StudioAssetCatalog({
       onDragOver={(event) => event.stopPropagation()}
       onDrop={(event) => event.stopPropagation()}
     >
-      <div className="studio-catalog-home-panel">
-        <div className="studio-catalog-house-column">
-          <div className="studio-catalog-house-card" aria-hidden="true">
-            <img alt="" draggable="false" src={STUDIO_CATALOG_HOME_ICON_SRC} />
-            <span />
-          </div>
-          <button
-            aria-label={collapsed ? "카탈로그 펼치기" : "카탈로그 접기"}
-            className={`studio-catalog-collapse-toggle${collapsed ? " is-collapsed" : ""}`}
-            onClick={onCollapseToggle}
-            title={collapsed ? "카탈로그 펼치기" : "카탈로그 접기"}
-            type="button"
-          >
-            {collapsed ? "›" : "‹"}
-          </button>
-          <div className="studio-catalog-category-readout" aria-live="polite">
-            <strong>{categoryReadout}</strong>
-            <span className="studio-catalog-readout-count">{categoryReadoutCount}</span>
-            <em>{categoryReadoutPolicy}</em>
-          </div>
-        </div>
-        <div className="studio-catalog-categories" aria-label="자산 카테고리">
-          {STUDIO_CATALOG_CATEGORIES.map((category) => {
-            const isActiveCategory = category.id === activeCategoryId;
-            const categoryCount = categoryCounts[category.id] ?? 0;
-            const categorySummary = categorySummaries[category.id] ?? { policyBadge: "asset", policySummary: "asset" };
-            return (
-              <button
-                aria-label={`${category.label}, ${categoryCount}개, ${categorySummary.policySummary}`}
-                aria-pressed={isActiveCategory}
-                className={[
-                  "studio-catalog-category-button",
-                  isActiveCategory ? "is-active" : "",
-                  collapsed && isActiveCategory ? "is-rail-active" : ""
-                ].filter(Boolean).join(" ")}
-                data-category-id={category.id}
-                data-count={categoryCount}
-                data-policy={categorySummary.policySummary}
-                data-policy-badge={categorySummary.policyBadge}
-                data-tooltip={category.label}
-                key={category.id}
-                onClick={() => {
-                  if (collapsed) onCollapseToggle?.();
-                  onCategoryChange(category.id);
-                }}
-                onBlur={() => setHoveredCategoryId(null)}
-                onFocus={() => setHoveredCategoryId(category.id)}
-                onMouseEnter={() => setHoveredCategoryId(category.id)}
-                onMouseLeave={() => setHoveredCategoryId(null)}
-                title={`${category.label} · ${categoryCount}개 · ${categorySummary.policySummary}`}
-                type="button"
-              >
-                {category.iconSrc ? <img alt="" draggable="false" src={category.iconSrc} /> : <category.icon size={18} />}
-                <span className="studio-catalog-category-count" aria-hidden="true">{categoryCount}</span>
-                <span className="studio-catalog-category-policy" aria-hidden="true">{categorySummary.policyBadge}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <StudioAssetCategoryRail
+        activeCategoryId={activeCategoryId}
+        categories={STUDIO_CATALOG_CATEGORIES}
+        categoryCounts={categoryCounts}
+        categorySummaries={categorySummaries}
+        collapsed={collapsed}
+        onCategoryChange={onCategoryChange}
+        onCollapseToggle={onCollapseToggle}
+      />
 
       {collapsed ? null : (
         <div className="studio-catalog-browser">
