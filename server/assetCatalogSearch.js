@@ -369,6 +369,7 @@ export function normalizeAssetForEditor(asset, costItem = null) {
   const urls = resolveModelUrls(asset);
   const result = {
     id: asset.id,
+    assetSourceId: asset.id,
     label: asset.label ?? asset.id,
     categoryId,
     placementMode: inferPlacementMode(asset, categoryId),
@@ -391,8 +392,19 @@ export function normalizeAssetForEditor(asset, costItem = null) {
     bimType: asset.bimType ?? null,
     componentKind: inferComponentKind(asset) || null,
     source: asset.source ?? null,
+    sourceLabel: asset.source ?? asset.label ?? asset.id,
     sourceType: asset.sourceType ?? null,
-    status: asset.reviewStatus ?? "unknown"
+    status: asset.reviewStatus ?? "unknown",
+    metadata: {
+      bimType: asset.bimType ?? null,
+      componentKind: inferComponentKind(asset) || null,
+      entityCounts: cloneJson(asset.entityCounts ?? null),
+      sourceAssetId: asset.id,
+      sourceLabel: asset.source ?? asset.label ?? asset.id,
+      sourceType: asset.sourceType ?? null,
+      technicalGrade: asset.technicalGrade ?? asset.quality?.technicalGrade ?? null,
+      technicalScore: asset.technicalScore ?? asset.quality?.technicalScore ?? null
+    }
   };
 
   return {

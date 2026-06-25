@@ -133,7 +133,7 @@ export function normalizeStudioGlbCatalog(rawCatalog) {
       const categoryId = getCategoryId(asset);
       const size = normalizeSize(asset, categoryId);
       const placementMode = getPlacementMode(asset, categoryId);
-      const modelUrl = asset.originalUrl ?? asset.url;
+      const modelUrl = asset.optimizedUrl ?? asset.url ?? asset.originalUrl;
 
       return {
         id: `glb-${asset.id}`,
@@ -175,7 +175,7 @@ export function normalizeStudioGlbCatalog(rawCatalog) {
           originalSizeBytes: asset.originalSizeBytes ?? asset.compression?.originalSizeBytes ?? null,
           optimizedSizeBytes: asset.sizeBytes ?? asset.compression?.optimizedSizeBytes ?? null,
           runtimeUrl: modelUrl,
-          sizeBytes: asset.sizeBytes ?? null
+          sizeBytes: asset.sizeBytes ?? asset.compression?.optimizedSizeBytes ?? null
         },
         metadata: {
           bimType: asset.bimType ?? null,

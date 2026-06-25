@@ -24,9 +24,11 @@ function assertSearchResult(query, response) {
     assert.equal(disallowedCategoryIds.has(result.categoryId), false, `${result.id} should not expose ${result.categoryId}`);
     assert.equal(typeof result.modelUrl, "string", `${result.id} should expose modelUrl`);
     assert.equal(result.modelUrl.length > 0, true, `${result.id} should expose a non-empty modelUrl`);
+    assert.equal(result.assetSourceId, result.id, `${result.id} should expose its source asset id`);
     assert.equal(Object.hasOwn(result, "optimizedModelUrl"), true, `${result.id} should expose optimizedModelUrl`);
     assert.equal(Object.hasOwn(result, "originalModelUrl"), true, `${result.id} should expose originalModelUrl`);
     assert.equal(Object.hasOwn(result.runtime ?? {}, "sizeBytes"), true, `${result.id} should expose runtime.sizeBytes`);
+    assert.equal(result.metadata?.sourceAssetId, result.id, `${result.id} should expose metadata.sourceAssetId`);
 
     if (result.originalModelUrl) {
       assert.equal(result.modelUrl, result.originalModelUrl, `${result.id} should prefer originalModelUrl for modelUrl`);

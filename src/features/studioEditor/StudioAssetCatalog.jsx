@@ -393,9 +393,27 @@ export function StudioAssetCatalog({
     if (!normalizedSearch) return categoryAssets;
 
     const activeApiResults = assetApiSearch.query === searchTerm.trim() ? assetApiSearch.results : [];
+    const apiResultsByDedupKey = new Map(activeApiResults.map((asset) => [getAssetDedupKey(asset), asset]).filter(([key]) => key));
     const catalogAssetIds = new Set(catalogAssets.map(getAssetDedupKey).filter(Boolean));
-    const mergedAssetIds = new Set(localSearchAssets.map(getAssetDedupKey).filter(Boolean));
-    const mergedAssets = [...localSearchAssets];
+    const mergedAssets = localSearchAssets.map((asset) => {
+      const apiAsset = apiResultsByDedupKey.get(getAssetDedupKey(asset));
+      if (!apiAsset) return asset;
+      return {
+        ...asset,
+        cost: asset.cost ?? apiAsset.cost,
+        optimizedModelUrl: asset.optimizedModelUrl ?? apiAsset.optimizedModelUrl,
+        originalModelUrl: asset.originalModelUrl ?? apiAsset.originalModelUrl,
+        runtime: asset.runtime ?? apiAsset.runtime,
+        score: apiAsset.score,
+        sourceLabel: asset.sourceLabel ?? apiAsset.sourceLabel,
+        sourceType: asset.sourceType ?? apiAsset.sourceType,
+        metadata: {
+          ...(apiAsset.metadata ?? {}),
+          ...(asset.metadata ?? {})
+        }
+      };
+    });
+    const mergedAssetIds = new Set(mergedAssets.map(getAssetDedupKey).filter(Boolean));
 
     activeApiResults.forEach((asset) => {
       const dedupKey = getAssetDedupKey(asset);

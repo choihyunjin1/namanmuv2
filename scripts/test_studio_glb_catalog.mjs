@@ -17,8 +17,12 @@ assert.equal(
 );
 
 for (const asset of normalizedAssets) {
+  const sourceAsset = rawCatalog.assets.find((candidate) => candidate.id === asset.assetSourceId);
   assert.equal(typeof asset.modelUrl, "string", `${asset.id} should include modelUrl`);
   assert.equal(asset.modelUrl.length > 0, true, `${asset.id} modelUrl should not be empty`);
+  if (sourceAsset?.optimizedUrl) {
+    assert.equal(asset.modelUrl, sourceAsset.optimizedUrl, `${asset.id} should prefer optimized GLB runtime URL`);
+  }
   assert.equal(typeof asset.thumbnailSrc, "string", `${asset.id} should include thumbnailSrc`);
   assert.equal(asset.thumbnailSrc.length > 0, true, `${asset.id} thumbnailSrc should not be empty`);
   assert.equal(typeof asset.categoryId, "string", `${asset.id} should include categoryId`);
