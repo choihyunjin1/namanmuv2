@@ -277,6 +277,9 @@ export function StudioAssetCatalog({
   const showAssetApiOffline =
     normalizedSearch.length >= 2 && assetApiSearch.query === searchTerm.trim() && assetApiSearch.status === "offline";
   const visibleAssetCount = visibleAssets.length + recommendedAssets.length;
+  const resultModeLabel = normalizedSearch ? `검색 결과 · ${searchTerm.trim()}` : `${activeCategory?.label ?? "자산"} 라이브러리`;
+  const resultMetaLabel = `${recommendedAssets.length} 추천 · ${visibleAssets.length} 자산`;
+  const sourceLabel = CATALOG_SOURCE_TABS.find((source) => source.id === sourceFilter)?.label ?? "All";
 
   return (
     <section
@@ -327,40 +330,49 @@ export function StudioAssetCatalog({
             <StudioAssetRecentStrip onAssetPick={onAssetPick} recentAssets={recentAssets} />
           </div>
 
-          <div className="studio-catalog-assets" aria-label="카테고리 자산">
-            <StudioAssetAiLeadingTile
-              generationStatus={generationStatus}
-              onGenerateSceneFromBrief={onGenerateSceneFromBrief}
-              prompt={searchTerm}
-            />
-            {recommendedAssets.map((asset) => {
-              const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
-              return (
-                <StudioAssetCatalogCard
-                  asset={asset}
-                  categoryLabel={category?.label}
-                  isActive={asset.id === activeAssetId}
-                  key={`recommendation-${asset.id}`}
-                  onAssetPick={onAssetPick}
-                  onDragAssetStart={onDragAssetStart}
-                  searchActive
-                />
-              );
-            })}
-            {visibleAssets.map((asset) => {
-              const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
-              return (
-                <StudioAssetCatalogCard
-                  asset={asset}
-                  categoryLabel={category?.label}
-                  isActive={asset.id === activeAssetId}
-                  key={asset.id}
-                  onAssetPick={onAssetPick}
-                  onDragAssetStart={onDragAssetStart}
-                  searchActive={Boolean(normalizedSearch)}
-                />
-              );
-            })}
+          <div className="studio-catalog-assets-panel">
+            <div className="studio-catalog-assets-toolbar" aria-label="자산 결과 요약">
+              <div className="studio-catalog-assets-title">
+                <strong>{resultModeLabel}</strong>
+                <small>{resultMetaLabel}</small>
+              </div>
+              <span>{sourceLabel}</span>
+            </div>
+            <div className="studio-catalog-assets" aria-label="카테고리 자산" data-source={sourceFilter}>
+              <StudioAssetAiLeadingTile
+                generationStatus={generationStatus}
+                onGenerateSceneFromBrief={onGenerateSceneFromBrief}
+                prompt={searchTerm}
+              />
+              {recommendedAssets.map((asset) => {
+                const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
+                return (
+                  <StudioAssetCatalogCard
+                    asset={asset}
+                    categoryLabel={category?.label}
+                    isActive={asset.id === activeAssetId}
+                    key={`recommendation-${asset.id}`}
+                    onAssetPick={onAssetPick}
+                    onDragAssetStart={onDragAssetStart}
+                    searchActive
+                  />
+                );
+              })}
+              {visibleAssets.map((asset) => {
+                const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
+                return (
+                  <StudioAssetCatalogCard
+                    asset={asset}
+                    categoryLabel={category?.label}
+                    isActive={asset.id === activeAssetId}
+                    key={asset.id}
+                    onAssetPick={onAssetPick}
+                    onDragAssetStart={onDragAssetStart}
+                    searchActive={Boolean(normalizedSearch)}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
