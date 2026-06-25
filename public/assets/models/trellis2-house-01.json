@@ -1,0 +1,144 @@
+{
+  "created_at": "2026-06-21T14:14:26",
+  "job_id": "2026-06-21_house_01-20260621-140701",
+  "input": "/mnt/c/Users/cedis/PycharmProjects/JupyterProject/outputs/2026-06-21_house_01/source_image.png",
+  "output": "/mnt/c/Users/cedis/PycharmProjects/JupyterProject/outputs/2026-06-21_house_01/object.glb",
+  "processed_preview": "/mnt/c/Users/cedis/PycharmProjects/JupyterProject/outputs/2026-06-21_house_01/trellis2_processed.png",
+  "model": "microsoft/TRELLIS.2-4B",
+  "rembg_model_name": "ZhengPeng7/BiRefNet",
+  "pipeline_type": "512",
+  "seed": 42,
+  "steps": 12,
+  "decimation_target": 500000,
+  "texture_size": 2048,
+  "remesh": true,
+  "output_size_bytes": 26508912,
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "assetSchemaVersion": 1,
+  "id": "trellis2-house-01",
+  "label": "TRELLIS.2 House 01",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "trellis2",
+  "source": "TRELLIS.2 local persistent worker output from house_01 source image",
+  "scaleUnit": "meter",
+  "anchor": "ground-center",
+  "tags": [
+    "detached-house",
+    "exterior-concept",
+    "glb",
+    "local-ai-generated",
+    "local-asset",
+    "local-intake",
+    "needs-visual-review",
+    "photo-derived",
+    "premium-asset",
+    "trellis"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "meshCount": 1,
+  "entityCounts": {
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 468934,
+    "GLBMaterial": 1,
+    "GLBTexture": 2
+  },
+  "quality": {
+    "limitation": "Local intake asset for exterior concept preview only. It does not guarantee permit, structure, or construction feasibility.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T05:31:25.931429+00:00",
+      "sourceFile": "public\\assets\\models\\trellis2-house-01.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 26508912,
+      "sizeMb": 25.281,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 1,
+        "textures": 2,
+        "images": 2,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 6,
+        "accessors": 4,
+        "primitives": 1,
+        "trianglesEstimate": 468934,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.4941,
+          -0.470305,
+          -0.493449
+        ],
+        "max": [
+          0.495507,
+          0.500966,
+          0.496832
+        ],
+        "dimensions": [
+          0.989607,
+          0.971271,
+          0.990281
+        ],
+        "maxDimension": 0.990281
+      },
+      "extensionsUsed": [
+        "EXT_texture_webp"
+      ],
+      "extensionsRequired": [
+        "EXT_texture_webp"
+      ],
+      "technicalScore": 76,
+      "technicalGrade": "B",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "texture present",
+        "bounds present",
+        "triangle count usable"
+      ],
+      "issues": [
+        "very large runtime asset",
+        "single dense mesh; component editing limited"
+      ]
+    },
+    "technicalGrade": "B",
+    "technicalScore": 76,
+    "interactionReadiness": "visual-preview",
+    "manualReviewRequired": true
+  },
+  "intake": {
+    "status": "staged",
+    "createdAt": "2026-06-21T05:17:20.679986+00:00",
+    "sourceFileName": "object.glb",
+    "sourcePath": "C:\\Users\\cedis\\PycharmProjects\\JupyterProject\\outputs\\2026-06-21_house_01\\object.glb",
+    "sourceSizeBytes": 26508912,
+    "glbHeader": {
+      "magic": "glTF",
+      "version": 2,
+      "declaredLengthBytes": 26508912
+    },
+    "visualReviewRequired": true,
+    "recommendedNextCommands": [
+      "npm run assets:optimize -- --only trellis2-house-01",
+      "npm run assets:thumbnails -- --only trellis2-house-01",
+      "npm run assets:catalog"
+    ]
+  }
+}

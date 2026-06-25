@@ -1,0 +1,66 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "basic-house",
+  "label": "BasicHouse",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "BasicHouse.ifc",
+  "output": "public\\assets\\models\\basic-house.glb",
+  "scaleUnit": "meter",
+  "anchor": "site-center",
+  "tags": [
+    "detached-house",
+    "ifc-derived",
+    "building-shell",
+    "openings",
+    "stress-test"
+  ],
+  "compatibleZones": [
+    "제1종전용주거지역",
+    "제1종일반주거지역",
+    "계획관리지역"
+  ],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC2X3",
+  "entityCounts": {
+    "IfcBuildingElementProxy": 4,
+    "IfcDoor": 8,
+    "IfcFlowTerminal": 7,
+    "IfcFurnishingElement": 71,
+    "IfcOpeningElement": 28,
+    "IfcSite": 1,
+    "IfcSlab": 3,
+    "IfcWallStandardCase": 13,
+    "IfcWindow": 19
+  },
+  "meshCount": 154,
+  "sourceBounds": {
+    "min": [
+      -20.4294,
+      -0.2999,
+      -12.9789
+    ],
+    "max": [
+      28.3772,
+      3.6235,
+      16.3182
+    ],
+    "extent": [
+      48.8065,
+      3.9234,
+      29.2971
+    ]
+  },
+  "normalization": {
+    "targetSize": 4.4,
+    "scale": 0.09015184062262267,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  }
+}

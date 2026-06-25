@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:15.305177+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-pergola-module.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 39136,
+  "sizeMb": 0.037,
+  "counts": {
+    "scenes": 1,
+    "nodes": 23,
+    "meshes": 21,
+    "materials": 3,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 84,
+    "accessors": 84,
+    "primitives": 21,
+    "trianglesEstimate": 252,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.96,
+      -0.66,
+      -0.56
+    ],
+    "max": [
+      0.96,
+      0.66,
+      0.56
+    ],
+    "dimensions": [
+      1.92,
+      1.32,
+      1.12
+    ],
+    "maxDimension": 1.92
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

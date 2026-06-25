@@ -1,0 +1,146 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "generated-shell-pnu-41450-002",
+  "label": "PLOT:ON Balanced Gable Warm Stone - 경기도 성남시 분당구 판교동 552-1",
+  "type": "detached-house-shell",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "output/projects/PNU-41450-002.json",
+  "generatedAssetFile": "generated-shell-pnu-41450-002.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 4,
+  "anchor": "ground-center",
+  "tags": [
+    "ploton-generated",
+    "detached-house",
+    "single-family-house",
+    "procedural-shell",
+    "premium-envelope",
+    "building-shell",
+    "openings",
+    "two-story",
+    "gable-roof",
+    "korean-parcel",
+    "editable-preview",
+    "local-asset",
+    "balanced-gable",
+    "family-house",
+    "front-canopy",
+    "warm-stone",
+    "wood-accent",
+    "warm-white"
+  ],
+  "compatibleZones": [
+    "제1종전용주거지역"
+  ],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "editableObjects": [
+      "wall",
+      "roof",
+      "window",
+      "door",
+      "deck",
+      "parking",
+      "landscape",
+      "solar"
+    ],
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_GENERATED_SHELL_V3",
+  "meshCount": 69,
+  "entityCounts": {
+    "IfcBuildingElementProxy": 10,
+    "IfcWall": 18,
+    "IfcWindow": 6,
+    "IfcDoor": 1,
+    "IfcRoof": 1,
+    "IfcSlab": 2,
+    "IfcCovering": 26,
+    "IfcSpace": 1,
+    "IfcGeographicElement": 1,
+    "IfcEnergyConversionDevice": 1
+  },
+  "parcel": {
+    "id": "PNU-41450-002",
+    "address": "경기도 성남시 분당구 판교동 552-1",
+    "area": null,
+    "zone": "제1종전용주거지역"
+  },
+  "concept": {
+    "id": "c1",
+    "title": "규제 순응형 2층 박공지붕",
+    "roofStyle": "gable"
+  },
+  "designPreset": {
+    "id": "balanced-gable",
+    "label": "Balanced Gable",
+    "description": "2층 박공지붕, 밝은 외벽, 목재 포인트의 균형형 외관",
+    "detailStyle": "balanced",
+    "floorMode": "all",
+    "tags": [
+      "balanced-gable",
+      "two-story",
+      "gable-roof",
+      "family-house",
+      "front-canopy"
+    ]
+  },
+  "materialPreset": {
+    "id": "warm-stone",
+    "label": "Warm Stone",
+    "description": "밝은 미장, 목재 포인트, 짙은 지붕",
+    "tags": [
+      "warm-stone",
+      "wood-accent",
+      "warm-white"
+    ]
+  },
+  "boundsMeters": {
+    "width": 9.2,
+    "depth": 6.08,
+    "estimatedHeight": 7.21
+  },
+  "sourceProjectStats": {
+    "assemblyId": "shell-c1-PNU-41450-002",
+    "unitScaleMetersPerSceneUnit": 4,
+    "blockCount": 36,
+    "generatedAssets": 4,
+    "massBlocks": 10,
+    "openingBlocks": 6,
+    "roofBlocks": 1,
+    "deckBlocks": 1,
+    "facadeDetailMeshes": 7,
+    "premiumDetailMeshes": 19,
+    "renderMeshCount": 69,
+    "floorCount": 2,
+    "roofStyle": "gable",
+    "designPreset": "balanced-gable",
+    "designLabel": "Balanced Gable",
+    "designDescription": "2층 박공지붕, 밝은 외벽, 목재 포인트의 균형형 외관",
+    "conceptId": "c1",
+    "conceptTitle": "규제 순응형 2층 박공지붕",
+    "materialPreset": "warm-stone",
+    "materialLabel": "Warm Stone",
+    "boundsMeters": {
+      "width": 9.2,
+      "depth": 6.08,
+      "estimatedHeight": 7.21
+    }
+  },
+  "quality": {
+    "shellScore": 100,
+    "shellStatus": "complete-shell",
+    "readinessStatus": "",
+    "readinessScore": null,
+    "generatedFromVerifiedScene": true,
+    "limitation": "외관 콘셉트 미리보기용 자산이며 인허가·구조·시공 가능성을 보증하지 않음"
+  },
+  "fileStats": {
+    "glbSizeBytes": 140892
+  }
+}

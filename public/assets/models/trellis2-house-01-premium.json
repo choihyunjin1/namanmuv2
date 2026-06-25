@@ -1,0 +1,147 @@
+{
+  "created_at": "2026-06-21T14:37:35",
+  "job_id": "2026-06-21_house_01-premium-s42-20260621-143330",
+  "quality_preset": "premium",
+  "variant": "premium-s42",
+  "input": "/mnt/c/Users/cedis/PycharmProjects/JupyterProject/outputs/2026-06-21_house_01/source_image.png",
+  "output": "/mnt/c/Users/cedis/PycharmProjects/JupyterProject/outputs/2026-06-21_house_01/variants/premium-s42/object.glb",
+  "processed_preview": "/mnt/c/Users/cedis/PycharmProjects/JupyterProject/outputs/2026-06-21_house_01/variants/premium-s42/trellis2_processed.png",
+  "model": "microsoft/TRELLIS.2-4B",
+  "rembg_model_name": "ZhengPeng7/BiRefNet",
+  "pipeline_type": "512",
+  "seed": 42,
+  "steps": 28,
+  "decimation_target": 900000,
+  "texture_size": 4096,
+  "remesh": true,
+  "output_size_bytes": 51642588,
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "assetSchemaVersion": 1,
+  "id": "trellis2-house-01-premium",
+  "label": "TRELLIS.2 House 01 Premium",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "trellis2",
+  "source": "TRELLIS.2 local persistent worker premium preset output from house_01 source image",
+  "scaleUnit": "meter",
+  "anchor": "ground-center",
+  "tags": [
+    "detached-house",
+    "exterior-concept",
+    "glb",
+    "high-detail",
+    "local-ai-generated",
+    "local-asset",
+    "local-intake",
+    "needs-visual-review",
+    "photo-derived",
+    "premium-asset",
+    "trellis"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "meshCount": 1,
+  "entityCounts": {
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 865151,
+    "GLBMaterial": 1,
+    "GLBTexture": 2
+  },
+  "quality": {
+    "limitation": "Local intake asset for exterior concept preview only. It does not guarantee permit, structure, or construction feasibility.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T05:38:49.268234+00:00",
+      "sourceFile": "public\\assets\\models\\trellis2-house-01-premium.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 51642588,
+      "sizeMb": 49.25,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 1,
+        "textures": 2,
+        "images": 2,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 6,
+        "accessors": 4,
+        "primitives": 1,
+        "trianglesEstimate": 865151,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.493441,
+          -0.470623,
+          -0.493027
+        ],
+        "max": [
+          0.495243,
+          0.470773,
+          0.49602
+        ],
+        "dimensions": [
+          0.988684,
+          0.941396,
+          0.989047
+        ],
+        "maxDimension": 0.989047
+      },
+      "extensionsUsed": [
+        "EXT_texture_webp"
+      ],
+      "extensionsRequired": [
+        "EXT_texture_webp"
+      ],
+      "technicalScore": 67,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "texture present",
+        "bounds present"
+      ],
+      "issues": [
+        "high triangle count",
+        "very large runtime asset",
+        "single dense mesh; component editing limited"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 67,
+    "interactionReadiness": "visual-preview",
+    "manualReviewRequired": true
+  },
+  "intake": {
+    "status": "staged",
+    "createdAt": "2026-06-21T05:38:44.270222+00:00",
+    "sourceFileName": "object.glb",
+    "sourcePath": "C:\\Users\\cedis\\PycharmProjects\\JupyterProject\\outputs\\2026-06-21_house_01\\variants\\premium-s42\\object.glb",
+    "sourceSizeBytes": 51642588,
+    "glbHeader": {
+      "magic": "glTF",
+      "version": 2,
+      "declaredLengthBytes": 51642588
+    },
+    "visualReviewRequired": true,
+    "recommendedNextCommands": [
+      "npm run assets:optimize -- --only trellis2-house-01-premium",
+      "npm run assets:thumbnails -- --only trellis2-house-01-premium",
+      "npm run assets:catalog"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "namanmuv2",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "assets:catalog": "python scripts/build_asset_catalog.py",
+    "assets:intake": "python scripts/intake_local_glb_asset.py",
+    "assets:optimize": "node scripts/optimize_glb_assets.mjs",
+    "assets:thumbnails": "node scripts/generate_glb_thumbnails.mjs",
+    "assets:export-components": "node scripts/export_component_glb_assets.mjs",
+    "assets:export-ifc-components": "python scripts/export_ifc_component_assets.py",
+    "test:catalog-policy-rules": "node scripts/test_studio_editor_catalog_policy_rules.mjs",
+    "test:text-to-cad-generator": "node scripts/test_text_to_cad_generator.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.4.2",
+    "@vitejs/plugin-react": "^5.1.2",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "three": "^0.182.0",
+    "three-mesh-bvh": "^0.8.3",
+    "vite": "^7.3.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.4.0",
+    "playwright": "^1.61.0"
+  },
+  "overrides": {
+    "esbuild": "0.28.1"
+  }
+}

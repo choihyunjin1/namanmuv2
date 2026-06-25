@@ -1,0 +1,69 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "ac20-fzk-haus",
+  "label": "FZK Haus",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "AC20-FZK-Haus.ifc",
+  "output": "public\\assets\\models\\ac20-fzk-haus.glb",
+  "scaleUnit": "meter",
+  "anchor": "site-center",
+  "tags": [
+    "detached-house",
+    "ifc-derived",
+    "building-shell",
+    "two-story",
+    "openings",
+    "mvp-default"
+  ],
+  "compatibleZones": [
+    "제1종전용주거지역",
+    "제1종일반주거지역",
+    "계획관리지역"
+  ],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "approved",
+  "license": "source-review-required",
+  "schema": "IFC4",
+  "entityCounts": {
+    "IfcBeam": 4,
+    "IfcDoor": 5,
+    "IfcMember": 42,
+    "IfcOpeningElement": 17,
+    "IfcRailing": 2,
+    "IfcSite": 1,
+    "IfcSlab": 4,
+    "IfcSpace": 7,
+    "IfcStair": 1,
+    "IfcWallStandardCase": 13,
+    "IfcWindow": 11
+  },
+  "meshCount": 107,
+  "sourceBounds": {
+    "min": [
+      -3.0,
+      -1.0,
+      -13.0
+    ],
+    "max": [
+      15.0,
+      6.3177,
+      3.0
+    ],
+    "extent": [
+      18.0,
+      7.3177,
+      16.0
+    ]
+  },
+  "normalization": {
+    "targetSize": 4.4,
+    "scale": 0.24444444444444446,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "component-parking-pad",
+  "label": "Parking Pad",
+  "type": "component",
+  "componentKind": "site",
+  "bimType": "IfcSpace",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "scripts/export_component_glb_assets.mjs",
+  "generatedAssetFile": "component-parking-pad.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "ground-center",
+  "tags": [
+    "component-ready",
+    "editable-component",
+    "local-asset",
+    "glb",
+    "component",
+    "parking",
+    "site",
+    "ground-placeable"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "preferredZone": "driveway"
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_COMPONENT_ASSET_V1",
+  "meshCount": 3,
+  "entityCounts": {
+    "IfcSpace": 1,
+    "IfcSlab": 1,
+    "GLBMesh": 3,
+    "GLBPrimitive": 3,
+    "GLBTriangleEstimate": 36,
+    "GLBMaterial": 2,
+    "GLBTexture": 0
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "Procedural component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:12:13.946253+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-parking-pad.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "THREE.GLTFExporter r182",
+      "sizeBytes": 6180,
+      "sizeMb": 0.006,
+      "counts": {
+        "scenes": 1,
+        "nodes": 4,
+        "meshes": 3,
+        "materials": 2,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 12,
+        "accessors": 12,
+        "primitives": 3,
+        "trianglesEstimate": 36,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.61,
+          -0.0275,
+          -1.04
+        ],
+        "max": [
+          0.61,
+          0.0275,
+          1.04
+        ],
+        "dimensions": [
+          1.22,
+          0.055,
+          2.08
+        ],
+        "maxDimension": 2.08
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 70,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 70
+  },
+  "component": {
+    "kind": "site",
+    "bimType": "IfcSpace",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "generated",
+    "createdAt": "2026-06-21T06:09:27.151Z",
+    "sourceSizeBytes": 6180
+  }
+}

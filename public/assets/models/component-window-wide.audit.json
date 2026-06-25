@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:21.819086+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-window-wide.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 8088,
+  "sizeMb": 0.008,
+  "counts": {
+    "scenes": 1,
+    "nodes": 6,
+    "meshes": 4,
+    "materials": 2,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 16,
+    "accessors": 16,
+    "primitives": 4,
+    "trianglesEstimate": 48,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.62,
+      -0.4,
+      -0.0375
+    ],
+    "max": [
+      0.62,
+      0.4,
+      0.0375
+    ],
+    "dimensions": [
+      1.24,
+      0.8,
+      0.075
+    ],
+    "maxDimension": 1.24
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

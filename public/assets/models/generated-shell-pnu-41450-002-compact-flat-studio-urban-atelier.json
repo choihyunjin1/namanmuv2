@@ -1,0 +1,150 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "generated-shell-pnu-41450-002-compact-flat-studio-urban-atelier",
+  "label": "PLOT:ON Compact Flat Studio Urban Atelier - 경기도 성남시 분당구 판교동 552-1",
+  "type": "detached-house-shell",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "output/projects/PNU-41450-002.json",
+  "generatedAssetFile": "generated-shell-pnu-41450-002-compact-flat-studio-urban-atelier.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 4,
+  "anchor": "ground-center",
+  "tags": [
+    "ploton-generated",
+    "detached-house",
+    "single-family-house",
+    "procedural-shell",
+    "premium-envelope",
+    "building-shell",
+    "openings",
+    "two-story",
+    "flat-roof",
+    "korean-parcel",
+    "editable-preview",
+    "local-asset",
+    "compact-flat",
+    "compact",
+    "modern",
+    "roof-terrace",
+    "balcony",
+    "urban-atelier",
+    "concrete",
+    "dark-frame"
+  ],
+  "compatibleZones": [
+    "제1종전용주거지역"
+  ],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "editableObjects": [
+      "wall",
+      "roof",
+      "window",
+      "door",
+      "deck",
+      "parking",
+      "landscape",
+      "solar"
+    ],
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_GENERATED_SHELL_V3",
+  "meshCount": 74,
+  "entityCounts": {
+    "IfcBuildingElementProxy": 10,
+    "IfcWall": 18,
+    "IfcWindow": 6,
+    "IfcDoor": 1,
+    "IfcRoof": 1,
+    "IfcSlab": 2,
+    "IfcCovering": 31,
+    "IfcSpace": 1,
+    "IfcGeographicElement": 1,
+    "IfcEnergyConversionDevice": 1
+  },
+  "parcel": {
+    "id": "PNU-41450-002",
+    "address": "경기도 성남시 분당구 판교동 552-1",
+    "area": null,
+    "zone": "제1종전용주거지역"
+  },
+  "concept": {
+    "id": "c3",
+    "title": "컴팩트 플랫루프 스튜디오",
+    "roofStyle": "flat"
+  },
+  "designPreset": {
+    "id": "compact-flat-studio",
+    "label": "Compact Flat Studio",
+    "description": "작은 발자국, 플랫루프, 발코니와 루프테라스 디테일",
+    "detailStyle": "studio",
+    "floorMode": "all",
+    "tags": [
+      "compact-flat",
+      "two-story",
+      "flat-roof",
+      "compact",
+      "modern",
+      "roof-terrace",
+      "balcony"
+    ]
+  },
+  "materialPreset": {
+    "id": "urban-atelier",
+    "label": "Urban Atelier",
+    "description": "라이트 콘크리트, 다크 프레임, 저채도 금속",
+    "tags": [
+      "urban-atelier",
+      "concrete",
+      "dark-frame"
+    ]
+  },
+  "boundsMeters": {
+    "width": 9.2,
+    "depth": 6.08,
+    "estimatedHeight": 6.01
+  },
+  "sourceProjectStats": {
+    "assemblyId": "shell-c1-PNU-41450-002",
+    "unitScaleMetersPerSceneUnit": 4,
+    "blockCount": 36,
+    "generatedAssets": 4,
+    "massBlocks": 10,
+    "openingBlocks": 6,
+    "roofBlocks": 1,
+    "deckBlocks": 1,
+    "facadeDetailMeshes": 13,
+    "premiumDetailMeshes": 18,
+    "renderMeshCount": 74,
+    "floorCount": 2,
+    "roofStyle": "flat",
+    "designPreset": "compact-flat-studio",
+    "designLabel": "Compact Flat Studio",
+    "designDescription": "작은 발자국, 플랫루프, 발코니와 루프테라스 디테일",
+    "conceptId": "c3",
+    "conceptTitle": "컴팩트 플랫루프 스튜디오",
+    "materialPreset": "urban-atelier",
+    "materialLabel": "Urban Atelier",
+    "boundsMeters": {
+      "width": 9.2,
+      "depth": 6.08,
+      "estimatedHeight": 6.01
+    }
+  },
+  "quality": {
+    "shellScore": 100,
+    "shellStatus": "complete-shell",
+    "readinessStatus": "",
+    "readinessScore": null,
+    "generatedFromVerifiedScene": true,
+    "limitation": "외관 콘셉트 미리보기용 자산이며 인허가·구조·시공 가능성을 보증하지 않음"
+  },
+  "fileStats": {
+    "glbSizeBytes": 150848
+  }
+}

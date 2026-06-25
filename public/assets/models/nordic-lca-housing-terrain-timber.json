@@ -1,0 +1,70 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "nordic-lca-housing-terrain-timber",
+  "label": "Nordic LCA Housing Terrain Timber",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "ARK_NordicLCA_Housing_Terrain-Timber_As-built_Archicad.ifc",
+  "output": "public\\assets\\models\\nordic-lca-housing-terrain-timber.glb",
+  "scaleUnit": "meter",
+  "anchor": "site-center",
+  "tags": [
+    "building-shell",
+    "global-reference",
+    "ifc-derived",
+    "multi-family-reference",
+    "nordic",
+    "residential-reference",
+    "terrain",
+    "timber"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC4",
+  "entityCounts": {
+    "IfcBeam": 8,
+    "IfcBuildingElementProxy": 4,
+    "IfcColumn": 5,
+    "IfcFurniture": 21,
+    "IfcGeographicElement": 40,
+    "IfcMember": 414,
+    "IfcRailing": 2,
+    "IfcRampFlight": 1,
+    "IfcSite": 1,
+    "IfcSlab": 6,
+    "IfcSpace": 8,
+    "IfcStairFlight": 1,
+    "IfcWall": 14,
+    "IfcWasteTerminal": 43
+  },
+  "meshCount": 568,
+  "sourceBounds": {
+    "min": [
+      -21.6537,
+      0.0,
+      -55.7764
+    ],
+    "max": [
+      51.0,
+      65.9965,
+      0.0549
+    ],
+    "extent": [
+      72.6537,
+      65.9965,
+      55.8314
+    ]
+  },
+  "normalization": {
+    "targetSize": 4.4,
+    "scale": 0.06056125322689261,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  }
+}

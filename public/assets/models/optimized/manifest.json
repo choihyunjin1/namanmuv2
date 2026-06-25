@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-21T06:34:29.416Z",
+  "tool": "@gltf-transform/cli meshopt",
+  "level": "high",
+  "outputDir": "public/assets/models/optimized",
+  "total": 14,
+  "ready": 8,
+  "failed": 0,
+  "notSmaller": 6,
+  "originalBytes": 119576,
+  "optimizedBytes": 35704,
+  "results": [
+    {
+      "id": "bim-component-basichouse-ifcdoor-01",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcdoor-01.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcdoor-01.glb",
+        "sizeBytes": 38676
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcdoor-01.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcdoor-01.meshopt.glb",
+        "sizeBytes": 9124
+      },
+      "savedBytes": 29552,
+      "ratio": 0.2359,
+      "reductionPercent": 76.4
+    },
+    {
+      "id": "bim-component-basichouse-ifcdoor-02",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcdoor-02.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcdoor-02.glb",
+        "sizeBytes": 38676
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcdoor-02.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcdoor-02.meshopt.glb",
+        "sizeBytes": 9124
+      },
+      "savedBytes": 29552,
+      "ratio": 0.2359,
+      "reductionPercent": 76.4
+    },
+    {
+      "id": "bim-component-basichouse-ifcslab-01",
+      "method": "meshopt",
+      "level": "high",
+      "status": "not-smaller",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcslab-01.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcslab-01.glb",
+        "sizeBytes": 1712
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcslab-01.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcslab-01.meshopt.glb",
+        "sizeBytes": 1932
+      },
+      "savedBytes": -220,
+      "ratio": 1.1285,
+      "reductionPercent": -12.9
+    },
+    {
+      "id": "bim-component-basichouse-ifcslab-02",
+      "method": "meshopt",
+      "level": "high",
+      "status": "not-smaller",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcslab-02.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcslab-02.glb",
+        "sizeBytes": 1712
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcslab-02.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcslab-02.meshopt.glb",
+        "sizeBytes": 1932
+      },
+      "savedBytes": -220,
+      "ratio": 1.1285,
+      "reductionPercent": -12.9
+    },
+    {
+      "id": "bim-component-basichouse-ifcwallstandardcase-01",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcwallstandardcase-01.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcwallstandardcase-01.glb",
+        "sizeBytes": 9412
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcwallstandardcase-01.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcwallstandardcase-01.meshopt.glb",
+        "sizeBytes": 3676
+      },
+      "savedBytes": 5736,
+      "ratio": 0.3906,
+      "reductionPercent": 60.9
+    },
+    {
+      "id": "bim-component-basichouse-ifcwallstandardcase-02",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcwallstandardcase-02.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcwallstandardcase-02.glb",
+        "sizeBytes": 3168
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcwallstandardcase-02.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcwallstandardcase-02.meshopt.glb",
+        "sizeBytes": 2324
+      },
+      "savedBytes": 844,
+      "ratio": 0.7336,
+      "reductionPercent": 26.6
+    },
+    {
+      "id": "bim-component-basichouse-ifcwindow-01",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcwindow-01.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcwindow-01.glb",
+        "sizeBytes": 5548
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcwindow-01.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcwindow-01.meshopt.glb",
+        "sizeBytes": 2812
+      },
+      "savedBytes": 2736,
+      "ratio": 0.5068,
+      "reductionPercent": 49.3
+    },
+    {
+      "id": "bim-component-basichouse-ifcwindow-02",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-basichouse-ifcwindow-02.glb",
+        "relativePath": "public/assets/models/bim-component-basichouse-ifcwindow-02.glb",
+        "sizeBytes": 5548
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-basichouse-ifcwindow-02.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-basichouse-ifcwindow-02.meshopt.glb",
+        "sizeBytes": 2812
+      },
+      "savedBytes": 2736,
+      "ratio": 0.5068,
+      "reductionPercent": 49.3
+    },
+    {
+      "id": "bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.glb",
+        "relativePath": "public/assets/models/bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.glb",
+        "sizeBytes": 3848
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.meshopt.glb",
+        "sizeBytes": 2392
+      },
+      "savedBytes": 1456,
+      "ratio": 0.6216,
+      "reductionPercent": 37.8
+    },
+    {
+      "id": "bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400",
+      "method": "meshopt",
+      "level": "high",
+      "status": "not-smaller",
+      "original": {
+        "url": "/assets/models/bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.glb",
+        "relativePath": "public/assets/models/bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.glb",
+        "sizeBytes": 1728
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.meshopt.glb",
+        "sizeBytes": 1944
+      },
+      "savedBytes": -216,
+      "ratio": 1.125,
+      "reductionPercent": -12.5
+    },
+    {
+      "id": "bim-material-ce711-gypsum-board-normal-ot-12-5mm",
+      "method": "meshopt",
+      "level": "high",
+      "status": "not-smaller",
+      "original": {
+        "url": "/assets/models/bim-material-ce711-gypsum-board-normal-ot-12-5mm.glb",
+        "relativePath": "public/assets/models/bim-material-ce711-gypsum-board-normal-ot-12-5mm.glb",
+        "sizeBytes": 1712
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-material-ce711-gypsum-board-normal-ot-12-5mm.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-material-ce711-gypsum-board-normal-ot-12-5mm.meshopt.glb",
+        "sizeBytes": 1904
+      },
+      "savedBytes": -192,
+      "ratio": 1.1121,
+      "reductionPercent": -11.2
+    },
+    {
+      "id": "bim-material-cl141-wood-structures-rect-ot-200x200",
+      "method": "meshopt",
+      "level": "high",
+      "status": "not-smaller",
+      "original": {
+        "url": "/assets/models/bim-material-cl141-wood-structures-rect-ot-200x200.glb",
+        "relativePath": "public/assets/models/bim-material-cl141-wood-structures-rect-ot-200x200.glb",
+        "sizeBytes": 1712
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-material-cl141-wood-structures-rect-ot-200x200.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-material-cl141-wood-structures-rect-ot-200x200.meshopt.glb",
+        "sizeBytes": 1928
+      },
+      "savedBytes": -216,
+      "ratio": 1.1262,
+      "reductionPercent": -12.6
+    },
+    {
+      "id": "bim-material-cw113-aluminum-curtain-wall-ot",
+      "method": "meshopt",
+      "level": "high",
+      "status": "ready",
+      "original": {
+        "url": "/assets/models/bim-material-cw113-aluminum-curtain-wall-ot.glb",
+        "relativePath": "public/assets/models/bim-material-cw113-aluminum-curtain-wall-ot.glb",
+        "sizeBytes": 4412
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-material-cw113-aluminum-curtain-wall-ot.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-material-cw113-aluminum-curtain-wall-ot.meshopt.glb",
+        "sizeBytes": 3440
+      },
+      "savedBytes": 972,
+      "ratio": 0.7797,
+      "reductionPercent": 22
+    },
+    {
+      "id": "bim-material-ft111-independence-foundation-ot-2000x2000x900",
+      "method": "meshopt",
+      "level": "high",
+      "status": "not-smaller",
+      "original": {
+        "url": "/assets/models/bim-material-ft111-independence-foundation-ot-2000x2000x900.glb",
+        "relativePath": "public/assets/models/bim-material-ft111-independence-foundation-ot-2000x2000x900.glb",
+        "sizeBytes": 1712
+      },
+      "optimized": {
+        "url": "/assets/models/optimized/bim-material-ft111-independence-foundation-ot-2000x2000x900.meshopt.glb",
+        "relativePath": "public/assets/models/optimized/bim-material-ft111-independence-foundation-ot-2000x2000x900.meshopt.glb",
+        "sizeBytes": 1936
+      },
+      "savedBytes": -224,
+      "ratio": 1.1308,
+      "reductionPercent": -13.1
+    }
+  ]
+}

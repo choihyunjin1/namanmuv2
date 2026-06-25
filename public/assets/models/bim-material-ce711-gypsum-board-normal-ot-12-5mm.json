@@ -1,0 +1,155 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "bim-material-ce711-gypsum-board-normal-ot-12-5mm",
+  "label": "BIM Cladding Panel - CE711_Gypsum_Board_Normal_OT(12.5mm)",
+  "type": "component",
+  "componentKind": "cladding-panel",
+  "bimType": "IfcCovering",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "CE711_Gypsum_Board_Normal_OT(12.5mm).ifc",
+  "sourcePath": "C:\\Users\\cedis\\OneDrive\\Desktop\\건축 bim 분류\\08_kbims_openbim_research\\downloads\\templates_and_libraries\\catia_library_a\\extracted_cp949\\08_Ceiling\\CE711_Gypsum_Board_Normal_OT(12.5mm).ifc",
+  "sourceMode": "file",
+  "generatedAssetFile": "bim-material-ce711-gypsum-board-normal-ot-12-5mm.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "IfcCovering",
+    "bim-component",
+    "cladding-panel",
+    "component",
+    "component-ready",
+    "editable-component",
+    "glb",
+    "ifc-derived",
+    "local-asset"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "attachToSurface": "wall",
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC2X3",
+  "entityCounts": {
+    "IfcCovering": 1,
+    "IfcElementAssembly": 1,
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 12,
+    "GLBMaterial": 0,
+    "GLBTexture": 0
+  },
+  "meshCount": 1,
+  "sourceEntities": [
+    {
+      "ifcType": "IfcElementAssembly",
+      "globalId": "EGIs66t8qsKixiP4Y8MLyp",
+      "name": "CE711_Gypsum_Board_Normal",
+      "stepId": 130
+    }
+  ],
+  "sourceBounds": {
+    "min": [
+      -15.0,
+      0.0,
+      -25.0
+    ],
+    "max": [
+      15.0,
+      0.0125,
+      25.0
+    ],
+    "extent": [
+      30.0,
+      0.0125,
+      50.0
+    ]
+  },
+  "normalization": {
+    "targetSize": 1.8,
+    "scale": 0.036000000000000004,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "IFC-derived component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:33:43.188689+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\bim-material-ce711-gypsum-board-normal-ot-12-5mm.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 1712,
+      "sizeMb": 0.002,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 3,
+        "accessors": 3,
+        "primitives": 1,
+        "trianglesEstimate": 12,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.54,
+          0.0,
+          -0.9
+        ],
+        "max": [
+          0.54,
+          0.00045,
+          0.9
+        ],
+        "dimensions": [
+          1.08,
+          0.00045,
+          1.8
+        ],
+        "maxDimension": 1.8
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 50,
+      "technicalGrade": "D",
+      "interactionReadiness": "research-review",
+      "checks": [
+        "mesh present",
+        "bounds present",
+        "runtime size acceptable"
+      ],
+      "issues": [
+        "no material",
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "D",
+    "technicalScore": 50
+  },
+  "component": {
+    "kind": "cladding-panel",
+    "bimType": "IfcCovering",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "ifc-derived-generated",
+    "createdAt": "2026-06-21T06:33:29.351148+00:00",
+    "sourceSizeBytes": 7751
+  }
+}

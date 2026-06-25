@@ -1,0 +1,162 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "bim-material-cw113-aluminum-curtain-wall-ot",
+  "label": "BIM Curtain Wall - CW113_Aluminum_Curtain_Wall_OT",
+  "type": "component",
+  "componentKind": "curtain-wall",
+  "bimType": "IfcCurtainWall",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "CW113_Aluminum_Curtain_Wall_OT.ifc",
+  "sourcePath": "C:\\Users\\cedis\\OneDrive\\Desktop\\건축 bim 분류\\08_kbims_openbim_research\\downloads\\templates_and_libraries\\catia_library_a\\extracted_cp949\\12_Curtain Wall\\CW113_Aluminum_Curtain_Wall_OT.ifc",
+  "sourceMode": "file",
+  "generatedAssetFile": "bim-material-cw113-aluminum-curtain-wall-ot.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "IfcCurtainWall",
+    "bim-component",
+    "component",
+    "component-ready",
+    "curtain-wall",
+    "editable-component",
+    "glb",
+    "ifc-derived",
+    "local-asset"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "attachToSurface": "wall",
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC2X3",
+  "entityCounts": {
+    "IfcCurtainWall": 1,
+    "IfcElementAssembly": 2,
+    "GLBMesh": 2,
+    "GLBPrimitive": 2,
+    "GLBTriangleEstimate": 44,
+    "GLBMaterial": 0,
+    "GLBTexture": 0
+  },
+  "meshCount": 2,
+  "sourceEntities": [
+    {
+      "ifcType": "IfcElementAssembly",
+      "globalId": "t0QRJtPULASmh20FLIy$os",
+      "name": "CW113_Aluminum_Curtain_Wall_FRM",
+      "stepId": 235
+    },
+    {
+      "ifcType": "IfcElementAssembly",
+      "globalId": "t1QRJtWlPFSmh20FLIy$os",
+      "name": "CW113_Aluminum_Curtain_Wall_GLS",
+      "stepId": 311
+    }
+  ],
+  "sourceBounds": {
+    "min": [
+      -0.225,
+      -15.0,
+      -25.0
+    ],
+    "max": [
+      -0.0,
+      15.0,
+      25.0
+    ],
+    "extent": [
+      0.225,
+      30.0,
+      50.0
+    ]
+  },
+  "normalization": {
+    "targetSize": 1.8,
+    "scale": 0.036000000000000004,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "IFC-derived component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:33:44.746257+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\bim-material-cw113-aluminum-curtain-wall-ot.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 4412,
+      "sizeMb": 0.004,
+      "counts": {
+        "scenes": 1,
+        "nodes": 3,
+        "meshes": 2,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 6,
+        "accessors": 6,
+        "primitives": 2,
+        "trianglesEstimate": 44,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.00405,
+          0.0,
+          -0.9
+        ],
+        "max": [
+          0.00405,
+          1.08,
+          0.9
+        ],
+        "dimensions": [
+          0.0081,
+          1.08,
+          1.8
+        ],
+        "maxDimension": 1.8
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 58,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no material",
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 58
+  },
+  "component": {
+    "kind": "curtain-wall",
+    "bimType": "IfcCurtainWall",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "ifc-derived-generated",
+    "createdAt": "2026-06-21T06:33:29.390192+00:00",
+    "sourceSizeBytes": 14787
+  }
+}

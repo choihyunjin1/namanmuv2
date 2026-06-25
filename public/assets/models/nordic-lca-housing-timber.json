@@ -1,0 +1,82 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "nordic-lca-housing-timber",
+  "label": "Nordic LCA Housing Timber",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "ARK_NordicLCA_Housing_Timber_As-built_Archicad.ifc",
+  "output": "public\\assets\\models\\nordic-lca-housing-timber.glb",
+  "scaleUnit": "meter",
+  "anchor": "site-center",
+  "tags": [
+    "building-shell",
+    "global-reference",
+    "ifc-derived",
+    "multi-family-reference",
+    "nordic",
+    "residential-reference",
+    "timber"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC4",
+  "entityCounts": {
+    "IfcAirToAirHeatRecovery": 3,
+    "IfcBeam": 33,
+    "IfcBuildingElementProxy": 17,
+    "IfcColumn": 47,
+    "IfcCommunicationsAppliance": 1,
+    "IfcCovering": 30,
+    "IfcCurtainWall": 6,
+    "IfcDistributionFlowElement": 9,
+    "IfcDoor": 72,
+    "IfcElectricAppliance": 35,
+    "IfcElectricDistributionBoard": 3,
+    "IfcFan": 9,
+    "IfcFooting": 48,
+    "IfcFurniture": 64,
+    "IfcOpeningElement": 195,
+    "IfcPipeSegment": 12,
+    "IfcRailing": 11,
+    "IfcRoof": 10,
+    "IfcSanitaryTerminal": 30,
+    "IfcSite": 1,
+    "IfcSlab": 24,
+    "IfcSolarDevice": 1,
+    "IfcSpace": 135,
+    "IfcStair": 7,
+    "IfcWall": 322,
+    "IfcWasteTerminal": 8,
+    "IfcWindow": 65
+  },
+  "meshCount": 1198,
+  "sourceBounds": {
+    "min": [
+      -10.1579,
+      0.0,
+      -45.2259
+    ],
+    "max": [
+      16.8066,
+      67.582,
+      0.0
+    ],
+    "extent": [
+      26.9645,
+      67.582,
+      45.2259
+    ]
+  },
+  "normalization": {
+    "targetSize": 4.4,
+    "scale": 0.0972894321912447,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  }
+}

@@ -1,0 +1,2561 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-23T09:04:30.182Z",
+  "strategy": "sims-inspired-bim-glb-build-mode-taxonomy",
+  "sourceCatalog": "public/assets/models/catalog.json",
+  "sourceCostCatalog": "public/assets/models/cost-catalog.json",
+  "toolbar": [
+    {
+      "id": "select",
+      "label": "선택",
+      "role": "select-and-transform",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "copy",
+      "label": "복사",
+      "role": "duplicate-selected",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "material",
+      "label": "색상/자재",
+      "role": "paint-material",
+      "mvpStatus": "planned"
+    },
+    {
+      "id": "delete",
+      "label": "철거",
+      "role": "remove-selected",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "undo",
+      "label": "실행취소",
+      "role": "history-back",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "redo",
+      "label": "재실행",
+      "role": "history-forward",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "save-library",
+      "label": "라이브러리 저장",
+      "role": "persist-layout",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "move-house",
+      "label": "집 이동",
+      "role": "move-generated-shell",
+      "mvpStatus": "partial"
+    },
+    {
+      "id": "floor",
+      "label": "층/단",
+      "role": "level-control",
+      "mvpStatus": "ready"
+    },
+    {
+      "id": "environment",
+      "label": "환경효과",
+      "role": "day-night-rain-preview",
+      "mvpStatus": "planned"
+    }
+  ],
+  "categories": [
+    {
+      "id": "all",
+      "label": "전체",
+      "group": "system",
+      "simsInspiredBy": "Build catalog overview",
+      "count": 46,
+      "planned": false
+    },
+    {
+      "id": "house-shell",
+      "label": "주택 셸",
+      "group": "shell",
+      "simsInspiredBy": "Styled rooms / prebuilt structures",
+      "count": 17,
+      "planned": false
+    },
+    {
+      "id": "wall-tool",
+      "label": "벽/방",
+      "group": "structure",
+      "simsInspiredBy": "Wall tool, room shapes, basement",
+      "count": 6,
+      "planned": false
+    },
+    {
+      "id": "roof",
+      "label": "지붕",
+      "group": "roof",
+      "simsInspiredBy": "Roofs",
+      "count": 4,
+      "planned": false
+    },
+    {
+      "id": "roof-decor",
+      "label": "지붕장식",
+      "group": "roof",
+      "simsInspiredBy": "Roof decorations",
+      "count": 0,
+      "planned": true
+    },
+    {
+      "id": "roof-pattern",
+      "label": "지붕재",
+      "group": "material",
+      "simsInspiredBy": "Roof patterns",
+      "count": 0,
+      "planned": true
+    },
+    {
+      "id": "frieze-trim",
+      "label": "외부 테두리",
+      "group": "facade",
+      "simsInspiredBy": "Friezes and exterior trims",
+      "count": 0,
+      "planned": true
+    },
+    {
+      "id": "door",
+      "label": "문",
+      "group": "opening",
+      "simsInspiredBy": "Doors",
+      "count": 4,
+      "planned": false
+    },
+    {
+      "id": "window",
+      "label": "창문",
+      "group": "opening",
+      "simsInspiredBy": "Windows",
+      "count": 6,
+      "planned": false
+    },
+    {
+      "id": "wall-pattern",
+      "label": "벽 패턴",
+      "group": "material",
+      "simsInspiredBy": "Wall patterns",
+      "count": 5,
+      "planned": false
+    },
+    {
+      "id": "spandrel",
+      "label": "스팬드럴",
+      "group": "facade",
+      "simsInspiredBy": "Spandrels",
+      "count": 0,
+      "planned": true
+    },
+    {
+      "id": "column",
+      "label": "기둥/보",
+      "group": "structure",
+      "simsInspiredBy": "Columns",
+      "count": 2,
+      "planned": false
+    },
+    {
+      "id": "gate-fence",
+      "label": "게이트/펜스",
+      "group": "site",
+      "simsInspiredBy": "Gates and fences",
+      "count": 1,
+      "planned": false
+    },
+    {
+      "id": "stairs-railing",
+      "label": "계단/난간",
+      "group": "circulation",
+      "simsInspiredBy": "Stairs, ladders, railings",
+      "count": 1,
+      "planned": false
+    },
+    {
+      "id": "site-landscape",
+      "label": "대지/조경",
+      "group": "site",
+      "simsInspiredBy": "Outdoor and terrain objects",
+      "count": 5,
+      "planned": false
+    },
+    {
+      "id": "equipment",
+      "label": "설비",
+      "group": "equipment",
+      "simsInspiredBy": "Utility objects",
+      "count": 1,
+      "planned": false
+    }
+  ],
+  "counts": {
+    "assets": 46,
+    "blocks": 6,
+    "categories": 16,
+    "mappedAssets": 46,
+    "pricedAssets": 46,
+    "toolbarTools": 10
+  },
+  "assets": [
+    {
+      "assetId": "ac20-fzk-haus",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 576,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "FZK Haus",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ifc",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/ac20-fzk-haus.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/ac20-fzk-haus.meshopt.glb"
+    },
+    {
+      "assetId": "basic-house",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1429.89,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "BasicHouse",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/basic-house.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/basic-house.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcdoor-01",
+      "assetType": "component",
+      "bimType": "IfcDoor",
+      "buildCategory": "door",
+      "buildCategoryLabel": "문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "door",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "door",
+        "family": "opening",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.7,
+          "name": "금속문, 철재후라쉬도아(함마톤)문틀포함 150×45×t1.6, 0.9×2.1, 편개",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 199900
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.36,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "door"
+      },
+      "label": "BIM Door 01 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "문",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcdoor-01.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-basichouse-ifcdoor-01.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcdoor-02",
+      "assetType": "component",
+      "bimType": "IfcDoor",
+      "buildCategory": "door",
+      "buildCategoryLabel": "문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "door",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "door",
+        "family": "opening",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.7,
+          "name": "금속문, 철재후라쉬도아(함마톤)문틀포함 150×45×t1.6, 0.9×2.1, 편개",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 199900
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.36,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "door"
+      },
+      "label": "BIM Door 02 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "문",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcdoor-02.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-basichouse-ifcdoor-02.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcslab-01",
+      "assetType": "component",
+      "bimType": "IfcSlab",
+      "buildCategory": "wall-tool",
+      "buildCategoryLabel": "벽/방",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "slab",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "roof-covering",
+        "family": "roof",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.52,
+          "name": "아스팔트싱글, 칼라, 1000×336×3.0mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "매",
+          "unitPriceKrw": 1754
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.73,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-manual-unit-conversion",
+        "role": "roof-slab"
+      },
+      "label": "BIM Slab 01 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "슬래브/바닥",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcslab-01.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/bim-component-basichouse-ifcslab-01.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcslab-02",
+      "assetType": "component",
+      "bimType": "IfcSlab",
+      "buildCategory": "wall-tool",
+      "buildCategoryLabel": "벽/방",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "slab",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "roof-covering",
+        "family": "roof",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.52,
+          "name": "아스팔트싱글, 칼라, 1000×336×3.0mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "매",
+          "unitPriceKrw": 1754
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.73,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-manual-unit-conversion",
+        "role": "roof-slab"
+      },
+      "label": "BIM Slab 02 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "슬래브/바닥",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcslab-02.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/bim-component-basichouse-ifcslab-02.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcwallstandardcase-01",
+      "assetType": "component",
+      "bimType": "IfcWallStandardCase",
+      "buildCategory": "wall-pattern",
+      "buildCategoryLabel": "벽 패턴",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "wall-panel",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "wall-panel",
+        "family": "envelope",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.62,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.36,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "wall-panel"
+      },
+      "label": "BIM Wall Panel 01 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "벽체 패널",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcwallstandardcase-01.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-basichouse-ifcwallstandardcase-01.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcwallstandardcase-02",
+      "assetType": "component",
+      "bimType": "IfcWallStandardCase",
+      "buildCategory": "wall-pattern",
+      "buildCategoryLabel": "벽 패턴",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "wall-panel",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "wall-panel",
+        "family": "envelope",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.62,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.08,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "wall-panel"
+      },
+      "label": "BIM Wall Panel 02 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "벽체 패널",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcwallstandardcase-02.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-basichouse-ifcwallstandardcase-02.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcwindow-01",
+      "assetType": "component",
+      "bimType": "IfcWindow",
+      "buildCategory": "window",
+      "buildCategoryLabel": "창문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "window",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "glazing",
+        "family": "opening",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.64,
+          "name": "강화유리, 투명, 10mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 39826
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.38,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "window"
+      },
+      "label": "BIM Window 01 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "창문",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcwindow-01.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-basichouse-ifcwindow-01.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-basichouse-ifcwindow-02",
+      "assetType": "component",
+      "bimType": "IfcWindow",
+      "buildCategory": "window",
+      "buildCategoryLabel": "창문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "window",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "glazing",
+        "family": "opening",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.64,
+          "name": "강화유리, 투명, 10mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 39826
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.38,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "window"
+      },
+      "label": "BIM Window 02 - BasicHouse",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "창문",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-basichouse-ifcwindow-02.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-basichouse-ifcwindow-02.meshopt.glb"
+    },
+    {
+      "assetId": "bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01",
+      "assetType": "component",
+      "bimType": "IfcDoor",
+      "buildCategory": "door",
+      "buildCategoryLabel": "문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "door",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "door",
+        "family": "opening",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.7,
+          "name": "금속문, 철재후라쉬도아(함마톤)문틀포함 150×45×t1.6, 0.9×2.1, 편개",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 199900
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.12,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "door"
+      },
+      "label": "BIM Door 01 - IfcOpenHouse_IFC4",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "문",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.meshopt.glb"
+    },
+    {
+      "assetId": "bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400",
+      "assetType": "component",
+      "bimType": "IfcBeam",
+      "buildCategory": "column",
+      "buildCategoryLabel": "기둥/보",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "beam",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "structural-frame",
+        "family": "structure",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.7,
+          "name": "콘크리트 타설/장비사용",
+          "source": "standardMarket",
+          "unit": "㎥",
+          "unitPriceKrw": 30911
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.3,
+          "method": "volumeFromSourceBounds",
+          "unit": "m3"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "reinforced-concrete-beam"
+      },
+      "label": "BIM Beam - BM111_Reinforced_Concrete_Structures_Rect_OT(250x400)",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "보",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.glb"
+    },
+    {
+      "assetId": "bim-material-ce711-gypsum-board-normal-ot-12-5mm",
+      "assetType": "component",
+      "bimType": "IfcCovering",
+      "buildCategory": "wall-pattern",
+      "buildCategoryLabel": "벽 패턴",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "cladding-panel",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "board-finish",
+        "family": "interior-exterior-finish",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.82,
+          "name": "석고보드, 평보드, 방화방수, 12.5×900×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 7874
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1.94,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "gypsum-board-panel"
+      },
+      "label": "BIM Cladding Panel - CE711_Gypsum_Board_Normal_OT(12.5mm)",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "외장 마감 패널",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-material-ce711-gypsum-board-normal-ot-12-5mm.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/bim-material-ce711-gypsum-board-normal-ot-12-5mm.glb"
+    },
+    {
+      "assetId": "bim-material-cl141-wood-structures-rect-ot-200x200",
+      "assetType": "component",
+      "bimType": "IfcColumn",
+      "buildCategory": "column",
+      "buildCategoryLabel": "기둥/보",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "column",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "timber-frame",
+        "family": "structure",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.65,
+          "name": "목재판재, 라왕, 일반",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎥",
+          "unitPriceKrw": 1819932
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.12,
+          "method": "volumeFromSourceBounds",
+          "unit": "m3"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "wood-structural-member"
+      },
+      "label": "BIM Column - CL141_Wood_Structures_Rect_OT(200x200)",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "기둥",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-material-cl141-wood-structures-rect-ot-200x200.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/bim-material-cl141-wood-structures-rect-ot-200x200.glb"
+    },
+    {
+      "assetId": "bim-material-cw113-aluminum-curtain-wall-ot",
+      "assetType": "component",
+      "bimType": "IfcCurtainWall",
+      "buildCategory": "window",
+      "buildCategoryLabel": "창문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "curtain-wall",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "curtain-wall-glazing",
+        "family": "envelope",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.74,
+          "name": "커튼월유리 설치",
+          "source": "standardMarket",
+          "unit": "m2",
+          "unitPriceKrw": 26486
+        },
+        "quantityBasis": {
+          "defaultQuantity": 6.75,
+          "method": "areaFromSourceBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "curtain-wall-panel"
+      },
+      "label": "BIM Curtain Wall - CW113_Aluminum_Curtain_Wall_OT",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "창문",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-material-cw113-aluminum-curtain-wall-ot.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/bim-material-cw113-aluminum-curtain-wall-ot.meshopt.glb"
+    },
+    {
+      "assetId": "bim-material-ft111-independence-foundation-ot-2000x2000x900",
+      "assetType": "component",
+      "bimType": "IfcFooting",
+      "buildCategory": "wall-tool",
+      "buildCategoryLabel": "벽/방",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "foundation",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "foundation-concrete",
+        "family": "foundation",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.7,
+          "name": "철근콘크리트타설/펌프차",
+          "source": "standardMarket",
+          "unit": "㎥",
+          "unitPriceKrw": 16620
+        },
+        "quantityBasis": {
+          "defaultQuantity": 7.56,
+          "method": "volumeFromSourceBounds",
+          "unit": "m3"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "isolated-foundation"
+      },
+      "label": "BIM Foundation - FT111_Independence_Foundation_OT(2000x2000x900)",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "기초",
+      "thumbnailUrl": "/assets/models/thumbnails/bim-material-ft111-independence-foundation-ot-2000x2000x900.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/bim-material-ft111-independence-foundation-ot-2000x2000x900.glb"
+    },
+    {
+      "assetId": "component-deck-module",
+      "assetType": "component",
+      "bimType": "IfcSlab",
+      "buildCategory": "site-landscape",
+      "buildCategoryLabel": "대지/조경",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "deck",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "outdoor-deck",
+        "family": "exterior-site",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.76,
+          "name": "목재덱, 피엠씨글로벌, PWKUMA90-21A, 1800×90×t21mm, 꾸메아",
+          "source": "ppsShoppingProduct",
+          "unit": "m²",
+          "unitPriceKrw": 68000
+        },
+        "quantityBasis": {
+          "defaultQuantity": 2.15,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "deck-module"
+      },
+      "label": "Deck Module",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "데크",
+      "thumbnailUrl": "/assets/models/thumbnails/component-deck-module.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-deck-module.meshopt.glb"
+    },
+    {
+      "assetId": "component-entry-door",
+      "assetType": "component",
+      "bimType": "IfcDoor",
+      "buildCategory": "door",
+      "buildCategoryLabel": "문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "door",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "door",
+        "family": "opening",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.7,
+          "name": "금속문, 철재후라쉬도아(함마톤)문틀포함 150×45×t1.6, 0.9×2.1, 편개",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 199900
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "entry-door"
+      },
+      "label": "Entry Door",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "문",
+      "thumbnailUrl": "/assets/models/thumbnails/component-entry-door.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-entry-door.meshopt.glb"
+    },
+    {
+      "assetId": "component-fence-panel",
+      "assetType": "component",
+      "bimType": "IfcRailing",
+      "buildCategory": "gate-fence",
+      "buildCategoryLabel": "게이트/펜스",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "fence",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "site-fence",
+        "family": "exterior-site",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.56,
+          "name": "안전펜스, 안전펜스, EGI철판, 550x2400",
+          "source": "ppsBuildingMaterial",
+          "unit": "매",
+          "unitPriceKrw": 29564
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1,
+          "method": "count",
+          "unit": "ea"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "fence-railing"
+      },
+      "label": "Fence Panel",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "게이트/펜스",
+      "thumbnailUrl": "/assets/models/thumbnails/component-fence-panel.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-fence-panel.meshopt.glb"
+    },
+    {
+      "assetId": "component-garden-tree",
+      "assetType": "component",
+      "bimType": "IfcGeographicElement",
+      "buildCategory": "site-landscape",
+      "buildCategoryLabel": "대지/조경",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "landscape",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "landscape-object",
+        "family": "landscape",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.38,
+          "name": "조경용수목, 경북농원, GBT-001, 다년초, 남천(옵세스드), 수관폭15cm, 포트",
+          "source": "ppsShoppingProduct",
+          "unit": "본",
+          "unitPriceKrw": 8500
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1,
+          "method": "count",
+          "unit": "ea"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "tree"
+      },
+      "label": "Garden Tree",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "조경",
+      "thumbnailUrl": "/assets/models/thumbnails/component-garden-tree.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-garden-tree.meshopt.glb"
+    },
+    {
+      "assetId": "component-parking-pad",
+      "assetType": "component",
+      "bimType": "IfcSpace",
+      "buildCategory": "site-landscape",
+      "buildCategoryLabel": "대지/조경",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "site",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "site-paving",
+        "family": "exterior-site",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.4,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 2.54,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "parking-or-paving"
+      },
+      "label": "Parking Pad",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주차/대지",
+      "thumbnailUrl": "/assets/models/thumbnails/component-parking-pad.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-parking-pad.meshopt.glb"
+    },
+    {
+      "assetId": "component-pergola-module",
+      "assetType": "component",
+      "bimType": "IfcBuildingElementProxy",
+      "buildCategory": "site-landscape",
+      "buildCategoryLabel": "대지/조경",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "pergola",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "outdoor-structure",
+        "family": "exterior-site",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.58,
+          "name": "퍼걸러, 청우펀스테이션, FSMP1000, 4.0×4.0×2.8m",
+          "source": "ppsShoppingProduct",
+          "unit": "개",
+          "unitPriceKrw": 14200000
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1,
+          "method": "count",
+          "unit": "ea"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "pergola"
+      },
+      "label": "Pergola Module",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "파고라",
+      "thumbnailUrl": "/assets/models/thumbnails/component-pergola-module.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-pergola-module.meshopt.glb"
+    },
+    {
+      "assetId": "component-planter",
+      "assetType": "component",
+      "bimType": "IfcGeographicElement",
+      "buildCategory": "site-landscape",
+      "buildCategoryLabel": "대지/조경",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "landscape",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "landscape-object",
+        "family": "landscape",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.38,
+          "name": "화분, 에이그리, AG-001DW, 1200×600×420mm",
+          "source": "ppsShoppingProduct",
+          "unit": "개",
+          "unitPriceKrw": 302000
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1,
+          "method": "count",
+          "unit": "ea"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "planter"
+      },
+      "label": "Planter",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "ground-drag-drop",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "조경",
+      "thumbnailUrl": "/assets/models/thumbnails/component-planter.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-planter.meshopt.glb"
+    },
+    {
+      "assetId": "component-roof-flat",
+      "assetType": "component",
+      "bimType": "IfcRoof",
+      "buildCategory": "roof",
+      "buildCategoryLabel": "지붕",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "roof",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "roof-covering",
+        "family": "roof",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "특수지붕재, 골함석(아연도),0.23T 0.9*1.8",
+          "source": "ppsBuildingMaterial",
+          "unit": "m",
+          "unitPriceKrw": 7800
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1.95,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-manual-unit-conversion",
+        "role": "roof-module"
+      },
+      "label": "Flat Roof Module",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "roof-or-slab-snap",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "지붕",
+      "thumbnailUrl": "/assets/models/thumbnails/component-roof-flat.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-roof-flat.meshopt.glb"
+    },
+    {
+      "assetId": "component-roof-gable",
+      "assetType": "component",
+      "bimType": "IfcRoof",
+      "buildCategory": "roof",
+      "buildCategoryLabel": "지붕",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "roof",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "roof-covering",
+        "family": "roof",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.52,
+          "name": "아스팔트싱글, 칼라, 1000×336×3.0mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "매",
+          "unitPriceKrw": 1754
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1.91,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-manual-unit-conversion",
+        "role": "roof-module"
+      },
+      "label": "Gable Roof Module",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "roof-or-slab-snap",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "지붕",
+      "thumbnailUrl": "/assets/models/thumbnails/component-roof-gable.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/component-roof-gable.glb"
+    },
+    {
+      "assetId": "component-roof-hip",
+      "assetType": "component",
+      "bimType": "IfcRoof",
+      "buildCategory": "roof",
+      "buildCategoryLabel": "지붕",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "roof",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "roof-covering",
+        "family": "roof",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.52,
+          "name": "아스팔트싱글, 칼라, 1000×336×3.0mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "매",
+          "unitPriceKrw": 1754
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1.81,
+          "method": "areaFromRuntimeBoundsXZ",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-manual-unit-conversion",
+        "role": "roof-module"
+      },
+      "label": "Hip Roof Module",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "roof-or-slab-snap",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "지붕",
+      "thumbnailUrl": "/assets/models/thumbnails/component-roof-hip.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/component-roof-hip.glb"
+    },
+    {
+      "assetId": "component-solar-panel",
+      "assetType": "component",
+      "bimType": "IfcEnergyConversionDevice",
+      "buildCategory": "equipment",
+      "buildCategoryLabel": "설비",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": false,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "equipment",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "energy-equipment",
+        "family": "equipment",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "태양광가로등, 위코, WI-BS020-S, 20W, 버스승강장용",
+          "source": "ppsShoppingProduct",
+          "unit": "조",
+          "unitPriceKrw": 2100000
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1,
+          "method": "count",
+          "unit": "ea"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "solar-or-energy-equipment"
+      },
+      "label": "Solar Panel",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "roof-or-slab-snap",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "설비",
+      "thumbnailUrl": "/assets/models/thumbnails/component-solar-panel.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-solar-panel.meshopt.glb"
+    },
+    {
+      "assetId": "component-wall-slat-panel",
+      "assetType": "component",
+      "bimType": "IfcWall",
+      "buildCategory": "wall-pattern",
+      "buildCategoryLabel": "벽 패턴",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "wall-panel",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "wall-panel",
+        "family": "envelope",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.48,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1.28,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "wall-panel"
+      },
+      "label": "Slat Wall Panel",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "벽체 패널",
+      "thumbnailUrl": "/assets/models/thumbnails/component-wall-slat-panel.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-wall-slat-panel.meshopt.glb"
+    },
+    {
+      "assetId": "component-wall-window-panel",
+      "assetType": "component",
+      "bimType": "IfcWall",
+      "buildCategory": "wall-pattern",
+      "buildCategoryLabel": "벽 패턴",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "wall-panel",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "wall-with-glazing",
+        "family": "envelope",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.55,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1.47,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "window-wall-panel"
+      },
+      "label": "Window Wall Panel",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "벽체 패널",
+      "thumbnailUrl": "/assets/models/thumbnails/component-wall-window-panel.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-wall-window-panel.meshopt.glb"
+    },
+    {
+      "assetId": "component-window-slim",
+      "assetType": "component",
+      "bimType": "IfcWindow",
+      "buildCategory": "window",
+      "buildCategoryLabel": "창문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "window",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "glazing",
+        "family": "opening",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.62,
+          "name": "강화유리, 투명, 10mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 39826
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.58,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "window"
+      },
+      "label": "Slim Window",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "창문",
+      "thumbnailUrl": "/assets/models/thumbnails/component-window-slim.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-window-slim.meshopt.glb"
+    },
+    {
+      "assetId": "component-window-wide",
+      "assetType": "component",
+      "bimType": "IfcWindow",
+      "buildCategory": "window",
+      "buildCategoryLabel": "창문",
+      "canCopy": true,
+      "canDelete": true,
+      "canDrag": true,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": "window",
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "glazing",
+        "family": "opening",
+        "mappingSource": "explicit",
+        "primary": {
+          "confidence": 0.62,
+          "name": "강화유리, 투명, 10mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 39826
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.99,
+          "method": "areaFromRuntimeBoundsXY",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-quantity-review",
+        "role": "window"
+      },
+      "label": "Wide Window",
+      "mvpStatus": "build-and-cost-ready",
+      "placementMode": "surface-attach",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "창문",
+      "thumbnailUrl": "/assets/models/thumbnails/component-window-wide.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/component-window-wide.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-compact-flat-studio-forest-timber",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Compact Flat Studio Forest Timber - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-compact-flat-studio-forest-timber.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-compact-flat-studio-forest-timber.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-compact-flat-studio-urban-atelier",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Compact Flat Studio Urban Atelier - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-compact-flat-studio-urban-atelier.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-compact-flat-studio-urban-atelier.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-compact-flat-studio-warm-stone",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Compact Flat Studio Warm Stone - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-compact-flat-studio-warm-stone.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-compact-flat-studio-warm-stone.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-forest-timber",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Balanced Gable Forest Timber - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-forest-timber.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-forest-timber.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-urban-atelier",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Balanced Gable Urban Atelier - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-urban-atelier.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-urban-atelier.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-warm-stone",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Balanced Gable Warm Stone - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-warm-stone.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-warm-stone.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-yard-porch-hip-forest-timber",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 55.94,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Yard Porch Hip Forest Timber - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-yard-porch-hip-forest-timber.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-yard-porch-hip-forest-timber.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-yard-porch-hip-urban-atelier",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 55.94,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Yard Porch Hip Urban Atelier - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-yard-porch-hip-urban-atelier.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-yard-porch-hip-urban-atelier.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002-yard-porch-hip-warm-stone",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 55.94,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Yard Porch Hip Warm Stone - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002-yard-porch-hip-warm-stone.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002-yard-porch-hip-warm-stone.meshopt.glb"
+    },
+    {
+      "assetId": "generated-shell-pnu-41450-002",
+      "assetType": "detached-house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.42,
+          "name": "석고보드, 평보드, 방화방수, 15×1200×2400mm(㎡)",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 11256
+        },
+        "quantityBasis": {
+          "defaultQuantity": 111.87,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "PLOT:ON Balanced Gable Warm Stone - 경기도 성남시 분당구 판교동 552-1",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ploton-generated",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/generated-shell-pnu-41450-002.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/generated-shell-pnu-41450-002.meshopt.glb"
+    },
+    {
+      "assetId": "ifc-open-house",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 400,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "OpenHouse",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "approved",
+      "sourceType": "ifc",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/ifc-open-house.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/ifc-open-house.meshopt.glb"
+    },
+    {
+      "assetId": "nordic-lca-housing-terrain-timber",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 4056.36,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "Nordic LCA Housing Terrain Timber",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/nordic-lca-housing-terrain-timber.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/nordic-lca-housing-terrain-timber.meshopt.glb"
+    },
+    {
+      "assetId": "nordic-lca-housing-timber",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 1219.49,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "Nordic LCA Housing Timber",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "needs-review",
+      "sourceType": "ifc",
+      "subcategory": "주택 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/nordic-lca-housing-timber.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/nordic-lca-housing-timber.meshopt.glb"
+    },
+    {
+      "assetId": "trellis2-house-01-premium",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.98,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "TRELLIS.2 House 01 Premium",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "needs-review",
+      "sourceType": "trellis2",
+      "subcategory": "실사 기반 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/trellis2-house-01-premium.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/trellis2-house-01-premium.meshopt.glb"
+    },
+    {
+      "assetId": "trellis2-house-01",
+      "assetType": "house-shell",
+      "bimType": null,
+      "buildCategory": "house-shell",
+      "buildCategoryLabel": "주택 셸",
+      "canCopy": true,
+      "canDelete": false,
+      "canDrag": false,
+      "canEstimateCost": true,
+      "canPaint": true,
+      "canRotate": true,
+      "canSnap": true,
+      "componentKind": null,
+      "cost": {
+        "catalogStatus": "priced-candidate",
+        "costClass": "exterior-shell-assembly",
+        "family": "whole-house-shell",
+        "mappingSource": "auto",
+        "primary": {
+          "confidence": 0.46,
+          "name": "경량기포콘크리트블록, 150×300×600mm",
+          "source": "ppsBuildingMaterial",
+          "unit": "㎡",
+          "unitPriceKrw": 20590
+        },
+        "quantityBasis": {
+          "defaultQuantity": 0.98,
+          "method": "floorAreaFromHouseBounds",
+          "unit": "m2"
+        },
+        "reviewStatus": "needs-assembly-takeoff",
+        "role": "detached-house-exterior-concept"
+      },
+      "label": "TRELLIS.2 House 01",
+      "mvpStatus": "preview-ready",
+      "placementMode": "replace-or-preview-house-shell",
+      "reviewStatus": "needs-review",
+      "sourceType": "trellis2",
+      "subcategory": "실사 기반 외관 셸",
+      "thumbnailUrl": "/assets/models/thumbnails/trellis2-house-01.png",
+      "toolRoles": [
+        "select",
+        "copy",
+        "delete",
+        "rotate",
+        "snap"
+      ],
+      "url": "/assets/models/optimized/trellis2-house-01.meshopt.glb"
+    }
+  ],
+  "blocks": [
+    {
+      "blockId": "mass-block",
+      "buildCategory": "wall-tool",
+      "label": "매스 블록",
+      "placementMode": "grid-stack",
+      "simsInspiredBy": "직사각형 방/매스"
+    },
+    {
+      "blockId": "wall-block",
+      "buildCategory": "wall-tool",
+      "label": "외벽 블록",
+      "placementMode": "grid-wall",
+      "simsInspiredBy": "벽 건설 도구"
+    },
+    {
+      "blockId": "glass-block",
+      "buildCategory": "window",
+      "label": "창호 블록",
+      "placementMode": "surface-attach",
+      "simsInspiredBy": "창문"
+    },
+    {
+      "blockId": "slab-block",
+      "buildCategory": "wall-tool",
+      "label": "슬래브 블록",
+      "placementMode": "grid-slab",
+      "simsInspiredBy": "바닥/지하실/기초"
+    },
+    {
+      "blockId": "roof-block",
+      "buildCategory": "roof",
+      "label": "지붕 블록",
+      "placementMode": "roof-stack",
+      "simsInspiredBy": "지붕"
+    },
+    {
+      "blockId": "core-block",
+      "buildCategory": "stairs-railing",
+      "label": "코어 블록",
+      "placementMode": "vertical-core",
+      "simsInspiredBy": "계단/동선 코어"
+    }
+  ],
+  "blockCategoryById": {
+    "core-block": "stairs-railing",
+    "glass-block": "window",
+    "mass-block": "wall-tool",
+    "roof-block": "roof",
+    "slab-block": "wall-tool",
+    "wall-block": "wall-tool"
+  }
+}

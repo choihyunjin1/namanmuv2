@@ -1,0 +1,121 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "component-window-slim",
+  "label": "Slim Window",
+  "type": "component",
+  "componentKind": "window",
+  "bimType": "IfcWindow",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "scripts/export_component_glb_assets.mjs",
+  "generatedAssetFile": "component-window-slim.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "component-ready",
+    "editable-component",
+    "local-asset",
+    "glb",
+    "component",
+    "window",
+    "openings",
+    "surface-snap"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "attachToSurface": "wall"
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_COMPONENT_ASSET_V1",
+  "meshCount": 4,
+  "entityCounts": {
+    "IfcWindow": 1,
+    "GLBMesh": 4,
+    "GLBPrimitive": 4,
+    "GLBTriangleEstimate": 48,
+    "GLBMaterial": 2,
+    "GLBTexture": 0
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "Procedural component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:12:21.625261+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-window-slim.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "THREE.GLTFExporter r182",
+      "sizeBytes": 8096,
+      "sizeMb": 0.008,
+      "counts": {
+        "scenes": 1,
+        "nodes": 6,
+        "meshes": 4,
+        "materials": 2,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 16,
+        "accessors": 16,
+        "primitives": 4,
+        "trianglesEstimate": 48,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.27,
+          -0.54,
+          -0.0375
+        ],
+        "max": [
+          0.27,
+          0.54,
+          0.0375
+        ],
+        "dimensions": [
+          0.54,
+          1.08,
+          0.075
+        ],
+        "maxDimension": 1.08
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 70,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 70
+  },
+  "component": {
+    "kind": "window",
+    "bimType": "IfcWindow",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "generated",
+    "createdAt": "2026-06-21T06:09:27.135Z",
+    "sourceSizeBytes": 8096
+  }
+}

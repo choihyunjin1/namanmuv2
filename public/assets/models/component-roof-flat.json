@@ -1,0 +1,123 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "component-roof-flat",
+  "label": "Flat Roof Module",
+  "type": "component",
+  "componentKind": "roof",
+  "bimType": "IfcRoof",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "scripts/export_component_glb_assets.mjs",
+  "generatedAssetFile": "component-roof-flat.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "component-ready",
+    "editable-component",
+    "local-asset",
+    "glb",
+    "component",
+    "roof",
+    "flat-roof",
+    "roof-terrace",
+    "building-shell"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "attachToSurface": "block-top"
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_COMPONENT_ASSET_V1",
+  "meshCount": 5,
+  "entityCounts": {
+    "IfcRoof": 1,
+    "IfcSlab": 1,
+    "GLBMesh": 5,
+    "GLBPrimitive": 5,
+    "GLBTriangleEstimate": 60,
+    "GLBMaterial": 2,
+    "GLBTexture": 0
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "Procedural component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:12:16.862110+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-roof-flat.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "THREE.GLTFExporter r182",
+      "sizeBytes": 9804,
+      "sizeMb": 0.009,
+      "counts": {
+        "scenes": 1,
+        "nodes": 6,
+        "meshes": 5,
+        "materials": 2,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 20,
+        "accessors": 20,
+        "primitives": 5,
+        "trianglesEstimate": 60,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.87,
+          -0.09,
+          -0.56
+        ],
+        "max": [
+          0.87,
+          0.09,
+          0.56
+        ],
+        "dimensions": [
+          1.74,
+          0.18,
+          1.12
+        ],
+        "maxDimension": 1.74
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 70,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 70
+  },
+  "component": {
+    "kind": "roof",
+    "bimType": "IfcRoof",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "generated",
+    "createdAt": "2026-06-21T06:09:27.143Z",
+    "sourceSizeBytes": 9804
+  }
+}

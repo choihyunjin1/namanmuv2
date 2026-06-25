@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:13.764502+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-garden-tree.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 26616,
+  "sizeMb": 0.025,
+  "counts": {
+    "scenes": 1,
+    "nodes": 4,
+    "meshes": 3,
+    "materials": 2,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 12,
+    "accessors": 12,
+    "primitives": 3,
+    "trianglesEstimate": 812,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.36,
+      -0.36,
+      -0.36
+    ],
+    "max": [
+      0.36,
+      0.36,
+      0.36
+    ],
+    "dimensions": [
+      0.72,
+      0.72,
+      0.72
+    ],
+    "maxDimension": 0.72
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

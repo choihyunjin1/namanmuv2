@@ -1,0 +1,154 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "bim-component-basichouse-ifcwindow-02",
+  "label": "BIM Window 02 - BasicHouse",
+  "type": "component",
+  "componentKind": "window",
+  "bimType": "IfcWindow",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "BasicHouse.ifc",
+  "sourcePath": "C:\\Users\\cedis\\OneDrive\\Desktop\\건축 bim 분류\\01_detached_house_priority\\B_exterior_ready\\BasicHouse.ifc",
+  "sourceMode": "entity",
+  "generatedAssetFile": "bim-component-basichouse-ifcwindow-02.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "IfcWindow",
+    "bim-component",
+    "component",
+    "component-ready",
+    "editable-component",
+    "glb",
+    "ifc-derived",
+    "local-asset",
+    "window"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "attachToSurface": "wall",
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC2X3",
+  "entityCounts": {
+    "IfcWindow": 1,
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 76,
+    "GLBMaterial": 0,
+    "GLBTexture": 0
+  },
+  "meshCount": 1,
+  "sourceEntities": [
+    {
+      "ifcType": "IfcWindow",
+      "globalId": "2DedXznHnDaeAWsrTB_q8E",
+      "name": "2-luft fast:10x10:1298065",
+      "stepId": 18813
+    }
+  ],
+  "sourceBounds": {
+    "min": [
+      -7.569,
+      1.14,
+      -2.6335
+    ],
+    "max": [
+      -7.449,
+      2.15,
+      -1.6235
+    ],
+    "extent": [
+      0.12,
+      1.01,
+      1.01
+    ]
+  },
+  "normalization": {
+    "targetSize": 1.8,
+    "scale": 1.7821782178217827,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "IFC-derived component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:33:41.405202+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\bim-component-basichouse-ifcwindow-02.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 5548,
+      "sizeMb": 0.005,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 3,
+        "accessors": 3,
+        "primitives": 1,
+        "trianglesEstimate": 76,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.106931,
+          0.0,
+          -0.9
+        ],
+        "max": [
+          0.106931,
+          1.8,
+          0.9
+        ],
+        "dimensions": [
+          0.213861,
+          1.8,
+          1.8
+        ],
+        "maxDimension": 1.8
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 50,
+      "technicalGrade": "D",
+      "interactionReadiness": "research-review",
+      "checks": [
+        "mesh present",
+        "bounds present",
+        "runtime size acceptable"
+      ],
+      "issues": [
+        "no material",
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "D",
+    "technicalScore": 50
+  },
+  "component": {
+    "kind": "window",
+    "bimType": "IfcWindow",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "ifc-derived-generated",
+    "createdAt": "2026-06-21T06:33:18.127710+00:00",
+    "sourceSizeBytes": 52702577
+  }
+}

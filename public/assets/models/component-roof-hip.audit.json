@@ -1,0 +1,58 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:18.421669+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-roof-hip.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 1768,
+  "sizeMb": 0.002,
+  "counts": {
+    "scenes": 1,
+    "nodes": 2,
+    "meshes": 1,
+    "materials": 1,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 3,
+    "accessors": 3,
+    "primitives": 1,
+    "trianglesEstimate": 12,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.81,
+      0.0,
+      -0.56
+    ],
+    "max": [
+      0.81,
+      0.34,
+      0.56
+    ],
+    "dimensions": [
+      1.62,
+      0.34,
+      1.12
+    ],
+    "maxDimension": 1.62
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 62,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

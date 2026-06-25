@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:18.657581+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-solar-panel.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 8300,
+  "sizeMb": 0.008,
+  "counts": {
+    "scenes": 1,
+    "nodes": 5,
+    "meshes": 4,
+    "materials": 3,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 16,
+    "accessors": 16,
+    "primitives": 4,
+    "trianglesEstimate": 48,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.61,
+      -0.25,
+      -0.43
+    ],
+    "max": [
+      0.61,
+      0.25,
+      0.43
+    ],
+    "dimensions": [
+      1.22,
+      0.5,
+      0.86
+    ],
+    "maxDimension": 1.22
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

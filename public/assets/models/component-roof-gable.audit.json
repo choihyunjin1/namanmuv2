@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:17.053339+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-roof-gable.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 3644,
+  "sizeMb": 0.003,
+  "counts": {
+    "scenes": 1,
+    "nodes": 3,
+    "meshes": 2,
+    "materials": 2,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 7,
+    "accessors": 7,
+    "primitives": 2,
+    "trianglesEstimate": 20,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.81,
+      -0.04,
+      -0.59
+    ],
+    "max": [
+      0.81,
+      0.38,
+      0.59
+    ],
+    "dimensions": [
+      1.62,
+      0.42,
+      1.18
+    ],
+    "maxDimension": 1.62
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

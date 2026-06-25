@@ -1,0 +1,63 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T05:31:25.931429+00:00",
+  "sourceFile": "public\\assets\\models\\trellis2-house-01.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "https://github.com/mikedh/trimesh",
+  "sizeBytes": 26508912,
+  "sizeMb": 25.281,
+  "counts": {
+    "scenes": 1,
+    "nodes": 2,
+    "meshes": 1,
+    "materials": 1,
+    "textures": 2,
+    "images": 2,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 6,
+    "accessors": 4,
+    "primitives": 1,
+    "trianglesEstimate": 468934,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.4941,
+      -0.470305,
+      -0.493449
+    ],
+    "max": [
+      0.495507,
+      0.500966,
+      0.496832
+    ],
+    "dimensions": [
+      0.989607,
+      0.971271,
+      0.990281
+    ],
+    "maxDimension": 0.990281
+  },
+  "extensionsUsed": [
+    "EXT_texture_webp"
+  ],
+  "extensionsRequired": [
+    "EXT_texture_webp"
+  ],
+  "technicalScore": 76,
+  "technicalGrade": "B",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "texture present",
+    "bounds present",
+    "triangle count usable"
+  ],
+  "issues": [
+    "very large runtime asset",
+    "single dense mesh; component editing limited"
+  ]
+}

@@ -1,0 +1,26 @@
+@import "./base.css";
+@import "./studio-editor.css";
+
+.stage-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #111312;
+  color: #f7faf7;
+}
+
+.stage-loading div {
+  display: grid;
+  gap: 8px;
+  text-align: center;
+}
+
+.stage-loading strong {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.stage-loading span {
+  color: rgba(247, 250, 247, 0.68);
+  font-size: 12px;
+}

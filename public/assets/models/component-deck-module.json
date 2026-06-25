@@ -1,0 +1,123 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "component-deck-module",
+  "label": "Deck Module",
+  "type": "component",
+  "componentKind": "deck",
+  "bimType": "IfcSlab",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "scripts/export_component_glb_assets.mjs",
+  "generatedAssetFile": "component-deck-module.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "ground-center",
+  "tags": [
+    "component-ready",
+    "editable-component",
+    "local-asset",
+    "glb",
+    "component",
+    "deck",
+    "yard",
+    "porch",
+    "ground-placeable"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "preferredZone": "front-yard"
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_COMPONENT_ASSET_V1",
+  "meshCount": 9,
+  "entityCounts": {
+    "IfcSlab": 1,
+    "IfcCovering": 7,
+    "GLBMesh": 9,
+    "GLBPrimitive": 9,
+    "GLBTriangleEstimate": 108,
+    "GLBMaterial": 2,
+    "GLBTexture": 0
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "Procedural component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:12:10.689402+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-deck-module.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "THREE.GLTFExporter r182",
+      "sizeBytes": 17096,
+      "sizeMb": 0.016,
+      "counts": {
+        "scenes": 1,
+        "nodes": 10,
+        "meshes": 9,
+        "materials": 2,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 36,
+        "accessors": 36,
+        "primitives": 9,
+        "trianglesEstimate": 108,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.96,
+          -0.065,
+          -0.56
+        ],
+        "max": [
+          0.96,
+          0.065,
+          0.56
+        ],
+        "dimensions": [
+          1.92,
+          0.13,
+          1.12
+        ],
+        "maxDimension": 1.92
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 70,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 70
+  },
+  "component": {
+    "kind": "deck",
+    "bimType": "IfcSlab",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "generated",
+    "createdAt": "2026-06-21T06:09:27.144Z",
+    "sourceSizeBytes": 17096
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "ifc-open-house",
+  "label": "OpenHouse",
+  "type": "house-shell",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "IfcOpenHouse_IFC4.ifc",
+  "output": "public\\assets\\models\\ifc-open-house.glb",
+  "scaleUnit": "meter",
+  "anchor": "site-center",
+  "tags": [
+    "detached-house",
+    "ifc-derived",
+    "building-shell",
+    "lightweight",
+    "openings"
+  ],
+  "compatibleZones": [
+    "제1종전용주거지역",
+    "제1종일반주거지역",
+    "계획관리지역"
+  ],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true
+  },
+  "reviewStatus": "approved",
+  "license": "source-review-required",
+  "schema": "IFC4",
+  "entityCounts": {
+    "IfcDoor": 1,
+    "IfcFooting": 1,
+    "IfcMember": 20,
+    "IfcOpeningElement": 4,
+    "IfcPlate": 5,
+    "IfcSite": 1,
+    "IfcSlab": 2,
+    "IfcStairFlight": 1,
+    "IfcWallStandardCase": 4
+  },
+  "meshCount": 39,
+  "sourceBounds": {
+    "min": [
+      -10.0,
+      -8.13,
+      -10.0
+    ],
+    "max": [
+      10.0,
+      5.78,
+      10.0
+    ],
+    "extent": [
+      20.0,
+      13.91,
+      20.0
+    ]
+  },
+  "normalization": {
+    "targetSize": 4.0,
+    "scale": 0.2,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  }
+}

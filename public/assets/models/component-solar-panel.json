@@ -1,0 +1,124 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "component-solar-panel",
+  "label": "Solar Panel",
+  "type": "component",
+  "componentKind": "equipment",
+  "bimType": "IfcEnergyConversionDevice",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "scripts/export_component_glb_assets.mjs",
+  "generatedAssetFile": "component-solar-panel.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "component-ready",
+    "editable-component",
+    "local-asset",
+    "glb",
+    "component",
+    "solar",
+    "equipment",
+    "roof-placeable"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "requiresSupportTypes": [
+      "IfcRoof",
+      "IfcSlab"
+    ]
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_COMPONENT_ASSET_V1",
+  "meshCount": 4,
+  "entityCounts": {
+    "IfcEnergyConversionDevice": 1,
+    "GLBMesh": 4,
+    "GLBPrimitive": 4,
+    "GLBTriangleEstimate": 48,
+    "GLBMaterial": 3,
+    "GLBTexture": 0
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "Procedural component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:12:18.657581+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-solar-panel.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "THREE.GLTFExporter r182",
+      "sizeBytes": 8300,
+      "sizeMb": 0.008,
+      "counts": {
+        "scenes": 1,
+        "nodes": 5,
+        "meshes": 4,
+        "materials": 3,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 16,
+        "accessors": 16,
+        "primitives": 4,
+        "trianglesEstimate": 48,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.61,
+          -0.25,
+          -0.43
+        ],
+        "max": [
+          0.61,
+          0.25,
+          0.43
+        ],
+        "dimensions": [
+          1.22,
+          0.5,
+          0.86
+        ],
+        "maxDimension": 1.22
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 70,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 70
+  },
+  "component": {
+    "kind": "equipment",
+    "bimType": "IfcEnergyConversionDevice",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "generated",
+    "createdAt": "2026-06-21T06:09:27.149Z",
+    "sourceSizeBytes": 8300
+  }
+}

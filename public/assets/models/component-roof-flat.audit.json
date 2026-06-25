@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:16.862110+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-roof-flat.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 9804,
+  "sizeMb": 0.009,
+  "counts": {
+    "scenes": 1,
+    "nodes": 6,
+    "meshes": 5,
+    "materials": 2,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 20,
+    "accessors": 20,
+    "primitives": 5,
+    "trianglesEstimate": 60,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.87,
+      -0.09,
+      -0.56
+    ],
+    "max": [
+      0.87,
+      0.09,
+      0.56
+    ],
+    "dimensions": [
+      1.74,
+      0.18,
+      1.12
+    ],
+    "maxDimension": 1.74
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

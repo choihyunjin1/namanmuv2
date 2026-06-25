@@ -1,0 +1,867 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-23T14:50:37.057Z",
+  "strategy": "ploton-component-alignment-benchmark",
+  "purpose": "SAM/YOLO 계열 2D 탐지 결과를 3D GLB transform metadata로 변환하는 PLOT:ON 정합 엔진의 baseline -> target 수치화",
+  "counts": {
+    "componentAssets": 29,
+    "ifcComponents": 14,
+    "generatedComponents": 15,
+    "benchmarkCases": 29,
+    "boundsReady": 29,
+    "transformReady": 0,
+    "boundsCoveragePct": 100,
+    "transformCoveragePct": 0
+  },
+  "datasetPlan": [
+    {
+      "id": "synthetic-reference",
+      "label": "합성 렌더 정답셋",
+      "currentCases": 15,
+      "targetCases": 100,
+      "value": "우리가 배치한 GLB 슬롯에서 정답 transform을 알고 있으므로 0cm/0도 기준 평가가 가능합니다."
+    },
+    {
+      "id": "bim-derived-reference",
+      "label": "BIM 파생 부품셋",
+      "currentCases": 14,
+      "targetCases": 50,
+      "value": "IFC 엔티티와 bounds를 기준으로 부착면/카테고리 정합을 검증합니다."
+    },
+    {
+      "id": "manual-photo-reference",
+      "label": "실사 수동 라벨셋",
+      "currentCases": 0,
+      "targetCases": 50,
+      "value": "실제 단독주택 사진에 문/창문/지붕/벽체 mask와 기준 스냅 위치를 수동 라벨링합니다."
+    }
+  ],
+  "headlineMetrics": [
+    {
+      "id": "transformCoverage",
+      "label": "3D transform coverage",
+      "baseline": "0%",
+      "target": "95% 이상",
+      "measurement": "component assets with generated position/scale/rotation/snap-target metadata"
+    },
+    {
+      "id": "alignmentSuccess",
+      "label": "부품 정합 성공률",
+      "baseline": "0%",
+      "target": "95% 이상",
+      "measurement": "position/rotation/surface/collision 조건을 모두 만족한 case 비율"
+    },
+    {
+      "id": "editLatency",
+      "label": "실시간 교체 반응",
+      "baseline": "모델 호출 시 수 초 가능",
+      "target": "1초 이내",
+      "measurement": "runtime edit path from click/drop to stable frame"
+    },
+    {
+      "id": "runtimeGpuCalls",
+      "label": "실시간 GPU 호출",
+      "baseline": "탐지 모델 직접 호출 시 1회 이상",
+      "target": "0회",
+      "measurement": "production runtime path must use precomputed GLB+JSON"
+    }
+  ],
+  "categoryCounts": {
+    "door": 4,
+    "wall-tool": 3,
+    "wall-pattern": 5,
+    "window": 5,
+    "column": 2,
+    "site-landscape": 5,
+    "gate-fence": 1,
+    "roof": 3,
+    "equipment": 1
+  },
+  "engineBudgets": [
+    {
+      "id": "speed-first",
+      "label": "속도 우선",
+      "cascade": [
+        "yolo11-seg",
+        "fastsam",
+        "ploton-transform-solver"
+      ],
+      "offlineBudgetMsPerImage": 900,
+      "runtimeBudgetMsPerEdit": 1000,
+      "gpuMemoryTargetGb": 12,
+      "useSam3": false,
+      "reason": "로컬/배포 안정성을 우선해 빠른 후보 탐지와 경량 후처리로 자산화합니다."
+    },
+    {
+      "id": "balanced",
+      "label": "균형",
+      "cascade": [
+        "yolo11-seg",
+        "fastsam",
+        "sam2-selective-refine",
+        "ploton-transform-solver"
+      ],
+      "offlineBudgetMsPerImage": 1600,
+      "runtimeBudgetMsPerEdit": 1000,
+      "gpuMemoryTargetGb": 16,
+      "useSam3": false,
+      "reason": "대부분의 MVP 자산화 기본값입니다. 빠른 후보 생성 후 교체 대상만 SAM2로 정밀화합니다."
+    },
+    {
+      "id": "accuracy-review",
+      "label": "정확도 검수",
+      "cascade": [
+        "yolo11-seg",
+        "sam2",
+        "sam3-review-candidate",
+        "ploton-transform-solver"
+      ],
+      "offlineBudgetMsPerImage": 3200,
+      "runtimeBudgetMsPerEdit": 1000,
+      "gpuMemoryTargetGb": 24,
+      "useSam3": true,
+      "reason": "SAM3는 실시간 기본값이 아니라 난이도 높은 실사 자산의 오프라인 검수 후보로 제한합니다."
+    },
+    {
+      "id": "production-runtime",
+      "label": "배포 실시간",
+      "cascade": [
+        "precomputed-glb",
+        "metadata-json",
+        "collision-validator"
+      ],
+      "offlineBudgetMsPerImage": 0,
+      "runtimeBudgetMsPerEdit": 1000,
+      "gpuMemoryTargetGb": 0,
+      "useSam3": false,
+      "reason": "배포 실시간 편집 경로에서는 GPU 모델 호출을 하지 않고 사전 생성된 GLB+JSON만 사용합니다."
+    }
+  ],
+  "cases": [
+    {
+      "id": "align-001-bim-component-basichouse-ifcdoor-01",
+      "assetId": "bim-component-basichouse-ifcdoor-01",
+      "label": "BIM Door 01 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "door",
+      "buildCategory": "door",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-002-bim-component-basichouse-ifcdoor-02",
+      "assetId": "bim-component-basichouse-ifcdoor-02",
+      "label": "BIM Door 02 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "door",
+      "buildCategory": "door",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-003-bim-component-basichouse-ifcslab-01",
+      "assetId": "bim-component-basichouse-ifcslab-01",
+      "label": "BIM Slab 01 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "slab",
+      "buildCategory": "wall-tool",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-004-bim-component-basichouse-ifcslab-02",
+      "assetId": "bim-component-basichouse-ifcslab-02",
+      "label": "BIM Slab 02 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "slab",
+      "buildCategory": "wall-tool",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-005-bim-component-basichouse-ifcwallstandardcase-01",
+      "assetId": "bim-component-basichouse-ifcwallstandardcase-01",
+      "label": "BIM Wall Panel 01 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "wall-panel",
+      "buildCategory": "wall-pattern",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-006-bim-component-basichouse-ifcwallstandardcase-02",
+      "assetId": "bim-component-basichouse-ifcwallstandardcase-02",
+      "label": "BIM Wall Panel 02 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "wall-panel",
+      "buildCategory": "wall-pattern",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-007-bim-component-basichouse-ifcwindow-01",
+      "assetId": "bim-component-basichouse-ifcwindow-01",
+      "label": "BIM Window 01 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "window",
+      "buildCategory": "window",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-008-bim-component-basichouse-ifcwindow-02",
+      "assetId": "bim-component-basichouse-ifcwindow-02",
+      "label": "BIM Window 02 - BasicHouse",
+      "sourceGroup": "bim-derived",
+      "componentKind": "window",
+      "buildCategory": "window",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-009-bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01",
+      "assetId": "bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01",
+      "label": "BIM Door 01 - IfcOpenHouse_IFC4",
+      "sourceGroup": "bim-derived",
+      "componentKind": "door",
+      "buildCategory": "door",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-010-bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400",
+      "assetId": "bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400",
+      "label": "BIM Beam - BM111_Reinforced_Concrete_Structures_Rect_OT(250x400)",
+      "sourceGroup": "bim-derived",
+      "componentKind": "beam",
+      "buildCategory": "column",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 8,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-011-bim-material-ce711-gypsum-board-normal-ot-12-5mm",
+      "assetId": "bim-material-ce711-gypsum-board-normal-ot-12-5mm",
+      "label": "BIM Cladding Panel - CE711_Gypsum_Board_Normal_OT(12.5mm)",
+      "sourceGroup": "bim-derived",
+      "componentKind": "cladding-panel",
+      "buildCategory": "wall-pattern",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 8,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-012-bim-material-cl141-wood-structures-rect-ot-200x200",
+      "assetId": "bim-material-cl141-wood-structures-rect-ot-200x200",
+      "label": "BIM Column - CL141_Wood_Structures_Rect_OT(200x200)",
+      "sourceGroup": "bim-derived",
+      "componentKind": "column",
+      "buildCategory": "column",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-013-bim-material-cw113-aluminum-curtain-wall-ot",
+      "assetId": "bim-material-cw113-aluminum-curtain-wall-ot",
+      "label": "BIM Curtain Wall - CW113_Aluminum_Curtain_Wall_OT",
+      "sourceGroup": "bim-derived",
+      "componentKind": "curtain-wall",
+      "buildCategory": "window",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 8,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-014-bim-material-ft111-independence-foundation-ot-2000x2000x900",
+      "assetId": "bim-material-ft111-independence-foundation-ot-2000x2000x900",
+      "label": "BIM Foundation - FT111_Independence_Foundation_OT(2000x2000x900)",
+      "sourceGroup": "bim-derived",
+      "componentKind": "foundation",
+      "buildCategory": "wall-tool",
+      "referenceType": "bim-component-with-bounds",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 3,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-015-component-deck-module",
+      "assetId": "component-deck-module",
+      "label": "Deck Module",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "deck",
+      "buildCategory": "site-landscape",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 8,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-016-component-entry-door",
+      "assetId": "component-entry-door",
+      "label": "Entry Door",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "door",
+      "buildCategory": "door",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-017-component-fence-panel",
+      "assetId": "component-fence-panel",
+      "label": "Fence Panel",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "fence",
+      "buildCategory": "gate-fence",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-018-component-garden-tree",
+      "assetId": "component-garden-tree",
+      "label": "Garden Tree",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "landscape",
+      "buildCategory": "site-landscape",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 20,
+        "rotationDeg": 15,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-019-component-parking-pad",
+      "assetId": "component-parking-pad",
+      "label": "Parking Pad",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "site",
+      "buildCategory": "site-landscape",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 8,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-020-component-pergola-module",
+      "assetId": "component-pergola-module",
+      "label": "Pergola Module",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "pergola",
+      "buildCategory": "site-landscape",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 8,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-021-component-planter",
+      "assetId": "component-planter",
+      "label": "Planter",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "landscape",
+      "buildCategory": "site-landscape",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "ground",
+      "tolerances": {
+        "positionCm": 20,
+        "rotationDeg": 15,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-022-component-roof-flat",
+      "assetId": "component-roof-flat",
+      "label": "Flat Roof Module",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "roof",
+      "buildCategory": "roof",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "block-top",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-023-component-roof-gable",
+      "assetId": "component-roof-gable",
+      "label": "Gable Roof Module",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "roof",
+      "buildCategory": "roof",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "block-top",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-024-component-roof-hip",
+      "assetId": "component-roof-hip",
+      "label": "Hip Roof Module",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "roof",
+      "buildCategory": "roof",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "block-top",
+      "tolerances": {
+        "positionCm": 10,
+        "rotationDeg": 5,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-025-component-solar-panel",
+      "assetId": "component-solar-panel",
+      "label": "Solar Panel",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "equipment",
+      "buildCategory": "equipment",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "roof",
+      "tolerances": {
+        "positionCm": 12,
+        "rotationDeg": 6,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-026-component-wall-slat-panel",
+      "assetId": "component-wall-slat-panel",
+      "label": "Slat Wall Panel",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "wall-panel",
+      "buildCategory": "wall-pattern",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-027-component-wall-window-panel",
+      "assetId": "component-wall-window-panel",
+      "label": "Window Wall Panel",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "wall-panel",
+      "buildCategory": "wall-pattern",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-028-component-window-slim",
+      "assetId": "component-window-slim",
+      "label": "Slim Window",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "window",
+      "buildCategory": "window",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    },
+    {
+      "id": "align-029-component-window-wide",
+      "assetId": "component-window-wide",
+      "label": "Wide Window",
+      "sourceGroup": "ploton-generated",
+      "componentKind": "window",
+      "buildCategory": "window",
+      "referenceType": "synthetic-placement-slot",
+      "expectedSurface": "wall",
+      "tolerances": {
+        "positionCm": 8,
+        "rotationDeg": 4,
+        "scalePct": 5
+      },
+      "baseline": {
+        "twoDDetection": "model-dependent",
+        "threeDTransform": "missing",
+        "collisionCheck": "missing"
+      },
+      "target": {
+        "transformMetadata": "generated",
+        "collisionCount": 0,
+        "runtimeEditMsMax": 1000
+      }
+    }
+  ]
+}

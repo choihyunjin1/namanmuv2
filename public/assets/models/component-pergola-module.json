@@ -1,0 +1,125 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "component-pergola-module",
+  "label": "Pergola Module",
+  "type": "component",
+  "componentKind": "pergola",
+  "bimType": "IfcBuildingElementProxy",
+  "format": "glb",
+  "sourceType": "ploton-generated",
+  "source": "scripts/export_component_glb_assets.mjs",
+  "generatedAssetFile": "component-pergola-module.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "ground-center",
+  "tags": [
+    "component-ready",
+    "editable-component",
+    "local-asset",
+    "glb",
+    "component",
+    "pergola",
+    "yard",
+    "shade",
+    "ground-placeable"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "preferredZone": "yard"
+  },
+  "reviewStatus": "approved",
+  "license": "internal prototype generated asset",
+  "generationSchema": "PLOT_ON_COMPONENT_ASSET_V1",
+  "meshCount": 21,
+  "entityCounts": {
+    "IfcBuildingElementProxy": 1,
+    "IfcColumn": 4,
+    "IfcBeam": 8,
+    "IfcSlab": 1,
+    "GLBMesh": 21,
+    "GLBPrimitive": 21,
+    "GLBTriangleEstimate": 252,
+    "GLBMaterial": 3,
+    "GLBTexture": 0
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "Procedural component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:12:15.305177+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-pergola-module.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "THREE.GLTFExporter r182",
+      "sizeBytes": 39136,
+      "sizeMb": 0.037,
+      "counts": {
+        "scenes": 1,
+        "nodes": 23,
+        "meshes": 21,
+        "materials": 3,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 84,
+        "accessors": 84,
+        "primitives": 21,
+        "trianglesEstimate": 252,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.96,
+          -0.66,
+          -0.56
+        ],
+        "max": [
+          0.96,
+          0.66,
+          0.56
+        ],
+        "dimensions": [
+          1.92,
+          1.32,
+          1.12
+        ],
+        "maxDimension": 1.92
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 70,
+      "technicalGrade": "C",
+      "interactionReadiness": "visual-preview",
+      "checks": [
+        "mesh present",
+        "material present",
+        "bounds present",
+        "runtime size acceptable",
+        "mesh count manageable"
+      ],
+      "issues": [
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "C",
+    "technicalScore": 70
+  },
+  "component": {
+    "kind": "pergola",
+    "bimType": "IfcBuildingElementProxy",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "generated",
+    "createdAt": "2026-06-21T06:09:27.147Z",
+    "sourceSizeBytes": 39136
+  }
+}

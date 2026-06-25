@@ -1,0 +1,154 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01",
+  "label": "BIM Door 01 - IfcOpenHouse_IFC4",
+  "type": "component",
+  "componentKind": "door",
+  "bimType": "IfcDoor",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "IfcOpenHouse_IFC4.ifc",
+  "sourcePath": "C:\\Users\\cedis\\OneDrive\\Desktop\\건축 bim 분류\\01_detached_house_priority\\C_parser_test_only\\IfcOpenHouse_IFC4.ifc",
+  "sourceMode": "entity",
+  "generatedAssetFile": "bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "surface-center",
+  "tags": [
+    "IfcDoor",
+    "bim-component",
+    "component",
+    "component-ready",
+    "door",
+    "editable-component",
+    "glb",
+    "ifc-derived",
+    "local-asset"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": false,
+    "attachToSurface": "wall",
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC4",
+  "entityCounts": {
+    "IfcDoor": 1,
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 48,
+    "GLBMaterial": 0,
+    "GLBTexture": 0
+  },
+  "meshCount": 1,
+  "sourceEntities": [
+    {
+      "ifcType": "IfcDoor",
+      "globalId": "0Tif_$wI1FwAwq$OJt24I8",
+      "name": "",
+      "stepId": 2441
+    }
+  ],
+  "sourceBounds": {
+    "min": [
+      4.76,
+      0.0,
+      -2.1
+    ],
+    "max": [
+      4.84,
+      2.2,
+      -1.1
+    ],
+    "extent": [
+      0.08,
+      2.2,
+      1.0
+    ]
+  },
+  "normalization": {
+    "targetSize": 1.8,
+    "scale": 0.8181818181818181,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "IFC-derived component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:33:41.606398+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\bim-component-openhouse-ifcopenhouse-ifc4-ifcdoor-01.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 3848,
+      "sizeMb": 0.004,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 3,
+        "accessors": 3,
+        "primitives": 1,
+        "trianglesEstimate": 48,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.032727,
+          0.0,
+          -0.409091
+        ],
+        "max": [
+          0.032727,
+          1.8,
+          0.409091
+        ],
+        "dimensions": [
+          0.065455,
+          1.8,
+          0.818182
+        ],
+        "maxDimension": 1.8
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 50,
+      "technicalGrade": "D",
+      "interactionReadiness": "research-review",
+      "checks": [
+        "mesh present",
+        "bounds present",
+        "runtime size acceptable"
+      ],
+      "issues": [
+        "no material",
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "D",
+    "technicalScore": 50
+  },
+  "component": {
+    "kind": "door",
+    "bimType": "IfcDoor",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "ifc-derived-generated",
+    "createdAt": "2026-06-21T06:33:29.525363+00:00",
+    "sourceSizeBytes": 113264
+  }
+}

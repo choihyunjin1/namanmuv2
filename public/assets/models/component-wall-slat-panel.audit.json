@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:20.044969+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-wall-slat-panel.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 19056,
+  "sizeMb": 0.018,
+  "counts": {
+    "scenes": 1,
+    "nodes": 11,
+    "meshes": 10,
+    "materials": 3,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 40,
+    "accessors": 40,
+    "primitives": 10,
+    "trianglesEstimate": 120,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.64,
+      -0.5,
+      -0.08
+    ],
+    "max": [
+      0.64,
+      0.5,
+      0.08
+    ],
+    "dimensions": [
+      1.28,
+      1.0,
+      0.16
+    ],
+    "maxDimension": 1.28
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

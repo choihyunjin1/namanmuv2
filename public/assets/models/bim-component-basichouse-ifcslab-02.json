@@ -1,0 +1,153 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "bim-component-basichouse-ifcslab-02",
+  "label": "BIM Slab 02 - BasicHouse",
+  "type": "component",
+  "componentKind": "slab",
+  "bimType": "IfcSlab",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "BasicHouse.ifc",
+  "sourcePath": "C:\\Users\\cedis\\OneDrive\\Desktop\\건축 bim 분류\\01_detached_house_priority\\B_exterior_ready\\BasicHouse.ifc",
+  "sourceMode": "entity",
+  "generatedAssetFile": "bim-component-basichouse-ifcslab-02.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "ground-center",
+  "tags": [
+    "IfcSlab",
+    "bim-component",
+    "component",
+    "component-ready",
+    "editable-component",
+    "glb",
+    "ifc-derived",
+    "local-asset",
+    "slab"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "supportsGridSnap": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC2X3",
+  "entityCounts": {
+    "IfcSlab": 1,
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 12,
+    "GLBMaterial": 0,
+    "GLBTexture": 0
+  },
+  "meshCount": 1,
+  "sourceEntities": [
+    {
+      "ifcType": "IfcSlab",
+      "globalId": "1yETHMphv6LwABqR4Pbs5g",
+      "name": "Basic Roof:Svart plåttak:1300347",
+      "stepId": 1765393
+    }
+  ],
+  "sourceBounds": {
+    "min": [
+      -8.191,
+      2.2504,
+      0.0083
+    ],
+    "max": [
+      15.609,
+      3.6235,
+      5.3583
+    ],
+    "extent": [
+      23.8,
+      1.3731,
+      5.35
+    ]
+  },
+  "normalization": {
+    "targetSize": 1.8,
+    "scale": 0.07563025210084064,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "IFC-derived component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:33:38.288025+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\bim-component-basichouse-ifcslab-02.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 1712,
+      "sizeMb": 0.002,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 3,
+        "accessors": 3,
+        "primitives": 1,
+        "trianglesEstimate": 12,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.9,
+          0.0,
+          -0.202311
+        ],
+        "max": [
+          0.9,
+          0.103845,
+          0.202311
+        ],
+        "dimensions": [
+          1.8,
+          0.103845,
+          0.404622
+        ],
+        "maxDimension": 1.8
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 50,
+      "technicalGrade": "D",
+      "interactionReadiness": "research-review",
+      "checks": [
+        "mesh present",
+        "bounds present",
+        "runtime size acceptable"
+      ],
+      "issues": [
+        "no material",
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "D",
+    "technicalScore": 50
+  },
+  "component": {
+    "kind": "slab",
+    "bimType": "IfcSlab",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "ifc-derived-generated",
+    "createdAt": "2026-06-21T06:33:18.295419+00:00",
+    "sourceSizeBytes": 52702577
+  }
+}

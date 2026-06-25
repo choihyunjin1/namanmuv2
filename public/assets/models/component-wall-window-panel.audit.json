@@ -1,0 +1,59 @@
+{
+  "tool": "scripts/audit_glb_asset.py",
+  "generatedAt": "2026-06-21T06:12:20.259698+00:00",
+  "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\component-wall-window-panel.glb",
+  "valid": true,
+  "assetVersion": "2.0",
+  "assetGenerator": "THREE.GLTFExporter r182",
+  "sizeBytes": 11980,
+  "sizeMb": 0.011,
+  "counts": {
+    "scenes": 1,
+    "nodes": 8,
+    "meshes": 6,
+    "materials": 4,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "buffers": 1,
+    "bufferViews": 24,
+    "accessors": 24,
+    "primitives": 6,
+    "trianglesEstimate": 72,
+    "unknownTrianglePrimitives": 0
+  },
+  "bounds": {
+    "min": [
+      -0.7,
+      -0.525,
+      -0.09
+    ],
+    "max": [
+      0.7,
+      0.525,
+      0.09
+    ],
+    "dimensions": [
+      1.4,
+      1.05,
+      0.18
+    ],
+    "maxDimension": 1.4
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "technicalScore": 70,
+  "technicalGrade": "C",
+  "interactionReadiness": "visual-preview",
+  "checks": [
+    "mesh present",
+    "material present",
+    "bounds present",
+    "runtime size acceptable",
+    "mesh count manageable"
+  ],
+  "issues": [
+    "no texture",
+    "low triangle count"
+  ]
+}

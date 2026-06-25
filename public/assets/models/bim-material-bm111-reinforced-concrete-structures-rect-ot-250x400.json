@@ -1,0 +1,155 @@
+{
+  "assetSchemaVersion": 1,
+  "id": "bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400",
+  "label": "BIM Beam - BM111_Reinforced_Concrete_Structures_Rect_OT(250x400)",
+  "type": "component",
+  "componentKind": "beam",
+  "bimType": "IfcBeam",
+  "format": "glb",
+  "sourceType": "ifc",
+  "source": "BM111_Reinforced_Concrete_Structures_Rect_OT(250x400).ifc",
+  "sourcePath": "C:\\Users\\cedis\\OneDrive\\Desktop\\건축 bim 분류\\08_kbims_openbim_research\\downloads\\templates_and_libraries\\catia_library_a\\extracted_cp949\\05_Beam\\BM111_Reinforced_Concrete_Structures_Rect_OT(250x400).ifc",
+  "sourceMode": "file",
+  "generatedAssetFile": "bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.glb",
+  "scaleUnit": "meter",
+  "unitScaleMetersPerSceneUnit": 1,
+  "anchor": "ground-center",
+  "tags": [
+    "IfcBeam",
+    "beam",
+    "bim-component",
+    "component",
+    "component-ready",
+    "editable-component",
+    "glb",
+    "ifc-derived",
+    "local-asset"
+  ],
+  "compatibleZones": [],
+  "placementRules": {
+    "rotatable": true,
+    "snappable": true,
+    "requiresGround": true,
+    "supportsGridSnap": true,
+    "supportsSurfaceSnap": true
+  },
+  "reviewStatus": "needs-review",
+  "license": "source-review-required",
+  "schema": "IFC2X3",
+  "entityCounts": {
+    "IfcBeam": 1,
+    "IfcElementAssembly": 1,
+    "GLBMesh": 1,
+    "GLBPrimitive": 1,
+    "GLBTriangleEstimate": 12,
+    "GLBMaterial": 0,
+    "GLBTexture": 0
+  },
+  "meshCount": 1,
+  "sourceEntities": [
+    {
+      "ifcType": "IfcElementAssembly",
+      "globalId": "taEzxty2xTp6vvriAUoUaZ",
+      "name": "BM111_Reinforced_Concrete_Structures_Rect",
+      "stepId": 143
+    }
+  ],
+  "sourceBounds": {
+    "min": [
+      -0.125,
+      -0.2,
+      -3.0
+    ],
+    "max": [
+      0.125,
+      0.2,
+      -0.0
+    ],
+    "extent": [
+      0.25,
+      0.4,
+      3.0
+    ]
+  },
+  "normalization": {
+    "targetSize": 1.8,
+    "scale": 0.6,
+    "axis": "IFC x,y,z -> Three x,y,z = x,z,-y"
+  },
+  "quality": {
+    "interactionReadiness": "component-ready",
+    "manualReviewRequired": true,
+    "limitation": "IFC-derived component asset for PLOT:ON exterior customization. Not a permit or construction document.",
+    "assetAudit": {
+      "tool": "scripts/audit_glb_asset.py",
+      "generatedAt": "2026-06-21T06:33:42.974363+00:00",
+      "sourceFile": "C:\\Users\\cedis\\OneDrive\\문서\\week15\\ploton-prototype\\public\\assets\\models\\bim-material-bm111-reinforced-concrete-structures-rect-ot-250x400.glb",
+      "valid": true,
+      "assetVersion": "2.0",
+      "assetGenerator": "https://github.com/mikedh/trimesh",
+      "sizeBytes": 1728,
+      "sizeMb": 0.002,
+      "counts": {
+        "scenes": 1,
+        "nodes": 2,
+        "meshes": 1,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "animations": 0,
+        "buffers": 1,
+        "bufferViews": 3,
+        "accessors": 3,
+        "primitives": 1,
+        "trianglesEstimate": 12,
+        "unknownTrianglePrimitives": 0
+      },
+      "bounds": {
+        "min": [
+          -0.075,
+          0.0,
+          -0.9
+        ],
+        "max": [
+          0.075,
+          0.24,
+          0.9
+        ],
+        "dimensions": [
+          0.15,
+          0.24,
+          1.8
+        ],
+        "maxDimension": 1.8
+      },
+      "extensionsUsed": [],
+      "extensionsRequired": [],
+      "technicalScore": 50,
+      "technicalGrade": "D",
+      "interactionReadiness": "research-review",
+      "checks": [
+        "mesh present",
+        "bounds present",
+        "runtime size acceptable"
+      ],
+      "issues": [
+        "no material",
+        "no texture",
+        "low triangle count"
+      ]
+    },
+    "technicalGrade": "D",
+    "technicalScore": 50
+  },
+  "component": {
+    "kind": "beam",
+    "bimType": "IfcBeam",
+    "reusable": true,
+    "intendedUse": "drag-drop exterior customization"
+  },
+  "intake": {
+    "status": "ifc-derived-generated",
+    "createdAt": "2026-06-21T06:33:29.373173+00:00",
+    "sourceSizeBytes": 8618
+  }
+}
