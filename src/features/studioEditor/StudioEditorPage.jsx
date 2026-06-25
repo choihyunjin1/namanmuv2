@@ -26,6 +26,7 @@ import {
 } from "./placementRules.js";
 import { buildStudioPascalSceneGraph } from "./pascalSceneGraph.js";
 import { createRoofAccessoryObjectForRoom, createRoofObjectForRoom } from "./roofPlacementRules.js";
+import { summarizeSceneCostEstimate } from "./sceneCostEstimate.js";
 import { validateStraightStairPlacement } from "./stairPlacementRules.js";
 import { StudioEditorHeader } from "./StudioEditorHeader.jsx";
 import { StudioEditorInspector } from "./StudioEditorInspector.jsx";
@@ -414,6 +415,7 @@ export function StudioEditorPage() {
   const buildable = useMemo(() => getBuildableFootprint(), []);
   const activeFloorBaseY = useMemo(() => getFloorBaseY(activeFloor), [activeFloor]);
   const objects = objectHistory.present;
+  const sceneCostEstimate = useMemo(() => summarizeSceneCostEstimate(objects), [objects]);
   const allCatalogAssets = useMemo(
     () => [...STUDIO_CATALOG_ASSETS, ...glbCatalogAssets, ...generatedAssets, ...libraryAssets],
     [generatedAssets, glbCatalogAssets, libraryAssets]
@@ -576,6 +578,7 @@ export function StudioEditorPage() {
       ok: catalogPolicy.ok,
       summary: catalogPolicy.summary
     },
+    costEstimate: sceneCostEstimate,
     objects,
     openingNodes,
     pascalSceneGraph,
@@ -596,6 +599,7 @@ export function StudioEditorPage() {
       assetTaxonomyCount: assetTaxonomySummary.total,
       catalogPolicyAssetCount: catalogPolicy.assetCount,
       catalogPolicyOk: catalogPolicy.ok,
+      estimatedCostKrw: sceneCostEstimate.estimatedTotalKrw,
       floorplanAreaCount: floorplanInterop.summary.areaCount,
       floorplanHoleCount: floorplanInterop.summary.holeCount,
       floorplanLineCount: floorplanInterop.summary.lineCount,
@@ -609,6 +613,7 @@ export function StudioEditorPage() {
       openingNodeCount: openingNodeSummary.total,
       openingNodesByHostType: openingNodeSummary.byHostType,
       openingNodesByType: openingNodeSummary.byType,
+      pricedObjectCount: sceneCostEstimate.pricedObjectCount,
       roomCount
     }
   });
@@ -1266,12 +1271,15 @@ export function StudioEditorPage() {
     const candidate = {
       assetId: asset.id,
       color: asset.color,
+      cost: asset.cost,
       frameDepth: asset.frameDepth ?? 0.18,
       height: openingHeight,
       id: movingOpeningRef?.openingId ?? `opening-${crypto.randomUUID?.() ?? Date.now()}`,
       label: asset.label,
       offset,
       roomId: host.type === "room" ? host.id : undefined,
+      sourceAssetId: asset.assetSourceId ?? asset.id,
+      sourceAssetLabel: asset.label,
       sillHeight,
       type: asset.openingType ?? "window",
       valid: true,
@@ -1317,6 +1325,7 @@ export function StudioEditorPage() {
       assetId: asset.id,
       centerY,
       color: asset.color,
+      cost: asset.cost,
       depth: asset.attachDepth ?? 0.06,
       height: attachmentHeight,
       id: movingAttachmentRef?.attachmentId ?? `attachment-${crypto.randomUUID?.() ?? Date.now()}`,
@@ -1324,6 +1333,8 @@ export function StudioEditorPage() {
       offset,
       roomId: host.type === "room" ? host.id : undefined,
       shape: asset.shape,
+      sourceAssetId: asset.assetSourceId ?? asset.id,
+      sourceAssetLabel: asset.label,
       type: asset.placementMode,
       valid: true,
       wall: hit.wall,
@@ -2801,12 +2812,15 @@ export function StudioEditorPage() {
       assetId: candidate.assetId,
       centerY: candidate.centerY,
       color: candidate.color,
+      cost: candidate.cost,
       depth: candidate.depth,
       height: candidate.height,
       id: candidate.id,
       label: candidate.label,
       offset: candidate.offset,
       shape: candidate.shape,
+      sourceAssetId: candidate.sourceAssetId,
+      sourceAssetLabel: candidate.sourceAssetLabel,
       type: candidate.type,
       wall: candidate.wall,
       width: candidate.width
@@ -2876,11 +2890,14 @@ export function StudioEditorPage() {
     const nextOpening = {
       assetId: candidate.assetId,
       color: candidate.color,
+      cost: candidate.cost,
       frameDepth: candidate.frameDepth,
       height: candidate.height,
       id: candidate.id,
       label: candidate.label,
       offset: candidate.offset,
+      sourceAssetId: candidate.sourceAssetId,
+      sourceAssetLabel: candidate.sourceAssetLabel,
       sillHeight: candidate.sillHeight,
       type: candidate.type,
       wall: candidate.wall,
@@ -3990,6 +4007,7 @@ export function StudioEditorPage() {
           selectedObjectIds={selectedObjectIds}
           selectedOpening={selectedOpening}
           selectedOpeningObject={selectedOpeningObject}
+          sceneCostEstimate={sceneCostEstimate}
           selectedTransformLabel={selectedTransformLabel}
           showSceneOutliner={activeWorkflowMode !== "scene"}
           snapEnabled={snapEnabled}

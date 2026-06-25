@@ -185,6 +185,7 @@ export function StudioEditorInspector({
   selectedObjectIds = [],
   selectedOpening,
   selectedOpeningObject,
+  sceneCostEstimate = null,
   selectedTransformLabel,
   showSceneOutliner = true,
   snapEnabled
@@ -234,6 +235,12 @@ export function StudioEditorInspector({
       })
     : null;
   const selectedObjectAssetDetails = selectedObject ? getObjectAssetDetails(selectedObject) : null;
+  const sceneCostTotalLabel = formatInspectorKrw(sceneCostEstimate?.estimatedTotalKrw) ?? "가격 후보 없음";
+  const sceneCostMappedLabel = `${sceneCostEstimate?.pricedObjectCount ?? 0}/${sceneCostEstimate?.totalObjectCount ?? objects.length}`;
+  const primaryCostClass = sceneCostEstimate?.byCostClass?.[0];
+  const primaryCostClassLabel = primaryCostClass
+    ? `${primaryCostClass.costClass} · ${formatInspectorKrw(primaryCostClass.estimatedCostKrw) ?? "0원"}`
+    : "없음";
   const selection = selectedOpeningObject
     ? {
         kind: selectedOpeningObject.type === "door" ? "문 개구부" : "창문 개구부",
@@ -559,6 +566,18 @@ export function StudioEditorInspector({
           <div>
             <dt>객체</dt>
             <dd>{objects.length}</dd>
+          </div>
+          <div>
+            <dt>견적 후보</dt>
+            <dd>{sceneCostTotalLabel}</dd>
+          </div>
+          <div>
+            <dt>가격 매핑</dt>
+            <dd>{sceneCostMappedLabel}</dd>
+          </div>
+          <div>
+            <dt>주요 공종</dt>
+            <dd>{primaryCostClassLabel}</dd>
           </div>
           <div>
             <dt>개구부</dt>

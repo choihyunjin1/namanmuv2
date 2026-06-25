@@ -141,6 +141,7 @@ export function normalizeStudioGlbCatalog(rawCatalog) {
         categoryId,
         color: COLOR_BY_CATEGORY[categoryId] ?? "#b9beb7",
         componentKind: asset.componentKind ?? null,
+        cost: asset.cost ?? null,
         format: "glb",
         label: asset.label ?? asset.id,
         metadataUrl: asset.metadataUrl ?? null,
