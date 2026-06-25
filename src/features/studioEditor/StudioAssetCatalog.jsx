@@ -46,6 +46,24 @@ function getRecommendationScoreLabel(score) {
   return `score ${Number(number.toFixed(2))}`;
 }
 
+function hasAssetCost(asset) {
+  return Boolean(asset?.cost?.primary?.unitPriceKrw || asset?.cost?.defaultRoughCostKrw);
+}
+
+function getCatalogResultStats(assets) {
+  return assets.reduce(
+    (stats, asset) => {
+      if (asset?.modelUrl || asset?.optimizedModelUrl || asset?.url) stats.glbCount += 1;
+      if (asset?.previewQuality === "bim" || asset?.bimType || asset?.metadata?.bimType || asset?.sourceType === "ifc") {
+        stats.bimCount += 1;
+      }
+      if (hasAssetCost(asset)) stats.pricedCount += 1;
+      return stats;
+    },
+    { bimCount: 0, glbCount: 0, pricedCount: 0 }
+  );
+}
+
 function getRecommendedCatalogAssets(recommendation) {
   if (recommendation?.status !== "ready" || !Array.isArray(recommendation.recommendations)) return [];
 
@@ -277,8 +295,12 @@ export function StudioAssetCatalog({
   const showAssetApiOffline =
     normalizedSearch.length >= 2 && assetApiSearch.query === searchTerm.trim() && assetApiSearch.status === "offline";
   const visibleAssetCount = visibleAssets.length + recommendedAssets.length;
+  const resultStats = useMemo(
+    () => getCatalogResultStats([...recommendedAssets, ...visibleAssets]),
+    [recommendedAssets, visibleAssets]
+  );
   const resultModeLabel = normalizedSearch ? `검색 결과 · ${searchTerm.trim()}` : `${activeCategory?.label ?? "자산"} 라이브러리`;
-  const resultMetaLabel = `${recommendedAssets.length} 추천 · ${visibleAssets.length} 자산`;
+  const resultMetaLabel = `${recommendedAssets.length} 추천 · ${visibleAssets.length} 자산 · ${resultStats.pricedCount} 가격`;
   const sourceLabel = CATALOG_SOURCE_TABS.find((source) => source.id === sourceFilter)?.label ?? "All";
 
   return (
@@ -336,7 +358,12 @@ export function StudioAssetCatalog({
                 <strong>{resultModeLabel}</strong>
                 <small>{resultMetaLabel}</small>
               </div>
-              <span>{sourceLabel}</span>
+              <div className="studio-catalog-assets-stats" aria-label="자산 파이프라인 커버리지">
+                <span>{sourceLabel}</span>
+                <span>{resultStats.glbCount} GLB</span>
+                <span>{resultStats.bimCount} BIM</span>
+                <span>{resultStats.pricedCount} 가격</span>
+              </div>
             </div>
             <div className="studio-catalog-assets" aria-label="카테고리 자산" data-source={sourceFilter}>
               <StudioAssetAiLeadingTile

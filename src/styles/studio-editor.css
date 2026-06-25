@@ -2704,8 +2704,16 @@
   font-weight: 900;
 }
 
-.studio-catalog-assets-toolbar > span {
+.studio-catalog-assets-stats {
   flex: 0 0 auto;
+  max-width: 52%;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.studio-catalog-assets-stats span {
   max-width: 96px;
   min-height: 20px;
   display: inline-flex;

@@ -29,6 +29,10 @@ try {
   await summary.getByText(/라이브러리|검색 결과/).waitFor({ state: "visible" });
   await summary.getByText(/자산/).waitFor({ state: "visible" });
   await summary.getByText("All", { exact: true }).waitFor({ state: "visible" });
+  const pipelineCoverage = page.getByLabel("자산 파이프라인 커버리지");
+  await pipelineCoverage.getByText(/GLB/).waitFor({ state: "visible" });
+  await pipelineCoverage.getByText(/BIM/).waitFor({ state: "visible" });
+  await pipelineCoverage.getByText(/가격/).waitFor({ state: "visible" });
 
   const assetGrid = page.getByLabel("카테고리 자산");
   await assetGrid.waitFor({ state: "visible" });
