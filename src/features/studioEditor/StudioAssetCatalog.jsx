@@ -787,8 +787,17 @@ export function StudioAssetCatalog({
                 const scoreLabel = getRecommendationScoreLabel(recommendation.score);
                 return (
                   <button
+                    className="studio-catalog-recommendation-result"
+                    draggable
                     key={asset.id}
                     onClick={() => onAssetPick(asset)}
+                    onDragEnd={() => onDragAssetStart(null)}
+                    onDragStart={(event) => {
+                      onAssetPick(asset.placementMode ? asset : null);
+                      event.dataTransfer.effectAllowed = "copy";
+                      event.dataTransfer.setData("application/x-ploton-asset", asset.id);
+                      onDragAssetStart(asset);
+                    }}
                     title={[
                       asset.label ?? asset.id,
                       scoreLabel,

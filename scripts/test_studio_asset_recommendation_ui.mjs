@@ -75,6 +75,11 @@ try {
     true,
     "studio recommendation UI should render at least one recommendation result button"
   );
+  assert.equal(
+    await resultButtons.first().getAttribute("draggable"),
+    "true",
+    "recommendation result buttons should support catalog drag-and-drop placement"
+  );
 
   assert.deepEqual(
     pageErrors.map((error) => error.message),
