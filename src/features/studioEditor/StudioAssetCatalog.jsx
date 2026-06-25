@@ -1,162 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
-import { getAssetTaxonomy } from "./assetTaxonomyRules.js";
-import { getAllowedHostKinds } from "./hostEligibilityRules.js";
 import {
   STUDIO_CATALOG_ASSETS,
   STUDIO_CATALOG_CATEGORIES,
   getCatalogAssetsByCategory
 } from "./studioCatalog.js";
+import { StudioAssetCatalogCard } from "./StudioAssetCatalogCard.jsx";
 import { StudioAssetGenerationControls } from "./StudioAssetGenerationControls.jsx";
 import { CATALOG_SOURCE_TABS, StudioAssetCatalogSourceTabs } from "./StudioAssetCatalogSourceTabs.jsx";
 import { StudioAssetRecentStrip } from "./StudioAssetRecentStrip.jsx";
-
-const PASCAL_ICON_BASE = "/assets/pascal-icons";
-const STUDIO_CATALOG_HOME_ICON_SRC = `${PASCAL_ICON_BASE}/build.webp`;
-const PLACEMENT_POLICY_LABELS = {
-  "draw-room": "room-draw",
-  "draw-wall": "wall-draw",
-  "floor-structural": "floor-free",
-  "floor-stair": "stair-place",
-  "roof-accessory": "roof-feature",
-  "roof-attached": "roof-place",
-  "wall-attached": "wall-attach",
-  "wall-opening": "wall-opening"
-};
-const PLACEMENT_POLICY_BADGE_LABELS = {
-  "draw-room": "room",
-  "draw-wall": "wall",
-  "floor-structural": "floor",
-  "floor-stair": "stair",
-  "roof-accessory": "roof+",
-  "roof-attached": "roof",
-  "wall-attached": "attach",
-  "wall-opening": "open"
-};
-const HOST_KIND_LABELS = {
-  floor: "floor",
-  room: "room",
-  roof: "roof",
-  "structural-wall": "wall",
-  unknown: "unknown"
-};
-const ASSET_STATUS_LABELS = {
-  "coming-soon": "soon",
-  partial: "partial",
-  ready: "ready"
-};
-const PREVIEW_QUALITY_LABELS = {
-  bim: "BIM",
-  component: "component",
-  generated: "generated",
-  planned: "planned",
-  proxy: "proxy"
-};
-const PLACEMENT_COPY_LABELS = {
-  "draw-room": "방 그리기",
-  "draw-wall": "벽 그리기",
-  "floor-free": "바닥 자유 배치",
-  "floor-stair": "계단 배치",
-  "floor-structural": "구조 배치",
-  "roof-accessory": "지붕 부착",
-  "roof-attached": "방 상단 부착",
-  "wall-attached": "벽 부착",
-  "wall-opening": "벽 개구부"
-};
-const INTERACTION_VERB_LABELS = {
-  "draw-room": "그리기",
-  "draw-wall": "그리기",
-  "floor-free": "드래그",
-  "floor-stair": "드래그",
-  "floor-structural": "드래그",
-  "roof-accessory": "부착",
-  "roof-attached": "부착",
-  "wall-attached": "벽배치",
-  "wall-opening": "개구부"
-};
-const PLACEMENT_HINTS = {
-  "draw-room": "바닥에서 범위를 드래그해 방을 만든다",
-  "draw-wall": "바닥에서 시작점과 끝점을 지정해 벽을 그린다",
-  "floor-free": "바닥 또는 작업층 평면에 드래그해 배치한다",
-  "floor-stair": "바닥에 배치하고 계단 방향을 조정한다",
-  "floor-structural": "작업층 평면에 구조 부재로 배치한다",
-  "roof-accessory": "방 위 지붕을 기준으로 부착한다",
-  "roof-attached": "선택한 방 상단에 지붕을 생성한다",
-  "wall-attached": "벽 위 위치를 지정해 부착한다",
-  "wall-opening": "벽 위 위치를 지정해 개구부를 만든다"
-};
-const ASSET_PREVIEW_BY_CATEGORY = {
-  column: { accent: "#ebe1c6", kind: "column", materialLabel: "support", trim: "#9f9275" },
-  door: { accent: "#f0d3a2", kind: "door", materialLabel: "entry", trim: "#594435" },
-  "exterior-trim": { accent: "#f5efe4", kind: "trim", materialLabel: "trim", trim: "#8f7f6b" },
-  gate: { accent: "#c6b19a", kind: "gate", materialLabel: "gate", trim: "#5f5246" },
-  railing: { accent: "#c9d0cc", kind: "railing", materialLabel: "rail", trim: "#66716c" },
-  roof: { accent: "#e4bc76", kind: "roof", materialLabel: "roof", trim: "#6d5d49" },
-  "roof-decor": { accent: "#f1d7a2", kind: "roof-decor", materialLabel: "decor", trim: "#7b6a53" },
-  "roof-pattern": { accent: "#8ea8b5", kind: "roof-tile", materialLabel: "tile", trim: "#51636d" },
-  "roof-trim": { accent: "#d2b589", kind: "roof-trim", materialLabel: "eave", trim: "#625341" },
-  spandrel: { accent: "#f4f1e8", kind: "spandrel", materialLabel: "band", trim: "#817668" },
-  "stairs-ladder": { accent: "#c8c9be", kind: "stair", materialLabel: "stair", trim: "#69716c" },
-  "wall-pattern": { accent: "#c88b70", kind: "wall-finish", materialLabel: "finish", trim: "#714d40" },
-  "wall-tool": { accent: "#91c9bc", kind: "wall", materialLabel: "wall", trim: "#3f7b70" },
-  window: { accent: "#9cd1dc", kind: "window", materialLabel: "glass", trim: "#3b6b78" }
-};
-
-const ASSET_PREVIEW_BY_SHAPE = {
-  beam: { kind: "beam", materialLabel: "linear" },
-  box: { kind: "block", materialLabel: "block" },
-  column: { kind: "column", materialLabel: "support" },
-  door: { kind: "door", materialLabel: "entry" },
-  gable: { kind: "gable-roof", materialLabel: "gable" },
-  gate: { kind: "gate", materialLabel: "gate" },
-  hip: { kind: "hip-roof", materialLabel: "hip" },
-  ladder: { kind: "ladder", materialLabel: "ladder" },
-  railing: { kind: "railing", materialLabel: "rail" },
-  room: { kind: "room", materialLabel: "room" },
-  shed: { kind: "shed-roof", materialLabel: "shed" },
-  slab: { kind: "slab-roof", materialLabel: "flat" },
-  stairs: { kind: "stair", materialLabel: "stair" },
-  tile: { kind: "surface", materialLabel: "finish" },
-  trim: { kind: "trim", materialLabel: "trim" },
-  wall: { kind: "wall", materialLabel: "wall" },
-  "wall-line": { kind: "wall-line", materialLabel: "draw" },
-  window: { kind: "window", materialLabel: "glass" },
-  "window-wide": { kind: "wide-window", materialLabel: "wide" }
-};
-
-function getStairCardDescriptor(asset) {
-  if (asset.placementMode !== "floor-stair") return null;
-  const kind = asset.stair?.kind ?? (asset.shape === "ladder" ? "ladder" : "stair");
-  const layout = kind === "ladder"
-    ? "ladder"
-    : asset.stair?.layout ?? asset.stairType ?? (Number(asset.landingDepth ?? asset.stair?.landingDepth ?? 0) > 0 ? "landing" : "straight");
-  const stepCount = Number(asset.stepCount ?? asset.stair?.stepCount ?? 0);
-  const landingDepth = Number(asset.landingDepth ?? asset.stair?.landingDepth ?? 0);
-  const layoutLabel = kind === "ladder" ? "ladder" : layout === "landing" ? "landing" : "straight";
-  const stepLabel = stepCount > 0 ? `${stepCount} ${kind === "ladder" ? "rungs" : "steps"}` : null;
-  const landingLabel = kind !== "ladder" && landingDepth > 0 ? `${landingDepth}m landing` : null;
-  const runLabel = Number.isFinite(Number(asset.stairRun)) ? `${asset.stairRun}m run` : null;
-
-  return {
-    badgeLabel: stepCount > 0 ? `${kind === "ladder" ? "ladder" : "stair"} ${stepCount}` : layoutLabel,
-    materialLabel: asset.previewMaterialLabel ?? layoutLabel,
-    metaLabel: [stepLabel, landingLabel ?? runLabel].filter(Boolean).join(" · ")
-  };
-}
-
-function getAssetPreviewMeta(asset) {
-  const categoryPreview = ASSET_PREVIEW_BY_CATEGORY[asset.categoryId] ?? {};
-  const shapePreview = ASSET_PREVIEW_BY_SHAPE[asset.shape] ?? {};
-  const stairPreview = getStairCardDescriptor(asset);
-  return {
-    accent: asset.previewAccent ?? categoryPreview.accent ?? asset.color ?? "#d8f36a",
-    kind: asset.previewKind ?? shapePreview.kind ?? categoryPreview.kind ?? "asset",
-    materialLabel: asset.previewMaterialLabel ?? stairPreview?.materialLabel ?? shapePreview.materialLabel ?? categoryPreview.materialLabel ?? "asset",
-    swatch: asset.previewSwatch ?? asset.color ?? categoryPreview.accent ?? "#d8f36a",
-    thumbnailSrc: asset.thumbnailSrc ?? null,
-    trim: asset.previewTrim ?? categoryPreview.trim ?? "#ffffff"
-  };
-}
+import {
+  STUDIO_CATALOG_HOME_ICON_SRC,
+  getCategoryPlacementBadgeSummary,
+  getCategoryPlacementSummary,
+  getStairCardDescriptor
+} from "./studioAssetCatalogDisplay.js";
 
 function getAssetSourceId(asset) {
   return asset.sourceId ?? asset.librarySource ?? asset.source ?? "pascal";
@@ -164,156 +22,6 @@ function getAssetSourceId(asset) {
 
 function matchesCatalogSource(asset, sourceId) {
   return sourceId === "all" || getAssetSourceId(asset) === sourceId;
-}
-
-function CatalogPreview({ asset, badgeLabel, iconSrc, shape }) {
-  const preview = getAssetPreviewMeta(asset);
-  const previewStyle = {
-    "--asset-accent": preview.accent,
-    "--asset-swatch": preview.swatch,
-    "--asset-trim": preview.trim
-  };
-
-  return (
-    <div
-      className={`studio-catalog-preview has-asset-preview is-${shape} is-preview-${preview.kind}`}
-      data-badge={badgeLabel}
-      data-preview-kind={preview.kind}
-      style={previewStyle}
-    >
-      {preview.thumbnailSrc ? <img alt="" className="studio-catalog-preview-thumb" draggable="false" src={preview.thumbnailSrc} /> : null}
-      <span className="studio-catalog-preview-scene" aria-hidden="true">
-        <span className="studio-catalog-preview-ground" />
-        <span className="studio-catalog-preview-primitive" />
-      </span>
-      {iconSrc ? <img alt="" className="studio-catalog-preview-icon" draggable="false" src={iconSrc} /> : null}
-      <span className="studio-catalog-preview-swatches" aria-hidden="true">
-        <i />
-        <i />
-      </span>
-      <span className="studio-catalog-preview-kind">{preview.materialLabel}</span>
-    </div>
-  );
-}
-
-function getPlacementLabel(asset) {
-  if (asset.placementMode === "draw-wall") return "벽";
-  if (asset.placementMode === "draw-room") return "방";
-  if (asset.placementMode === "wall-opening") return "개구부";
-  if (asset.placementMode === "wall-attached") return "벽부착";
-  if (asset.placementMode === "roof-attached") return "지붕";
-  if (asset.placementMode === "roof-accessory") return "장식";
-  if (asset.placementMode === "floor-structural") return "구조";
-  if (asset.placementMode === "floor-stair") return "계단";
-  return "자산";
-}
-
-function getPlacementBadgeLabel(asset) {
-  if (asset.placementMode === "draw-wall") return "draw";
-  if (asset.placementMode === "draw-room") return "room";
-  if (asset.placementMode === "wall-opening") return "opening";
-  if (asset.placementMode === "wall-attached") return "wall";
-  if (asset.placementMode === "roof-attached" || asset.placementMode === "roof-accessory") return "roof";
-  if (asset.placementMode === "floor-structural") return "floor";
-  if (asset.placementMode === "floor-stair") return getStairCardDescriptor(asset)?.badgeLabel ?? "stair";
-  if (asset.shape === "room") return "room";
-  return "asset";
-}
-
-function getPlacementPolicyLabel(asset) {
-  return PLACEMENT_POLICY_LABELS[asset.placementMode] ?? (asset.placementMode ? "place" : "asset");
-}
-
-function getReadablePlacementLabel(asset) {
-  return asset.placementTitle ?? PLACEMENT_COPY_LABELS[asset.placementMode] ?? getPlacementPolicyLabel(asset);
-}
-
-function getInteractionVerb(asset, isDrawTool = false) {
-  if (asset.interactionVerb) return asset.interactionVerb;
-  if (isDrawTool) return "그리기";
-  return INTERACTION_VERB_LABELS[asset.placementMode] ?? "드래그";
-}
-
-function getPlacementHint(asset) {
-  if (asset.placementHint) return asset.placementHint;
-  if (asset.attachmentTarget === "stair") return "계단 선택 후 난간 부착 정책으로 확장 예정";
-  return PLACEMENT_HINTS[asset.placementMode] ?? "에디터 씬에 배치한다";
-}
-
-function getAssetStatus(asset) {
-  if (asset.status) return asset.status;
-  if (asset.attachmentTarget === "stair") return "partial";
-  return "ready";
-}
-
-function getAssetStatusLabel(asset) {
-  return ASSET_STATUS_LABELS[getAssetStatus(asset)] ?? "ready";
-}
-
-function getPreviewQuality(asset) {
-  if (asset.previewQuality) return asset.previewQuality;
-  if (asset.categoryId === "stairs-ladder" || asset.categoryId === "roof") return "component";
-  if (asset.status === "coming-soon") return "planned";
-  return "proxy";
-}
-
-function getPreviewQualityLabel(asset) {
-  return PREVIEW_QUALITY_LABELS[getPreviewQuality(asset)] ?? "proxy";
-}
-
-function getCategoryPlacementSummary(assets) {
-  const policies = [...new Set(assets.map(getPlacementPolicyLabel))].filter(Boolean);
-  if (!policies.length) return "asset";
-  if (policies.length <= 3) return policies.join(" / ");
-  return `${policies.slice(0, 2).join(" / ")} +${policies.length - 2}`;
-}
-
-function getCategoryPlacementBadgeSummary(assets) {
-  const policies = [...new Set(assets.map((asset) => PLACEMENT_POLICY_BADGE_LABELS[asset.placementMode] ?? getPlacementPolicyLabel(asset)))].filter(Boolean);
-  if (!policies.length) return "asset";
-  if (policies.length === 1) return policies[0];
-  if (policies.length === 2) return policies.join("+");
-  return `${policies[0]}+${policies.length - 1}`;
-}
-
-function getAssetMetaLabel(asset) {
-  if (asset.placementMode === "floor-stair") return getStairCardDescriptor(asset)?.metaLabel || "stair";
-  if (asset.openingSize) return `${asset.openingSize[0]}x${asset.openingSize[1]}m`;
-  if (asset.attachmentSize) return `${asset.attachmentSize[0]}x${asset.attachmentSize[1]}m`;
-  if (asset.size) return `${asset.size[0]}x${asset.size[2] ?? asset.size[1]}m`;
-  return "custom";
-}
-
-function getAssetHostLabel(asset) {
-  const hosts = getAllowedHostKinds(asset).map((hostKind) => HOST_KIND_LABELS[hostKind] ?? hostKind);
-  if (!hosts.length) return "free";
-  if (hosts.length === 1) return `${hosts[0]} host`;
-  return `${hosts.join("/")} host`;
-}
-
-function getAssetTaxonomyLabel(asset) {
-  const taxonomy = getAssetTaxonomy(asset);
-  return `${taxonomy.phase}/${taxonomy.system}`;
-}
-
-function getAssetIconSrc(asset) {
-  if (asset.iconSrc) return asset.iconSrc;
-  if (asset.categoryId === "roof" || asset.categoryId === "roof-decor" || asset.categoryId === "roof-trim") {
-    return `${PASCAL_ICON_BASE}/roof.webp`;
-  }
-  if (asset.categoryId === "roof-pattern" || asset.categoryId === "wall-pattern") return `${PASCAL_ICON_BASE}/paint.webp`;
-  if (asset.categoryId === "wall-tool") {
-    if (asset.placementMode === "draw-room" || asset.shape === "room") return `${PASCAL_ICON_BASE}/custom-room.webp`;
-    if (asset.id === "test-basement") return `${PASCAL_ICON_BASE}/floor.webp`;
-    return `${PASCAL_ICON_BASE}/wall.webp`;
-  }
-  if (asset.categoryId === "door") return `${PASCAL_ICON_BASE}/door.webp`;
-  if (asset.categoryId === "window") return `${PASCAL_ICON_BASE}/window.webp`;
-  if (asset.categoryId === "exterior-trim" || asset.categoryId === "spandrel") return `${PASCAL_ICON_BASE}/wallcut.webp`;
-  if (asset.categoryId === "column") return `${PASCAL_ICON_BASE}/column.webp`;
-  if (asset.categoryId === "gate" || asset.categoryId === "railing") return `${PASCAL_ICON_BASE}/fence.webp`;
-  if (asset.categoryId === "stairs-ladder") return `${PASCAL_ICON_BASE}/stairs.webp`;
-  return `${PASCAL_ICON_BASE}/cube.webp`;
 }
 
 function normalizeSearchText(value) {
@@ -651,98 +359,17 @@ export function StudioAssetCatalog({
 
           <div className="studio-catalog-assets" aria-label="카테고리 자산">
             {assets.map((asset) => {
-              const isDrawTool = ["draw-room", "draw-wall"].includes(asset.placementMode);
-              const isPlacementTool = Boolean(asset.placementMode);
-              const isActive = asset.id === activeAssetId;
               const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
-              const placementLabel = getPlacementLabel(asset);
-              const placementBadgeLabel = getPlacementBadgeLabel(asset);
-              const placementPolicyLabel = getReadablePlacementLabel(asset);
-              const placementHint = getPlacementHint(asset);
-              const sizeLabel = getAssetMetaLabel(asset);
-              const hostLabel = getAssetHostLabel(asset);
-              const taxonomyLabel = getAssetTaxonomyLabel(asset);
-              const previewMeta = getAssetPreviewMeta(asset);
-              const assetStatus = getAssetStatus(asset);
-              const assetStatusLabel = getAssetStatusLabel(asset);
-              const interactionVerb = getInteractionVerb(asset, isDrawTool);
-              const previewQuality = getPreviewQuality(asset);
-              const previewQualityLabel = getPreviewQualityLabel(asset);
-              const isComingSoon = assetStatus === "coming-soon";
-              const metaLabel = normalizedSearch ? category?.label ?? sizeLabel : sizeLabel;
               return (
-                <button
-                  aria-disabled={isComingSoon ? "true" : undefined}
-                  aria-label={`${asset.label}, ${assetStatusLabel}, ${previewQualityLabel}, ${placementBadgeLabel}, ${previewMeta.materialLabel}, ${sizeLabel}, ${hostLabel}, ${taxonomyLabel}, ${placementHint}`}
-                  aria-pressed={isActive}
-                  className={[
-                    "studio-catalog-asset-card",
-                    isPlacementTool ? "is-tool" : "",
-                    isDrawTool ? "is-draw-tool" : "is-draggable",
-                    assetStatus ? `is-status-${assetStatus}` : "",
-                    previewQuality ? `is-quality-${previewQuality}` : "",
-                    isActive ? "is-active" : ""
-                  ].filter(Boolean).join(" ")}
-                  data-action={isDrawTool ? "click-tool" : "drag-asset"}
-                  data-action-label={interactionVerb}
-                  data-badge={placementBadgeLabel}
-                  data-disabled-reason={isComingSoon ? asset.disabledReason ?? "후속 구현 예정" : undefined}
-                  data-meta={sizeLabel}
-                  data-placement={placementLabel}
-                  data-policy={hostLabel}
-                  data-preview-kind={previewMeta.kind}
-                  data-preview-quality={previewQuality}
-                  data-status={assetStatus}
-                  data-swatch={previewMeta.swatch}
-                  disabled={isComingSoon}
-                  draggable={!isDrawTool && !isComingSoon}
+                <StudioAssetCatalogCard
+                  asset={asset}
+                  categoryLabel={category?.label}
+                  isActive={asset.id === activeAssetId}
                   key={asset.id}
-                  onClick={() => {
-                    if (isComingSoon) return;
-                    onAssetPick(asset);
-                  }}
-                  onDragStart={(event) => {
-                    if (isComingSoon) {
-                      event.preventDefault();
-                      return;
-                    }
-                    if (isDrawTool) {
-                      event.preventDefault();
-                      onAssetPick(asset);
-                      return;
-                    }
-                    onAssetPick(asset.placementMode ? asset : null);
-                    event.dataTransfer.effectAllowed = "copy";
-                    event.dataTransfer.setData("application/x-ploton-asset", asset.id);
-                    onDragAssetStart(asset);
-                  }}
-                  onDragEnd={() => onDragAssetStart(null)}
-                  title={`${asset.label} · ${assetStatusLabel} · ${previewQualityLabel} · ${placementBadgeLabel} · ${sizeLabel} · ${hostLabel} · ${taxonomyLabel} · ${placementPolicyLabel} · ${placementHint}`}
-                  type="button"
-                >
-                  <span className="studio-catalog-asset-mode">{placementBadgeLabel}</span>
-                  <CatalogPreview asset={asset} badgeLabel={placementBadgeLabel} iconSrc={getAssetIconSrc(asset)} shape={asset.shape} />
-                  <span className="studio-catalog-asset-content">
-                    <span className="studio-catalog-asset-title">{asset.label}</span>
-                    <span className="studio-catalog-asset-status-row">
-                      <small>{assetStatusLabel}</small>
-                      <em>{previewQualityLabel}</em>
-                      <strong>{interactionVerb}</strong>
-                    </span>
-                    <span className="studio-catalog-asset-material">
-                      <i style={{ "--asset-swatch": previewMeta.swatch }} />
-                      <span>{previewMeta.materialLabel}</span>
-                    </span>
-                    <span className="studio-catalog-asset-meta-row">
-                      <small>{metaLabel}</small>
-                      <em>{hostLabel}</em>
-                    </span>
-                    <span className="studio-catalog-asset-meta-row is-taxonomy">
-                      <small>{taxonomyLabel}</small>
-                      <em>{placementPolicyLabel}</em>
-                    </span>
-                  </span>
-                </button>
+                  onAssetPick={onAssetPick}
+                  onDragAssetStart={onDragAssetStart}
+                  searchActive={Boolean(normalizedSearch)}
+                />
               );
             })}
           </div>
