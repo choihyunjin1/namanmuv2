@@ -17,6 +17,11 @@ function assertSearchResult(query, response) {
   assert.equal(response.data.query, query);
   assert.equal(response.data.total > 0, true, `${query} search should return results`);
   assert.equal(response.data.results.length, response.data.total);
+  assert.equal(typeof response.data.facets, "object", `${query} search should expose facets`);
+  assert.equal(response.data.facets.pricedCount > 0, true, `${query} search should count priced results`);
+  assert.equal(Object.keys(response.data.facets.byCategory).length > 0, true, `${query} search should expose category facets`);
+  assert.equal(Object.keys(response.data.facets.byCostClass).length > 0, true, `${query} search should expose cost class facets`);
+  assert.equal(Array.isArray(response.data.facets.topCostClasses), true, `${query} search should expose top cost classes`);
 
   let costBackedResultCount = 0;
   for (const result of response.data.results) {

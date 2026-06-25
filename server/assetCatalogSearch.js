@@ -474,7 +474,39 @@ export function scoreAssetResult(result, asset, query) {
 }
 
 function emptyData(query) {
-  return { query, total: 0, results: [] };
+  return { facets: emptyFacets(), query, total: 0, results: [] };
+}
+
+function emptyFacets() {
+  return {
+    byCategory: {},
+    byCostClass: {},
+    byPreviewQuality: {},
+    bySourceType: {},
+    pricedCount: 0,
+    topCostClasses: []
+  };
+}
+
+function incrementFacet(target, key) {
+  const label = key || "unknown";
+  target[label] = (target[label] ?? 0) + 1;
+}
+
+function buildSearchFacets(results) {
+  const facets = emptyFacets();
+  for (const result of results) {
+    incrementFacet(facets.byCategory, result.categoryId);
+    incrementFacet(facets.byCostClass, result.cost?.costClass);
+    incrementFacet(facets.byPreviewQuality, result.previewQuality);
+    incrementFacet(facets.bySourceType, result.sourceType);
+    if (result.cost?.primary?.unitPriceKrw || result.cost?.defaultRoughCostKrw) facets.pricedCount += 1;
+  }
+  facets.topCostClasses = Object.entries(facets.byCostClass)
+    .sort((first, second) => second[1] - first[1] || first[0].localeCompare(second[0], "ko-KR"))
+    .slice(0, 5)
+    .map(([costClass, count]) => ({ costClass, count }));
+  return facets;
 }
 
 export async function searchAssetCatalog(rawQuery = "", options = {}) {
@@ -508,6 +540,7 @@ export async function searchAssetCatalog(rawQuery = "", options = {}) {
   return {
     ok: true,
     data: {
+      facets: buildSearchFacets(scoredResults.map(({ result }) => result)),
       query,
       total: scoredResults.length,
       results: scoredResults.map(({ result, score }) => ({
