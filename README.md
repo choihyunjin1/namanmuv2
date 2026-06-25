@@ -134,6 +134,7 @@ npm run test:catalog-policy-rules
 
 ```bash
 npm run test:studio-glb-flow
+npm run test:viewport-renderer-registry
 npm run test:asset-recommendation
 npm run test:asset-recommendation-api
 npm run test:studio-asset-recommendation-ui

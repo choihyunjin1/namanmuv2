@@ -7,6 +7,7 @@ import { EditorGround } from "./EditorGround.jsx";
 import { getEditorInteractionMode } from "./editorInteractionMode.js";
 import { buildBoundsTreesForScene, installStudioEditorRaycastAcceleration } from "./editorRaycastAcceleration.js";
 import { isObjectHidden, isObjectLocked } from "./editorObjectState.js";
+import { VIEWPORT_RENDERER_TYPES, getViewportRendererType } from "./viewportRenderers/viewportRendererRegistry.js";
 import { getWallEndpoints, getWallSegment, isStructuralWallObject } from "./wallJoinRules.js";
 
 const DRAG_GROUND_PLANE = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
@@ -2515,7 +2516,8 @@ function PlacedEditorBox({
   const dragPlaneRef = useRef(DRAG_GROUND_PLANE.clone());
   const { gl } = useThree();
   const editorLocked = isObjectLocked(object);
-  const transformLocked = editorLocked || object.type === "room" || isStructuralWallObject(object);
+  const structuralWallObject = isStructuralWallObject(object);
+  const transformLocked = editorLocked || object.type === "room" || structuralWallObject;
   const canMoveObject = !editorLocked && (activeTool === "select" || activeTool === "move");
   const canRotateObject = !editorLocked && activeTool === "rotate" && !transformLocked;
   const canScaleObject = !editorLocked && activeTool === "scale" && !transformLocked;
@@ -2526,6 +2528,11 @@ function PlacedEditorBox({
   const floorMode = objectFloor === activeFloor ? "current" : objectFloor < activeFloor ? "below" : "above";
   const wallJoinCount = object.metadata?.wallJoin?.sourceCount ?? 1;
   const isJoinedWall = object.supportKind === "wall" && wallJoinCount > 1;
+  const viewportRendererType = getViewportRendererType(object, {
+    hasScenePlan: Boolean(getObjectScenePlan(object)),
+    planMode,
+    structuralWall: structuralWallObject
+  });
   const handleY = object.type === "room" ? size[1] + 0.42 : size[1] / 2 + 0.42;
   const handleRadius = Math.max(size[0] ?? 1, size[2] ?? 1) / 2 + 0.42;
   const handleActive = primarySelected && !editorLocked && !transformLocked && (activeTool === "rotate" || activeTool === "scale");
@@ -2727,7 +2734,7 @@ function PlacedEditorBox({
   };
 
   const getPlanWallEndpointFromPoint = (point) => {
-    if (!point || !isStructuralWallObject(object)) return null;
+    if (!point || !structuralWallObject) return null;
     const endpoints = getWallEndpoints(object);
     const distanceToStart = Math.hypot(point.x - endpoints[0].x, point.z - endpoints[0].z);
     const distanceToEnd = Math.hypot(point.x - endpoints[1].x, point.z - endpoints[1].z);
@@ -2763,7 +2770,7 @@ function PlacedEditorBox({
             return;
           }
         }
-        if (!editorLocked && planMode && primarySelected && isStructuralWallObject(object) && (activeTool === "select" || activeTool === "scale")) {
+        if (!editorLocked && planMode && primarySelected && structuralWallObject && (activeTool === "select" || activeTool === "scale")) {
           const endpoint = getPlanWallEndpointFromPoint(event.point);
           if (endpoint) {
             startDrag(event, "wall-endpoint", { endpoint });
@@ -2795,7 +2802,7 @@ function PlacedEditorBox({
       onPointerCancel={endDrag}
       onPointerUp={endDrag}
     >
-      {object.type === "room" ? (
+      {viewportRendererType === VIEWPORT_RENDERER_TYPES.ROOM ? (
         <RoomBody
           activeTool={activeTool}
           dragging={dragging}
@@ -2816,7 +2823,7 @@ function PlacedEditorBox({
           wallOpeningPreview={wallOpeningPreview}
           wallViewMode={wallViewMode}
         />
-      ) : isStructuralWallObject(object) ? (
+      ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.STRUCTURAL_WALL ? (
         <StructuralWallBody
           activeTool={activeTool}
           dragging={dragging}
@@ -2836,17 +2843,15 @@ function PlacedEditorBox({
           wallOpeningPreview={wallOpeningPreview}
           wallViewMode={wallViewMode}
         />
-      ) : object.placementMode === "roof-accessory" ? (
+      ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.ROOF_ACCESSORY ? (
         <RoofAccessoryBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
-      ) : object.placementMode === "floor-stair" || object.shape === "stairs" || object.shape === "ladder" ? (
-        planMode ? (
-          <StairPlanFootprint dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
-        ) : (
-          <StairAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
-        )
-      ) : getObjectScenePlan(object) && !planMode ? (
+      ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.STAIR_PLAN ? (
+        <StairPlanFootprint dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
+      ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.STAIR ? (
+        <StairAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
+      ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.SCENE_PLAN ? (
         <ScenePlanAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
-      ) : object.modelUrl && !planMode ? (
+      ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.GLB ? (
         <React.Suspense fallback={<GlbAssetFallback dragging={dragging} floorMode={floorMode} object={object} selected={selected} />}>
           <GlbAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
         </React.Suspense>
@@ -2975,7 +2980,7 @@ function PlacedEditorBox({
           ))}
         </group>
       ) : null}
-      {primarySelected && !editorLocked && isStructuralWallObject(object) && (activeTool === "select" || activeTool === "scale") ? planMode ? (
+      {primarySelected && !editorLocked && structuralWallObject && (activeTool === "select" || activeTool === "scale") ? planMode ? (
         <group>
           {[
             { endpoint: "start", position: [-size[0] / 2, planHandleY, 0] },
@@ -3055,7 +3060,7 @@ function PlacedEditorBox({
           ))}
         </group>
       ) : null}
-      {!planMode && primarySelected && !editorLocked && isStructuralWallObject(object) && (activeTool === "select" || activeTool === "move") ? (
+      {!planMode && primarySelected && !editorLocked && structuralWallObject && (activeTool === "select" || activeTool === "move") ? (
         <group>
           {[
             { side: "front", position: [0, size[1] / 2 + 0.18, size[2] / 2 + 0.42] },
