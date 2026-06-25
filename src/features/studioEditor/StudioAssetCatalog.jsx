@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import {
   STUDIO_CATALOG_ASSETS,
   STUDIO_CATALOG_CATEGORIES,
@@ -7,6 +6,7 @@ import {
 } from "./studioCatalog.js";
 import { StudioAssetCatalogCard } from "./StudioAssetCatalogCard.jsx";
 import { StudioAssetCategoryRail } from "./StudioAssetCategoryRail.jsx";
+import { StudioAssetCatalogSearchHeader } from "./StudioAssetCatalogSearchHeader.jsx";
 import { StudioAssetGenerationControls } from "./StudioAssetGenerationControls.jsx";
 import { CATALOG_SOURCE_TABS, StudioAssetCatalogSourceTabs } from "./StudioAssetCatalogSourceTabs.jsx";
 import { StudioAssetRecentStrip } from "./StudioAssetRecentStrip.jsx";
@@ -251,32 +251,15 @@ export function StudioAssetCatalog({
       {collapsed ? null : (
         <div className="studio-catalog-browser">
           <div className="studio-catalog-browser-bar">
-            <div className="studio-catalog-context-header studio-catalog-crumb" aria-live="polite">
-              <div className="studio-catalog-context-title">
-                <strong>{crumbLabel}</strong>
-                <span>{assets.length} items</span>
-              </div>
-              <div className="studio-catalog-policy-row" aria-label={`배치 정책 ${categoryPolicySummary}`}>
-                <span className="studio-catalog-policy-count">{assets.length} assets</span>
-                <span className="studio-catalog-policy-badge">{activeCategoryPolicyBadge}</span>
-                <span className="studio-catalog-policy-summary">{categoryPolicySummary}</span>
-              </div>
-            </div>
-            <label className="studio-catalog-search">
-              <Search size={15} />
-              <input
-                aria-label="자산 검색"
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="자산 검색"
-                type="search"
-                value={searchTerm}
-              />
-              {showAssetApiOffline ? (
-                <span className="studio-catalog-asset-api-status" role="status">
-                  asset API offline
-                </span>
-              ) : null}
-            </label>
+            <StudioAssetCatalogSearchHeader
+              activeCategoryPolicyBadge={activeCategoryPolicyBadge}
+              assetCount={assets.length}
+              categoryPolicySummary={categoryPolicySummary}
+              crumbLabel={crumbLabel}
+              onSearchTermChange={setSearchTerm}
+              searchTerm={searchTerm}
+              showAssetApiOffline={showAssetApiOffline}
+            />
             <StudioAssetGenerationControls
               generationStatus={generationStatus}
               onAssetPick={onAssetPick}

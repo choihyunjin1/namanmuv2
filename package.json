@@ -24,6 +24,7 @@
     "test:studio-brief-scene-ui": "node scripts/test_studio_brief_scene_ui.mjs",
     "test:studio-asset-recommendation-ui": "node scripts/test_studio_asset_recommendation_ui.mjs",
     "test:studio-catalog-card-ui": "node scripts/test_studio_catalog_card_ui.mjs",
+    "test:studio-catalog-search-header-ui": "node scripts/test_studio_catalog_search_header_ui.mjs",
     "test:studio-category-rail-ui": "node scripts/test_studio_category_rail_ui.mjs",
     "test:studio-catalog-source-recent-ui": "node scripts/test_studio_catalog_source_recent_ui.mjs",
     "test:studio-generated-scene-plan": "node scripts/test_studio_generated_scene_plan.mjs",
