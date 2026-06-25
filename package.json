@@ -19,6 +19,8 @@
     "test:asset-catalog-search": "node scripts/test_asset_catalog_search.mjs",
     "test:asset-recommendation": "node scripts/test_asset_recommendation.mjs",
     "test:asset-recommendation-api": "node scripts/test_asset_recommendation_api.mjs",
+    "test:brief-scene-generator": "node scripts/test_brief_scene_generator.mjs",
+    "test:studio-brief-scene-ui": "node scripts/test_studio_brief_scene_ui.mjs",
     "test:studio-asset-recommendation-ui": "node scripts/test_studio_asset_recommendation_ui.mjs",
     "test:studio-generated-scene-plan": "node scripts/test_studio_generated_scene_plan.mjs",
     "test:studio-text-to-cad-ui": "node scripts/test_studio_text_to_cad_ui.mjs",

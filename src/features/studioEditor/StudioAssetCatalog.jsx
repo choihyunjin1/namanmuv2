@@ -386,6 +386,7 @@ export function StudioAssetCatalog({
   onAssetPick,
   onDragAssetStart,
   onGenerateAsset,
+  onGenerateSceneFromBrief,
   onResizeStart,
   recentAssetIds = []
 }) {
@@ -583,6 +584,7 @@ export function StudioAssetCatalog({
   const showAssetApiOffline =
     normalizedSearch.length >= 2 && assetApiSearch.query === searchTerm.trim() && assetApiSearch.status === "offline";
   const canGenerateAsset = Boolean(onGenerateAsset) && generationPrompt.trim().length > 0 && generationStatus?.state !== "loading";
+  const canGenerateBriefScene = Boolean(onGenerateSceneFromBrief) && generationPrompt.trim().length > 0 && generationStatus?.state !== "loading";
   const recommendationPrompt = generationPrompt.trim() || searchTerm.trim();
   const recommendationParcelLabel = `${DEFAULT_RECOMMENDATION_PARCEL.zone} · ${DEFAULT_RECOMMENDATION_PARCEL.widthM}x${DEFAULT_RECOMMENDATION_PARCEL.depthM}m · BCR ${Math.round(DEFAULT_RECOMMENDATION_PARCEL.maxBuildingCoverageRatio * 100)}% · FAR ${Math.round(DEFAULT_RECOMMENDATION_PARCEL.maxFloorAreaRatio * 100)}%`;
   const recommendationStatusLabel = assetRecommendation.status === "loading"
@@ -604,6 +606,16 @@ export function StudioAssetCatalog({
     if (result?.ok !== false) {
       setGenerationPrompt("");
       setSourceFilter("generated");
+    }
+  };
+
+  const handleGenerateBriefScene = async () => {
+    const prompt = generationPrompt.trim();
+    if (!prompt || !onGenerateSceneFromBrief) return;
+    const result = await onGenerateSceneFromBrief(prompt);
+    if (result?.ok !== false) {
+      setGenerationPrompt("");
+      setSourceFilter("all");
     }
   };
 
@@ -765,6 +777,9 @@ export function StudioAssetCatalog({
               </label>
               <button disabled={!canGenerateAsset} type="submit">
                 {generationStatus?.state === "loading" ? "생성중" : "Generate"}
+              </button>
+              <button disabled={!canGenerateBriefScene} onClick={handleGenerateBriefScene} type="button">
+                집 초안
               </button>
               {generationStatus?.message ? <span>{generationStatus.message}</span> : null}
             </form>

@@ -1,3 +1,4 @@
+import { createBriefScene } from "./briefSceneGenerator.js";
 import { recommendAssets } from "./assetRecommendationEngine.js";
 import { searchAssetCatalog } from "./assetCatalogSearch.js";
 import { readProject, writeProject } from "./projectStore.js";
@@ -37,6 +38,32 @@ function readJsonBody(req) {
 }
 
 export function installStudioApi(server, env = {}) {
+  server.middlewares.use("/api/scenes/from-brief", async (req, res) => {
+    const url = new URL(req.url ?? "", "http://127.0.0.1");
+    const brief = url.searchParams.get("brief") ?? url.searchParams.get("prompt") ?? "";
+
+    try {
+      if (req.method === "GET") {
+        sendJson(res, 200, { ok: true, data: createBriefScene({ brief }) });
+        return;
+      }
+
+      if (req.method === "POST") {
+        const payload = await readJsonBody(req);
+        sendJson(res, 200, { ok: true, data: createBriefScene(payload) });
+        return;
+      }
+
+      sendJson(res, 405, { ok: false, message: "GET 또는 POST만 지원합니다." });
+    } catch (error) {
+      sendJson(res, error.statusCode ?? 500, {
+        ok: false,
+        code: "BRIEF_SCENE_ERROR",
+        message: error.message
+      });
+    }
+  });
+
   server.middlewares.use("/api/assets/recommend", async (req, res) => {
     const url = new URL(req.url ?? "", "http://127.0.0.1");
     const prompt = url.searchParams.get("prompt") ?? url.searchParams.get("q") ?? url.searchParams.get("query") ?? "";

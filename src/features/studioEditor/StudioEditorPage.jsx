@@ -701,6 +701,7 @@ function StudioWorkflowPanel({
   onDragAssetStart,
   onFloorFocus,
   onGenerateAsset,
+  onGenerateSceneFromBrief,
   onModeChange,
   onResizeStart,
   onSelectAttachment,
@@ -787,6 +788,7 @@ function StudioWorkflowPanel({
             onCollapseToggle={onCollapseToggle}
             onDragAssetStart={onDragAssetStart}
             onGenerateAsset={onGenerateAsset}
+            onGenerateSceneFromBrief={onGenerateSceneFromBrief}
             onResizeStart={onResizeStart}
             recentAssetIds={recentAssetIds}
           />
@@ -2042,6 +2044,38 @@ export function StudioEditorPage() {
       return { asset: nextAsset, ok: true };
     } catch (error) {
       setGenerationStatus({ message: error.message ?? "생성 실패", state: "error" });
+      return { ok: false };
+    }
+  };
+
+  const generateSceneFromBrief = async (brief) => {
+    const trimmedBrief = String(brief ?? "").trim();
+    if (!trimmedBrief) return { ok: false };
+    setGenerationStatus({ message: "AI 집 초안 생성 중", state: "loading" });
+
+    try {
+      const response = await fetch("/api/scenes/from-brief", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          brief: trimmedBrief
+        })
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.message ?? "집 초안 생성 실패");
+
+      applyScenePayload({
+        ...result.data,
+        activeWorkflowMode: "build",
+        cameraView: "orbit"
+      });
+      setGenerationStatus({
+        message: `집 초안 생성 완료 · ${result.data?.summary?.roomCount ?? 0} rooms`,
+        state: "ready"
+      });
+      return { ok: true, scene: result.data };
+    } catch (error) {
+      setGenerationStatus({ message: error.message ?? "집 초안 생성 실패", state: "error" });
       return { ok: false };
     }
   };
@@ -4864,6 +4898,7 @@ export function StudioEditorPage() {
           onDragAssetStart={setDraggedAsset}
           onFloorFocus={handleFloorChange}
           onGenerateAsset={generateCatalogAssetFromPrompt}
+          onGenerateSceneFromBrief={generateSceneFromBrief}
           onModeChange={setActiveWorkflowMode}
           onResizeStart={handleCatalogResizeStart}
           onSelectAttachment={selectAttachment}

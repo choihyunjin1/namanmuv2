@@ -137,6 +137,8 @@ npm run test:studio-glb-flow
 npm run test:asset-recommendation
 npm run test:asset-recommendation-api
 npm run test:studio-asset-recommendation-ui
+npm run test:brief-scene-generator
+npm run test:studio-brief-scene-ui
 npm run test:text-to-cad-generator
 npm run test:studio-generated-scene-plan
 npm run test:studio-text-to-cad-ui
