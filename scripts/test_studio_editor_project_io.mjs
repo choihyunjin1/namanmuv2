@@ -15,6 +15,8 @@ async function loadStudioProjectIoHelpers() {
       return {
         code: `${code}
 export {
+  buildProjectAiPipelineTrace as __testBuildProjectAiPipelineTrace,
+  buildProjectAssetBundle as __testBuildProjectAssetBundle,
   createProjectExportEnvelope as __testCreateProjectExportEnvelope,
   unwrapImportedScenePayload as __testUnwrapImportedScenePayload
 };`,
@@ -33,6 +35,8 @@ export {
   try {
     const studioEditorModule = await server.ssrLoadModule(STUDIO_EDITOR_PAGE_MODULE);
     return {
+      buildProjectAiPipelineTrace: studioEditorModule.__testBuildProjectAiPipelineTrace,
+      buildProjectAssetBundle: studioEditorModule.__testBuildProjectAssetBundle,
       createProjectExportEnvelope: studioEditorModule.__testCreateProjectExportEnvelope,
       unwrapImportedScenePayload: studioEditorModule.__testUnwrapImportedScenePayload
     };
@@ -69,16 +73,97 @@ function validateImportedScenePayload(candidate, unwrapImportedScenePayload) {
 }
 
 const {
+  buildProjectAiPipelineTrace,
+  buildProjectAssetBundle,
   createProjectExportEnvelope,
   unwrapImportedScenePayload
 } = await loadStudioProjectIoHelpers();
 
+assert.equal(typeof buildProjectAiPipelineTrace, "function");
+assert.equal(typeof buildProjectAssetBundle, "function");
 assert.equal(typeof createProjectExportEnvelope, "function");
 assert.equal(typeof unwrapImportedScenePayload, "function");
+
+const generatedAsset = {
+  categoryId: "wall-tool",
+  id: "generated-cadam-wall",
+  label: "Generated CADAM Wall",
+  metadata: {
+    engine: "cadam-compatible-text-to-cad",
+    scenePlan: { primitives: [{ id: "block", kind: "box" }] },
+    sourceJobId: "cadam-job-1"
+  },
+  placementMode: "floor-free",
+  previewQuality: "generated",
+  sourceId: "generated"
+};
+const libraryAsset = {
+  categoryId: "gate",
+  id: "mine-front-gate",
+  label: "Mine Front Gate",
+  placementMode: "floor-free",
+  previewQuality: "component",
+  sourceSnapshot: { id: "gate-1", metadata: { editor: {} } }
+};
+const glbCatalogAsset = {
+  assetSourceId: "component-window-wide",
+  bimType: "IfcWindow",
+  categoryId: "window",
+  componentKind: "window",
+  cost: { costClass: "glazing" },
+  id: "component-window-wide",
+  label: "Wide Window",
+  modelUrl: "/assets/models/optimized/component-window-wide.meshopt.glb",
+  placementMode: "wall-opening",
+  previewQuality: "component",
+  sourceType: "ploton-generated",
+  thumbnailSrc: "/assets/models/thumbnails/component-window-wide.png"
+};
+const assetBundle = buildProjectAssetBundle({
+  generatedAssets: [generatedAsset],
+  glbCatalogAssets: [glbCatalogAsset],
+  libraryAssets: [libraryAsset]
+});
+assert.equal(assetBundle.schemaVersion, 1);
+assert.equal(assetBundle.summary.generatedAssetCount, 1);
+assert.equal(assetBundle.summary.glbAssetCount, 1);
+assert.equal(assetBundle.summary.libraryAssetCount, 1);
+assert.equal(assetBundle.summary.totalProjectAssetCount, 3);
+assert.deepEqual(assetBundle.generatedAssets, [generatedAsset]);
+assert.deepEqual(assetBundle.libraryAssets, [libraryAsset]);
+assert.deepEqual(assetBundle.glbCatalog.assets[0], {
+  bimType: "IfcWindow",
+  categoryId: "window",
+  componentKind: "window",
+  costClass: "glazing",
+  id: "component-window-wide",
+  label: "Wide Window",
+  librarySource: "ploton-generated",
+  modelUrl: "/assets/models/optimized/component-window-wide.meshopt.glb",
+  placementMode: "wall-opening",
+  previewQuality: "component",
+  sourceAssetId: "component-window-wide",
+  sourceType: "ploton-generated",
+  thumbnailSrc: "/assets/models/thumbnails/component-window-wide.png"
+});
+
+const aiPipeline = buildProjectAiPipelineTrace({
+  audit: {
+    attachedAssetSlots: ["house-shell", "roof"],
+    semanticCommandPlan: { strategy: "pascal-style-tool-command-plan" }
+  },
+  message: "집 초안 생성 완료 · 2 rooms",
+  state: "ready"
+});
+assert.equal(aiPipeline.schemaVersion, 1);
+assert.equal(aiPipeline.lastGeneration.state, "ready");
+assert.equal(aiPipeline.lastGeneration.audit.attachedAssetSlots.includes("roof"), true);
 
 const scenePayload = {
   activeCategoryId: "roof",
   activeFloor: 2,
+  aiPipeline,
+  assetBundle,
   cameraView: "top",
   gridVisible: true,
   objects: [

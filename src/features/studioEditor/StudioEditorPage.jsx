@@ -170,6 +170,58 @@ function unwrapImportedScenePayload(payload) {
   return payload;
 }
 
+function compactCatalogAsset(asset) {
+  if (!asset?.id) return null;
+  return {
+    bimType: asset.bimType ?? asset.metadata?.bimType ?? null,
+    categoryId: asset.categoryId ?? null,
+    componentKind: asset.componentKind ?? asset.metadata?.componentKind ?? null,
+    costClass: asset.cost?.costClass ?? null,
+    id: asset.id,
+    label: asset.label ?? asset.id,
+    librarySource: asset.librarySource ?? asset.sourceId ?? asset.sourceType ?? "local",
+    modelUrl: asset.modelUrl ?? asset.optimizedModelUrl ?? asset.url ?? null,
+    placementMode: asset.placementMode ?? null,
+    previewQuality: asset.previewQuality ?? null,
+    sourceAssetId: asset.assetSourceId ?? asset.metadata?.sourceAssetId ?? asset.id,
+    sourceType: asset.sourceType ?? asset.sourceId ?? null,
+    thumbnailSrc: asset.thumbnailSrc ?? null
+  };
+}
+
+function buildProjectAssetBundle({ generatedAssets = [], glbCatalogAssets = [], libraryAssets = [] } = {}) {
+  const compactGlbAssets = glbCatalogAssets.map(compactCatalogAsset).filter(Boolean);
+  return {
+    generatedAssets,
+    glbCatalog: {
+      assets: compactGlbAssets,
+      count: compactGlbAssets.length
+    },
+    libraryAssets,
+    schemaVersion: 1,
+    summary: {
+      generatedAssetCount: generatedAssets.length,
+      glbAssetCount: compactGlbAssets.length,
+      libraryAssetCount: libraryAssets.length,
+      totalProjectAssetCount: generatedAssets.length + compactGlbAssets.length + libraryAssets.length
+    }
+  };
+}
+
+function buildProjectAiPipelineTrace(generationStatus) {
+  const audit = generationStatus?.audit && typeof generationStatus.audit === "object"
+    ? generationStatus.audit
+    : null;
+  return {
+    lastGeneration: {
+      audit,
+      message: generationStatus?.message ?? "",
+      state: generationStatus?.state ?? "idle"
+    },
+    schemaVersion: 1
+  };
+}
+
 function areSameIdLists(first = [], second = []) {
   return first.length === second.length && first.every((value, index) => value === second[index]);
 }
@@ -513,6 +565,12 @@ export function StudioEditorPage() {
     attachmentNodes,
     assetTaxonomy,
     assetTaxonomySummary,
+    aiPipeline: buildProjectAiPipelineTrace(generationStatus),
+    assetBundle: buildProjectAssetBundle({
+      generatedAssets,
+      glbCatalogAssets,
+      libraryAssets
+    }),
     catalogPolicy: {
       assetCount: catalogPolicy.assetCount,
       ok: catalogPolicy.ok,
@@ -569,6 +627,23 @@ export function StudioEditorPage() {
     );
     setCatalogCollapsed(Boolean(payload?.catalogCollapsed));
     setCatalogWidth(clampCatalogWidth(Number.isFinite(payload?.catalogWidth) ? payload.catalogWidth : 360));
+    if (payload?.assetBundle) {
+      const nextGeneratedAssets = Array.isArray(payload.assetBundle.generatedAssets)
+        ? saveStudioGeneratedAssets(payload.assetBundle.generatedAssets)
+        : generatedAssets;
+      const nextLibraryAssets = Array.isArray(payload.assetBundle.libraryAssets)
+        ? saveStudioAssetLibrary(payload.assetBundle.libraryAssets)
+        : libraryAssets;
+      setGeneratedAssets(nextGeneratedAssets);
+      setLibraryAssets(nextLibraryAssets);
+    }
+    if (payload?.aiPipeline?.lastGeneration) {
+      setGenerationStatus({
+        audit: payload.aiPipeline.lastGeneration.audit ?? null,
+        message: payload.aiPipeline.lastGeneration.message ?? "",
+        state: payload.aiPipeline.lastGeneration.state ?? "idle"
+      });
+    }
     setRecentAssetIds(Array.isArray(payload?.recentAssetIds) ? payload.recentAssetIds.slice(0, 8) : []);
     setGridVisible(payload?.gridVisible !== false);
     setSnapEnabled(payload?.snapEnabled !== false);
