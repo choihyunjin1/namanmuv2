@@ -2259,6 +2259,18 @@
   background: rgba(216, 243, 106, 0.075);
 }
 
+.studio-catalog-asset-api-status {
+  flex: 0 0 auto;
+  max-width: 92px;
+  overflow: hidden;
+  color: rgba(255, 184, 146, 0.86);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .studio-catalog-source-tabs {
   min-width: 0;
   display: grid;

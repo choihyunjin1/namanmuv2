@@ -4684,7 +4684,7 @@ export function StudioEditorPage() {
   const handleViewportDrop = (event) => {
     event.preventDefault();
     const assetId = event.dataTransfer.getData("application/x-ploton-asset");
-    const asset = findCatalogAsset(assetId || draggedAsset?.id);
+    const asset = findCatalogAsset(assetId || draggedAsset?.id) ?? draggedAsset;
     if (!asset) return;
     if (shouldActivateAssetTool(asset)) {
       setActiveBuildAsset(asset);

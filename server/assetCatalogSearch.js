@@ -3,6 +3,23 @@ import path from "node:path";
 
 const MODEL_CATALOG_PATH = path.join("public", "assets", "models", "catalog.json");
 const COST_CATALOG_PATH = path.join("public", "assets", "models", "cost-catalog.json");
+const STUDIO_CATALOG_CATEGORY_IDS = new Set([
+  "roof",
+  "roof-decor",
+  "roof-pattern",
+  "roof-trim",
+  "exterior-trim",
+  "wall-tool",
+  "door",
+  "window",
+  "wall-pattern",
+  "spandrel",
+  "column",
+  "gate",
+  "stairs-ladder",
+  "railing"
+]);
+const FALLBACK_STUDIO_CATEGORY_ID = "wall-tool";
 
 const CATEGORY_BY_COMPONENT_KIND = {
   beam: "exterior-trim",
@@ -14,13 +31,46 @@ const CATEGORY_BY_COMPONENT_KIND = {
   equipment: "roof-decor",
   fence: "railing",
   foundation: "wall-tool",
-  landscape: "site",
+  landscape: "wall-tool",
   pergola: "exterior-trim",
   roof: "roof",
-  site: "site",
+  site: "wall-tool",
   slab: "wall-tool",
+  stair: "stairs-ladder",
   "wall-panel": "wall-tool",
   window: "window"
+};
+
+const CATEGORY_BY_BIM_TYPE = {
+  IfcBeam: "exterior-trim",
+  IfcBuildingElementProxy: "wall-tool",
+  IfcColumn: "column",
+  IfcCovering: "wall-pattern",
+  IfcCurtainWall: "wall-tool",
+  IfcDoor: "door",
+  IfcEnergyConversionDevice: "roof-decor",
+  IfcFooting: "wall-tool",
+  IfcGeographicElement: "wall-tool",
+  IfcRailing: "railing",
+  IfcRoof: "roof",
+  IfcSlab: "wall-tool",
+  IfcSpace: "wall-tool",
+  IfcStair: "stairs-ladder",
+  IfcStairFlight: "stairs-ladder",
+  IfcWall: "wall-tool",
+  IfcWallStandardCase: "wall-tool",
+  IfcWindow: "window"
+};
+
+const STUDIO_CATEGORY_ALIASES = {
+  "detached-house-shell": "wall-tool",
+  fence: "railing",
+  "house-shell": "wall-tool",
+  landscape: "wall-tool",
+  "local-asset": "wall-tool",
+  site: "wall-tool",
+  stair: "stairs-ladder",
+  stairs: "stairs-ladder"
 };
 
 const PLACEMENT_BY_COMPONENT_KIND = {
@@ -33,11 +83,12 @@ const PLACEMENT_BY_COMPONENT_KIND = {
   equipment: "roof-accessory",
   fence: "floor-free",
   foundation: "floor-structural",
-  landscape: "floor-free",
+  landscape: "floor-structural",
   pergola: "floor-free",
   roof: "roof-attached",
-  site: "floor-free",
+  site: "floor-structural",
   slab: "floor-structural",
+  stair: "floor-stair",
   "wall-panel": "wall-attached",
   window: "wall-opening"
 };
@@ -134,21 +185,41 @@ function inferComponentKind(asset) {
   return asset?.componentKind ?? asset?.component?.kind ?? "";
 }
 
-function inferCategoryId(asset) {
-  if (asset?.categoryId) return asset.categoryId;
-  if (asset?.category) return asset.category;
-
-  const componentKind = inferComponentKind(asset);
-  if (CATEGORY_BY_COMPONENT_KIND[componentKind]) return CATEGORY_BY_COMPONENT_KIND[componentKind];
-  if (String(asset?.type ?? "").includes("house-shell")) return "house-shell";
-  return "local-asset";
+function isHouseShellAsset(asset) {
+  return String(asset?.type ?? "").includes("house-shell");
 }
 
-function inferPlacementMode(asset) {
+function normalizeStudioCategoryId(value, fallback = FALLBACK_STUDIO_CATEGORY_ID) {
+  const categoryId = String(value ?? "").trim();
+  if (STUDIO_CATALOG_CATEGORY_IDS.has(categoryId)) return categoryId;
+
+  const alias = STUDIO_CATEGORY_ALIASES[categoryId];
+  if (STUDIO_CATALOG_CATEGORY_IDS.has(alias)) return alias;
+
+  return fallback;
+}
+
+function inferCategoryId(asset) {
+  if (isHouseShellAsset(asset)) return "wall-tool";
+  if (asset?.categoryId) return normalizeStudioCategoryId(asset.categoryId);
+  if (asset?.category) return normalizeStudioCategoryId(asset.category);
+
+  const componentKind = inferComponentKind(asset);
+  if (CATEGORY_BY_COMPONENT_KIND[componentKind]) return normalizeStudioCategoryId(CATEGORY_BY_COMPONENT_KIND[componentKind]);
+  if (CATEGORY_BY_BIM_TYPE[asset?.bimType]) return normalizeStudioCategoryId(CATEGORY_BY_BIM_TYPE[asset.bimType]);
+  if (asset?.type) return normalizeStudioCategoryId(asset.type);
+  return FALLBACK_STUDIO_CATEGORY_ID;
+}
+
+function inferPlacementMode(asset, categoryId = null) {
   if (asset?.placementMode) return asset.placementMode;
+  if (isHouseShellAsset(asset)) return "floor-free";
 
   const componentKind = inferComponentKind(asset);
   if (PLACEMENT_BY_COMPONENT_KIND[componentKind]) return PLACEMENT_BY_COMPONENT_KIND[componentKind];
+  if (categoryId === "wall-tool" || categoryId === "column") return "floor-structural";
+  if (categoryId === "roof") return "roof-attached";
+  if (categoryId === "roof-decor" || categoryId === "roof-pattern" || categoryId === "roof-trim") return "roof-accessory";
   return "floor-free";
 }
 
@@ -265,24 +336,55 @@ function editorPlacementFields(result, asset) {
   return {};
 }
 
+function resolveModelUrls(asset) {
+  const modelUrl = asset.originalUrl ?? asset.modelUrl ?? asset.url ?? asset.optimizedUrl ?? null;
+  const originalModelUrl = asset.originalUrl ?? modelUrl;
+  const optimizedModelUrl = asset.optimizedUrl ?? asset.url ?? asset.modelUrl ?? modelUrl;
+  return { modelUrl, optimizedModelUrl, originalModelUrl };
+}
+
+function runtimeMetadata(asset, urls) {
+  const optimizedSizeBytes = finiteNumber(asset.sizeBytes ?? asset.compression?.optimizedSizeBytes);
+  const originalSizeBytes = finiteNumber(asset.originalSizeBytes ?? asset.compression?.originalSizeBytes);
+  const sizeBytes = urls.modelUrl === urls.originalModelUrl
+    ? originalSizeBytes ?? optimizedSizeBytes
+    : optimizedSizeBytes ?? originalSizeBytes;
+
+  return {
+    estimatedDownloadMb: finiteNumber(asset.performance?.estimatedDownloadMb),
+    loadStrategy: asset.performance?.loadStrategy ?? asset.runtimePolicy ?? null,
+    optimizedSizeBytes,
+    originalSizeBytes,
+    runtimeUrl: urls.modelUrl,
+    sizeBytes
+  };
+}
+
 export function normalizeAssetForEditor(asset, costItem = null) {
   if (!asset?.id) return null;
 
   const cost = summarizeCost(costItem);
   const size = asset.size ?? assetBoundsSize(asset, costItem);
+  const categoryId = inferCategoryId(asset);
+  const urls = resolveModelUrls(asset);
   const result = {
     id: asset.id,
     label: asset.label ?? asset.id,
-    categoryId: inferCategoryId(asset),
-    placementMode: inferPlacementMode(asset),
+    categoryId,
+    placementMode: inferPlacementMode(asset, categoryId),
     shape: inferShape(asset),
     size,
-    modelUrl: asset.modelUrl ?? asset.url ?? asset.optimizedUrl ?? asset.originalUrl ?? null,
+    modelUrl: urls.modelUrl,
+    optimizedModelUrl: urls.optimizedModelUrl,
+    originalModelUrl: urls.originalModelUrl,
+    optimizedUrl: asset.optimizedUrl ?? null,
+    url: asset.url ?? null,
     thumbnailSrc: asset.thumbnailSrc ?? asset.thumbnailUrl ?? asset.thumbnail?.url ?? null,
     sourceId: asset.sourceId ?? asset.sourceType ?? "local",
     librarySource: asset.librarySource ?? "local",
     previewQuality: inferPreviewQuality(asset),
     previewMaterialLabel: inferPreviewMaterialLabel(asset),
+    runtime: runtimeMetadata(asset, urls),
     tags: Array.isArray(asset.tags) ? asset.tags : [],
     cost,
     type: asset.type ?? null,

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Clock3, Search, WandSparkles } from "lucide-react";
 import { getAssetTaxonomy } from "./assetTaxonomyRules.js";
 import { getAllowedHostKinds } from "./hostEligibilityRules.js";
@@ -325,6 +325,13 @@ function normalizeSearchText(value) {
   return String(value ?? "").trim().toLowerCase();
 }
 
+function getAssetApiResults(payload) {
+  if (Array.isArray(payload?.data?.results)) return payload.data.results;
+  if (Array.isArray(payload?.results)) return payload.results;
+  if (Array.isArray(payload)) return payload;
+  return [];
+}
+
 export function StudioAssetCatalog({
   activeCategoryId,
   activeAssetId,
@@ -340,6 +347,11 @@ export function StudioAssetCatalog({
   recentAssetIds = []
 }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [assetApiSearch, setAssetApiSearch] = useState({
+    query: "",
+    results: [],
+    status: "idle"
+  });
   const [sourceFilter, setSourceFilter] = useState("all");
   const [generationPrompt, setGenerationPrompt] = useState("");
   const sourceAssets = useMemo(
@@ -351,8 +363,8 @@ export function StudioAssetCatalog({
     [activeCategoryId, sourceAssets]
   );
   const normalizedSearch = normalizeSearchText(searchTerm);
-  const assets = useMemo(() => {
-    if (!normalizedSearch) return categoryAssets;
+  const localSearchAssets = useMemo(() => {
+    if (!normalizedSearch) return [];
     return sourceAssets.filter((asset) => {
       const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
       const stairDescriptor = getStairCardDescriptor(asset);
@@ -372,7 +384,74 @@ export function StudioAssetCatalog({
       ]
         .some((field) => normalizeSearchText(field).includes(normalizedSearch));
     });
-  }, [categoryAssets, normalizedSearch, sourceAssets]);
+  }, [normalizedSearch, sourceAssets]);
+  const assets = useMemo(() => {
+    if (!normalizedSearch) return categoryAssets;
+
+    const activeApiResults = assetApiSearch.query === searchTerm.trim() ? assetApiSearch.results : [];
+    const catalogAssetIds = new Set(catalogAssets.map((asset) => asset.id).filter(Boolean));
+    const mergedAssetIds = new Set(localSearchAssets.map((asset) => asset.id).filter(Boolean));
+    const mergedAssets = [...localSearchAssets];
+
+    activeApiResults.forEach((asset) => {
+      if (!asset?.id || catalogAssetIds.has(asset.id) || mergedAssetIds.has(asset.id)) return;
+      mergedAssets.push(asset);
+      mergedAssetIds.add(asset.id);
+    });
+
+    return mergedAssets;
+  }, [assetApiSearch.query, assetApiSearch.results, catalogAssets, categoryAssets, localSearchAssets, normalizedSearch, searchTerm]);
+
+  useEffect(() => {
+    const query = searchTerm.trim();
+    if (query.length < 2) {
+      setAssetApiSearch({
+        query: "",
+        results: [],
+        status: "idle"
+      });
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      setAssetApiSearch((current) => ({
+        query,
+        results: current.query === query ? current.results : [],
+        status: "loading"
+      }));
+
+      try {
+        const response = await fetch(`/api/assets/search?q=${encodeURIComponent(query)}`, {
+          headers: { Accept: "application/json" },
+          signal: controller.signal
+        });
+        if (!response.ok) throw new Error(`Asset search failed: ${response.status}`);
+
+        const payload = await response.json();
+        if (payload?.ok === false) throw new Error(payload.message ?? "Asset search failed");
+
+        setAssetApiSearch({
+          query,
+          results: getAssetApiResults(payload).filter((asset) => asset?.id),
+          status: "ready"
+        });
+      } catch (error) {
+        if (error?.name === "AbortError") return;
+        setAssetApiSearch({
+          query,
+          results: [],
+          status: "offline"
+        });
+      }
+    }, 250);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [searchTerm]);
+
   const categoryCounts = useMemo(
     () =>
       STUDIO_CATALOG_CATEGORIES.reduce((counts, category) => {
@@ -433,6 +512,8 @@ export function StudioAssetCatalog({
   const crumbLabel = normalizedSearch ? "전체 검색" : activeCategory?.label ?? "자산";
   const categoryPolicySummary = useMemo(() => getCategoryPlacementSummary(categoryAssets), [categoryAssets]);
   const activeCategoryPolicyBadge = categorySummaries[activeCategory?.id]?.policyBadge ?? "asset";
+  const showAssetApiOffline =
+    normalizedSearch.length >= 2 && assetApiSearch.query === searchTerm.trim() && assetApiSearch.status === "offline";
   const canGenerateAsset = Boolean(onGenerateAsset) && generationPrompt.trim().length > 0 && generationStatus?.state !== "loading";
 
   const handleGenerateSubmit = async (event) => {
@@ -539,6 +620,11 @@ export function StudioAssetCatalog({
                 type="search"
                 value={searchTerm}
               />
+              {showAssetApiOffline ? (
+                <span className="studio-catalog-asset-api-status" role="status">
+                  asset API offline
+                </span>
+              ) : null}
             </label>
             <form className="studio-catalog-generator" onSubmit={handleGenerateSubmit}>
               <label>
