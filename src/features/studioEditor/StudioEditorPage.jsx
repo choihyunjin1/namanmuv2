@@ -224,6 +224,108 @@ function buildProjectAiPipelineTrace(generationStatus) {
   };
 }
 
+function getFallbackRecommendationColor(categoryId) {
+  return {
+    column: "#d9d1bf",
+    door: "#b28a63",
+    railing: "#c6b19a",
+    roof: "#8ea8b5",
+    "stairs-ladder": "#b9b6a7",
+    "wall-pattern": "#c88b70",
+    "wall-tool": "#c9c5b7",
+    window: "#9ecbd6"
+  }[categoryId] ?? "#b9beb7";
+}
+
+function getFallbackRecommendationShape(categoryId, componentKind) {
+  if (componentKind === "roof" || categoryId === "roof") return "gable";
+  if (componentKind === "door" || categoryId === "door") return "door";
+  if (componentKind === "window" || categoryId === "window") return "window-wide";
+  if (componentKind === "column" || categoryId === "column") return "column";
+  if (componentKind === "fence" || categoryId === "railing") return "railing";
+  if (componentKind === "stair" || categoryId === "stairs-ladder") return "stairs";
+  if (componentKind === "wall-panel" || categoryId === "wall-tool") return "wall";
+  if (categoryId === "wall-pattern") return "tile";
+  return "box";
+}
+
+function normalizeRecommendationPlacementMode(asset) {
+  const placementMode = asset?.placementMode;
+  if ([
+    "draw-room",
+    "draw-wall",
+    "floor-free",
+    "floor-stair",
+    "floor-structural",
+    "roof-accessory",
+    "roof-attached",
+    "wall-attached",
+    "wall-opening"
+  ].includes(placementMode)) return placementMode;
+
+  if (asset?.categoryId === "window" || asset?.categoryId === "door") return "wall-opening";
+  if (asset?.categoryId === "roof") return "roof-attached";
+  if (asset?.categoryId === "column") return "floor-structural";
+  if (asset?.categoryId === "stairs-ladder") return "floor-stair";
+  return "floor-free";
+}
+
+function createRecommendationFallbackAsset(recommendation) {
+  const asset = recommendation?.asset ?? recommendation;
+  if (!asset?.id) return null;
+  const categoryId = asset.categoryId ?? "wall-tool";
+  const componentKind = asset.componentKind ?? null;
+  const size = Array.isArray(asset.size) && asset.size.length >= 3 ? asset.size : [1, 1, 1];
+  const placementMode = normalizeRecommendationPlacementMode({ ...asset, categoryId });
+  const fallback = {
+    ...asset,
+    assetSourceId: asset.id,
+    categoryId,
+    color: getFallbackRecommendationColor(categoryId),
+    componentKind,
+    cost: asset.cost ?? null,
+    format: asset.modelUrl ? "glb" : undefined,
+    id: asset.id,
+    label: asset.label ?? asset.id,
+    librarySource: "rag-recommendation",
+    modelUrl: asset.modelUrl ?? null,
+    optimizedModelUrl: asset.modelUrl ?? null,
+    originalModelUrl: asset.modelUrl ?? null,
+    placementMode,
+    previewQuality: asset.previewQuality ?? (asset.modelUrl ? "bim" : "proxy"),
+    previewMaterialLabel: componentKind ?? categoryId,
+    shape: asset.shape ?? getFallbackRecommendationShape(categoryId, componentKind),
+    size,
+    sourceId: "rag",
+    sourceLabel: "RAG recommendation",
+    sourceType: asset.sourceType ?? "recommendation",
+    status: "ready",
+    supportKind: categoryId === "column" ? "column" : undefined,
+    thumbnailSrc: asset.thumbnailSrc ?? null,
+    url: asset.modelUrl ?? null,
+    runtime: asset.runtime ?? null,
+    metadata: {
+      ...(asset.metadata ?? {}),
+      componentKind,
+      sourceAssetId: asset.id,
+      sourceLabel: asset.label ?? asset.id,
+      sourceType: asset.sourceType ?? "recommendation"
+    }
+  };
+
+  if (placementMode === "wall-opening") {
+    fallback.openingType = categoryId === "door" ? "door" : "window";
+    fallback.openingSize = [
+      Number(size[0] ?? 1),
+      Number(size[1] ?? (categoryId === "door" ? 2.1 : 1))
+    ];
+    fallback.frameDepth = Number(size[2] ?? 0.18);
+    fallback.defaultSillHeight = categoryId === "door" ? 0 : 0.9;
+  }
+
+  return fallback;
+}
+
 function areSameIdLists(first = [], second = []) {
   return first.length === second.length && first.every((value, index) => value === second[index]);
 }
@@ -889,6 +991,36 @@ export function StudioEditorPage() {
     setWallAttachmentPreview(null);
     setWallDraft(null);
     setWallOpeningPreview(null);
+  };
+
+  const resolveRecommendationAsset = (recommendation) => {
+    const compactAsset = recommendation?.asset ?? recommendation;
+    if (!compactAsset?.id) return null;
+    const matchedAsset = allCatalogAssets.find((asset) =>
+      asset.id === compactAsset.id ||
+      asset.assetSourceId === compactAsset.id ||
+      asset.metadata?.sourceAssetId === compactAsset.id
+    );
+    const fallbackAsset = createRecommendationFallbackAsset(recommendation);
+    const resolvedAsset = matchedAsset ?? fallbackAsset;
+    if (!resolvedAsset) return null;
+
+    return {
+      ...resolvedAsset,
+      cost: resolvedAsset.cost ?? compactAsset.cost,
+      recommendationReason: Array.isArray(recommendation?.reasons) ? recommendation.reasons[0] ?? "" : "",
+      recommendationScore: Number.isFinite(Number(recommendation?.score)) ? Number(recommendation.score) : null,
+      recommendationSlot: recommendation?.slot ?? null
+    };
+  };
+
+  const handleRecommendedAssetPick = (recommendation) => {
+    const asset = resolveRecommendationAsset(recommendation);
+    if (!asset) return null;
+    setActiveWorkflowMode(asset.categoryId === "roof" || asset.categoryId === "wall-tool" ? "build" : "items");
+    setActiveCategoryId(asset.categoryId ?? activeCategoryId);
+    handleCatalogAssetPick(asset);
+    return asset;
   };
 
   const saveSelectedObjectToLibrary = () => {
@@ -3996,6 +4128,7 @@ export function StudioEditorPage() {
           onHideSelection={() => setSelectedObjectsHidden(true)}
           onLockSelection={() => setSelectedObjectsLocked(true)}
           onMoveObject={moveObjectToPosition}
+          onRecommendedAssetPick={handleRecommendedAssetPick}
           onMoveSelection={() => handleToolChange("move")}
           onRotateObject={rotateObjectToRotation}
           onScaleObject={scaleObjectToSize}

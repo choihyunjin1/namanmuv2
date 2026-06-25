@@ -54,6 +54,39 @@ function getObjectAssetDetails(object) {
   };
 }
 
+function formatRecommendationScore(score) {
+  const number = Number(score);
+  if (!Number.isFinite(number)) return null;
+  return `score ${Number(number.toFixed(2))}`;
+}
+
+function getRecommendationCostLabel(recommendation) {
+  const cost = recommendation?.asset?.cost ?? recommendation?.cost ?? null;
+  return formatInspectorKrw(cost?.primary?.unitPriceKrw ?? cost?.defaultRoughCostKrw) ?? "가격 검토";
+}
+
+function normalizeRecommendationEntry(recommendation, slot) {
+  if (!recommendation?.asset?.id) return null;
+  return {
+    ...recommendation,
+    slot: recommendation.slot ?? slot ?? "asset"
+  };
+}
+
+function getSelectionAssetRecommendations({ selectedAttachmentObject, selectedObject, selectedOpeningObject }) {
+  if (selectedOpeningObject?.assetRecommendation) {
+    return [normalizeRecommendationEntry(selectedOpeningObject.assetRecommendation, selectedOpeningObject.type)].filter(Boolean);
+  }
+  if (selectedAttachmentObject?.assetRecommendation) {
+    return [normalizeRecommendationEntry(selectedAttachmentObject.assetRecommendation, "attachment")].filter(Boolean);
+  }
+  const recommendations = selectedObject?.metadata?.recommendedAssets;
+  if (!recommendations || typeof recommendations !== "object") return [];
+  return Object.entries(recommendations)
+    .map(([slot, recommendation]) => normalizeRecommendationEntry(recommendation, slot))
+    .filter(Boolean);
+}
+
 function getObjectSizeLabel(object) {
   if (!object) return "none";
   if (isStructuralWallObject(object)) {
@@ -162,6 +195,7 @@ export function StudioEditorInspector({
   onLockSelection,
   onMoveSelection,
   onMoveObject,
+  onRecommendedAssetPick,
   onSelectAttachment,
   onSelectObject,
   onSelectOpening,
@@ -235,6 +269,11 @@ export function StudioEditorInspector({
       })
     : null;
   const selectedObjectAssetDetails = selectedObject ? getObjectAssetDetails(selectedObject) : null;
+  const selectedAssetRecommendations = getSelectionAssetRecommendations({
+    selectedAttachmentObject,
+    selectedObject,
+    selectedOpeningObject
+  });
   const sceneCostTotalLabel = formatInspectorKrw(sceneCostEstimate?.estimatedTotalKrw) ?? "가격 후보 없음";
   const sceneCostMappedLabel = `${sceneCostEstimate?.pricedObjectCount ?? 0}/${sceneCostEstimate?.totalObjectCount ?? objects.length}`;
   const primaryCostClass = sceneCostEstimate?.byCostClass?.[0];
@@ -459,6 +498,36 @@ export function StudioEditorInspector({
               </div>
             ) : null}
           </dl>
+          {selectedAssetRecommendations.length ? (
+            <div className="studio-editor-recommendation-panel" aria-label="선택 항목 추천 자산">
+              <strong>RAG 추천 자산</strong>
+              <div>
+                {selectedAssetRecommendations.map((recommendation) => {
+                  const asset = recommendation.asset;
+                  const scoreLabel = formatRecommendationScore(recommendation.score);
+                  const costLabel = getRecommendationCostLabel(recommendation);
+                  return (
+                    <button
+                      key={`${recommendation.slot}-${asset.id}`}
+                      onClick={() => onRecommendedAssetPick?.(recommendation)}
+                      title={[
+                        asset.label ?? asset.id,
+                        recommendation.slot,
+                        scoreLabel,
+                        costLabel,
+                        ...(Array.isArray(recommendation.reasons) ? recommendation.reasons : [])
+                      ].filter(Boolean).join(" · ")}
+                      type="button"
+                    >
+                      <span>{asset.label ?? asset.id}</span>
+                      <small>{recommendation.slot}</small>
+                      <em>{[scoreLabel, costLabel].filter(Boolean).join(" · ")}</em>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
           {selectedObject && !multiSelectionActive && !selectedOpeningObject && !selectedAttachmentObject ? (
             <div className="studio-editor-transform-controls">
               {selectedWallSegment ? (

@@ -62,6 +62,15 @@ try {
   await page.getByText("1층 생활공간").waitFor({ state: "visible" });
   await page.getByText("2침실 상부 매스").waitFor({ state: "visible" });
 
+  await page.getByLabel("씬 아웃라이너").getByRole("button", { name: /1층 생활공간/ }).first().click();
+  const selectionRecommendationPanel = page.getByLabel("선택 항목 추천 자산");
+  await selectionRecommendationPanel.waitFor({ state: "visible" });
+  await selectionRecommendationPanel.getByText(/RAG 추천 자산/).waitFor({ state: "visible" });
+  const firstRecommendedAssetButton = selectionRecommendationPanel.getByRole("button").first();
+  const firstRecommendedAssetLabel = await firstRecommendedAssetButton.locator("span").innerText();
+  await firstRecommendedAssetButton.click();
+  await page.locator(".studio-editor-statusbar").getByText(firstRecommendedAssetLabel).waitFor({ state: "visible" });
+
   const catalogBrief = "카탈로그 검색형 모던 단층 주택";
   await page.getByLabel("자산 검색").fill(catalogBrief);
   const catalogAiTile = page.locator(".studio-catalog-ai-leading-tile");
