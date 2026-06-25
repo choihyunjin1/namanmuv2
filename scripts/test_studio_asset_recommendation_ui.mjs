@@ -87,6 +87,15 @@ try {
   assert.match(firstResultTitle, /score \d/);
   assert.match(firstResultTitle, /parcel:/);
   assert.match(firstResultTitle, /prompt: 모던 단독주택/);
+  assert.equal(
+    await resultButtons.first().locator(".studio-catalog-recommendation-meta").count(),
+    1,
+    "recommendation result should expose score, cost, source, and material metadata"
+  );
+  const firstResultText = await resultButtons.first().textContent();
+  assert.match(firstResultText, /score \d/);
+  assert.match(firstResultText, /₩|가격/);
+  assert.match(firstResultTitle, /조달청|IFC|PLOT:ON|catalog/);
 
   assert.deepEqual(
     pageErrors.map((error) => error.message),
