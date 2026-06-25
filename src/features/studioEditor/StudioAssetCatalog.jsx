@@ -332,6 +332,10 @@ function getAssetApiResults(payload) {
   return [];
 }
 
+function getAssetDedupKey(asset) {
+  return asset?.assetSourceId ?? asset?.metadata?.sourceAssetId ?? asset?.id ?? "";
+}
+
 export function StudioAssetCatalog({
   activeCategoryId,
   activeAssetId,
@@ -389,14 +393,15 @@ export function StudioAssetCatalog({
     if (!normalizedSearch) return categoryAssets;
 
     const activeApiResults = assetApiSearch.query === searchTerm.trim() ? assetApiSearch.results : [];
-    const catalogAssetIds = new Set(catalogAssets.map((asset) => asset.id).filter(Boolean));
-    const mergedAssetIds = new Set(localSearchAssets.map((asset) => asset.id).filter(Boolean));
+    const catalogAssetIds = new Set(catalogAssets.map(getAssetDedupKey).filter(Boolean));
+    const mergedAssetIds = new Set(localSearchAssets.map(getAssetDedupKey).filter(Boolean));
     const mergedAssets = [...localSearchAssets];
 
     activeApiResults.forEach((asset) => {
-      if (!asset?.id || catalogAssetIds.has(asset.id) || mergedAssetIds.has(asset.id)) return;
+      const dedupKey = getAssetDedupKey(asset);
+      if (!asset?.id || catalogAssetIds.has(dedupKey) || mergedAssetIds.has(dedupKey)) return;
       mergedAssets.push(asset);
-      mergedAssetIds.add(asset.id);
+      mergedAssetIds.add(dedupKey);
     });
 
     return mergedAssets;
