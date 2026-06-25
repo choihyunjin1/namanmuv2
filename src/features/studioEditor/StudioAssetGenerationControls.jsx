@@ -43,6 +43,7 @@ export function StudioAssetGenerationControls({
   onDragAssetStart,
   onGenerateAsset,
   onGenerateSceneFromBrief,
+  onRecommendationChange,
   onSourceFilterChange,
   searchTerm = ""
 }) {
@@ -64,6 +65,11 @@ export function StudioAssetGenerationControls({
   const canGenerateAsset = Boolean(onGenerateAsset) && generationPromptValue.length > 0 && generationStatus?.state !== "loading";
   const canGenerateBriefScene = Boolean(onGenerateSceneFromBrief) && generationPromptValue.length > 0 && generationStatus?.state !== "loading";
   const canRecommendAssets = recommendationPrompt.length > 0 && assetRecommendation.status !== "loading";
+
+  const publishAssetRecommendation = (nextRecommendation) => {
+    setAssetRecommendation(nextRecommendation);
+    onRecommendationChange?.(nextRecommendation);
+  };
 
   const handleGenerateSubmit = async (event) => {
     event.preventDefault();
@@ -88,7 +94,7 @@ export function StudioAssetGenerationControls({
     const prompt = recommendationPrompt;
     if (!prompt) return;
 
-    setAssetRecommendation({
+    publishAssetRecommendation({
       message: "",
       prompt,
       recommendations: [],
@@ -114,14 +120,14 @@ export function StudioAssetGenerationControls({
       if (payload?.ok === false) throw new Error(payload.message ?? "Asset recommendation failed");
 
       const recommendations = getAssetRecommendations(payload);
-      setAssetRecommendation({
+      publishAssetRecommendation({
         message: payload?.data?.rationale?.summary ?? "",
         prompt,
         recommendations,
         status: recommendations.length ? "ready" : "empty"
       });
     } catch (error) {
-      setAssetRecommendation({
+      publishAssetRecommendation({
         message: error?.message ?? "추천 자산을 불러오지 못했습니다.",
         prompt,
         recommendations: [],

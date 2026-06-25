@@ -2760,6 +2760,17 @@
   border-color: rgba(216, 243, 106, 0.42);
 }
 
+.studio-catalog-asset-card.is-recommended {
+  border-color: rgba(216, 243, 106, 0.36);
+  background:
+    linear-gradient(180deg, rgba(216, 243, 106, 0.13), rgba(255, 255, 255, 0.045)),
+    rgba(255, 255, 255, 0.055);
+}
+
+.studio-catalog-asset-card.is-recommended::before {
+  border-color: rgba(216, 243, 106, 0.26);
+}
+
 .studio-catalog-ai-leading-tile {
   border-color: rgba(216, 243, 106, 0.34);
   background:
@@ -2883,6 +2894,39 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 3px;
   align-items: center;
+}
+
+.studio-catalog-asset-recommendation-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+  gap: 3px;
+  align-items: center;
+}
+
+.studio-catalog-asset-recommendation-row small,
+.studio-catalog-asset-recommendation-row em {
+  min-width: 0;
+  height: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(216, 243, 106, 0.14);
+  color: rgba(246, 255, 216, 0.92);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-catalog-asset-recommendation-row em {
+  background: rgba(0, 0, 0, 0.26);
+  color: rgba(216, 243, 106, 0.86);
 }
 
 .studio-catalog-asset-status-row small,

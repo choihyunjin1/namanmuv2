@@ -97,6 +97,18 @@ try {
   assert.match(firstResultText, /₩|가격/);
   assert.match(firstResultTitle, /조달청|IFC|PLOT:ON|catalog/);
 
+  const recommendedCatalogCards = page.locator('.studio-catalog-assets .studio-catalog-asset-card[data-recommendation="true"]');
+  await recommendedCatalogCards.first().waitFor({ state: "visible" });
+  assert.equal(
+    await recommendedCatalogCards.first().getAttribute("draggable"),
+    "true",
+    "RAG recommendation cards should keep the normal catalog drag-and-drop contract"
+  );
+  const firstRecommendedCardTitle = await recommendedCatalogCards.first().getAttribute("title");
+  assert.match(firstRecommendedCardTitle, /RAG 추천 score \d/);
+  assert.match(firstRecommendedCardTitle, /prompt: 모던 단독주택/);
+  assert.match(await recommendedCatalogCards.first().textContent(), /RAG 추천/);
+
   assert.deepEqual(
     pageErrors.map((error) => error.message),
     [],

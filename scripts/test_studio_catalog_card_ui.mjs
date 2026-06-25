@@ -75,7 +75,7 @@ try {
 
   const searchInput = page.getByLabel("자산 검색");
   await searchInput.fill("와이드 창");
-  const wideWindowCard = page.locator(".studio-catalog-asset-card").filter({ hasText: "와이드 창" }).first();
+  const wideWindowCard = page.locator(".studio-catalog-asset-card:not(.studio-catalog-ai-leading-tile)").filter({ hasText: "와이드 창" }).first();
   await wideWindowCard.waitFor({ state: "visible" });
   assert.equal(await wideWindowCard.getAttribute("data-action"), "drag-asset");
   assert.equal(await wideWindowCard.getAttribute("data-badge"), "opening");

@@ -71,16 +71,20 @@ export function StudioAssetCatalogCard({
   const previewQualityLabel = getPreviewQualityLabel(asset);
   const isComingSoon = assetStatus === "coming-soon";
   const metaLabel = searchActive ? categoryLabel || sizeLabel : sizeLabel;
+  const isRecommended = Number.isFinite(Number(asset.recommendationScore));
+  const recommendationScoreLabel = asset.recommendationScoreLabel ?? (isRecommended ? `score ${Number(Number(asset.recommendationScore).toFixed(2))}` : "");
+  const recommendationReason = asset.recommendationReason ?? "";
 
   return (
     <button
       aria-disabled={isComingSoon ? "true" : undefined}
-      aria-label={`${asset.label}, ${assetStatusLabel}, ${previewQualityLabel}, ${placementBadgeLabel}, ${previewMeta.materialLabel}, ${sizeLabel}, ${hostLabel}, ${taxonomyLabel}, ${placementHint}`}
+      aria-label={`${asset.label}, ${isRecommended ? `RAG 추천 ${recommendationScoreLabel}, ` : ""}${assetStatusLabel}, ${previewQualityLabel}, ${placementBadgeLabel}, ${previewMeta.materialLabel}, ${sizeLabel}, ${hostLabel}, ${taxonomyLabel}, ${placementHint}`}
       aria-pressed={isActive}
       className={[
         "studio-catalog-asset-card",
         isPlacementTool ? "is-tool" : "",
         isDrawTool ? "is-draw-tool" : "is-draggable",
+        isRecommended ? "is-recommended" : "",
         assetStatus ? `is-status-${assetStatus}` : "",
         previewQuality ? `is-quality-${previewQuality}` : "",
         isActive ? "is-active" : ""
@@ -94,6 +98,7 @@ export function StudioAssetCatalogCard({
       data-policy={hostLabel}
       data-preview-kind={previewMeta.kind}
       data-preview-quality={previewQuality}
+      data-recommendation={isRecommended ? "true" : undefined}
       data-status={assetStatus}
       data-swatch={previewMeta.swatch}
       disabled={isComingSoon}
@@ -118,13 +123,32 @@ export function StudioAssetCatalogCard({
         onDragAssetStart?.(asset);
       }}
       onDragEnd={() => onDragAssetStart?.(null)}
-      title={`${asset.label} · ${assetStatusLabel} · ${previewQualityLabel} · ${placementBadgeLabel} · ${sizeLabel} · ${hostLabel} · ${taxonomyLabel} · ${placementPolicyLabel} · ${placementHint}`}
+      title={[
+        asset.label,
+        isRecommended ? `RAG 추천 ${recommendationScoreLabel}` : null,
+        recommendationReason,
+        asset.recommendationPrompt ? `prompt: ${asset.recommendationPrompt}` : null,
+        assetStatusLabel,
+        previewQualityLabel,
+        placementBadgeLabel,
+        sizeLabel,
+        hostLabel,
+        taxonomyLabel,
+        placementPolicyLabel,
+        placementHint
+      ].filter(Boolean).join(" · ")}
       type="button"
     >
       <span className="studio-catalog-asset-mode">{placementBadgeLabel}</span>
       <CatalogPreview asset={asset} badgeLabel={placementBadgeLabel} iconSrc={getAssetIconSrc(asset)} shape={asset.shape} />
       <span className="studio-catalog-asset-content">
         <span className="studio-catalog-asset-title">{asset.label}</span>
+        {isRecommended ? (
+          <span className="studio-catalog-asset-recommendation-row">
+            <small>RAG 추천</small>
+            <em>{recommendationScoreLabel}</em>
+          </span>
+        ) : null}
         <span className="studio-catalog-asset-status-row">
           <small>{assetStatusLabel}</small>
           <em>{previewQualityLabel}</em>

@@ -121,6 +121,16 @@ try {
   assert.match(await pricedResult.textContent(), /조달청/);
   assert.match(await pricedResult.textContent(), /경량기포콘크리트패널/);
   assert.match(await pricedResult.getAttribute("title"), /가격 후보와 외벽 자산 메타데이터가 일치/);
+  const pricedCatalogCard = page
+    .getByLabel("카테고리 자산")
+    .locator('.studio-catalog-asset-card[data-recommendation="true"]')
+    .filter({ hasText: "Mock 견적 외벽" })
+    .first();
+  await pricedCatalogCard.waitFor({ state: "visible" });
+  assert.equal(await pricedCatalogCard.getAttribute("data-action"), "drag-asset");
+  assert.equal(await pricedCatalogCard.getAttribute("draggable"), "true");
+  assert.match(await pricedCatalogCard.textContent(), /RAG 추천/);
+  assert.match(await pricedCatalogCard.getAttribute("title"), /prompt: priced 추천 상태/);
 
   await page.unroute("**/api/assets/recommend");
   await page.route("**/api/assets/recommend", async (route) => {

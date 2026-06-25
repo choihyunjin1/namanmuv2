@@ -40,6 +40,35 @@ function getAssetDedupKey(asset) {
   return asset?.assetSourceId ?? asset?.metadata?.sourceAssetId ?? asset?.id ?? "";
 }
 
+function getRecommendationScoreLabel(score) {
+  const number = Number(score);
+  if (!Number.isFinite(number)) return null;
+  return `score ${Number(number.toFixed(2))}`;
+}
+
+function getRecommendedCatalogAssets(recommendation) {
+  if (recommendation?.status !== "ready" || !Array.isArray(recommendation.recommendations)) return [];
+
+  const seen = new Set();
+  return recommendation.recommendations
+    .map((item) => {
+      const asset = item?.asset;
+      const dedupKey = getAssetDedupKey(asset);
+      if (!asset?.id || !dedupKey || seen.has(dedupKey)) return null;
+      seen.add(dedupKey);
+
+      return {
+        ...asset,
+        recommendationPrompt: recommendation.prompt ?? "",
+        recommendationReason: Array.isArray(item.reasons) ? item.reasons[0] ?? "" : "",
+        recommendationScore: Number.isFinite(Number(item.score)) ? Number(item.score) : null,
+        recommendationScoreLabel: getRecommendationScoreLabel(item.score),
+        status: asset.status ?? "ready"
+      };
+    })
+    .filter(Boolean);
+}
+
 export function StudioAssetCatalog({
   activeCategoryId,
   activeAssetId,
@@ -59,6 +88,12 @@ export function StudioAssetCatalog({
   const [assetApiSearch, setAssetApiSearch] = useState({
     query: "",
     results: [],
+    status: "idle"
+  });
+  const [assetRecommendation, setAssetRecommendation] = useState({
+    message: "",
+    prompt: "",
+    recommendations: [],
     status: "idle"
   });
   const [sourceFilter, setSourceFilter] = useState("all");
@@ -128,6 +163,18 @@ export function StudioAssetCatalog({
 
     return mergedAssets;
   }, [assetApiSearch.query, assetApiSearch.results, catalogAssets, categoryAssets, localSearchAssets, normalizedSearch, searchTerm]);
+  const recommendedAssets = useMemo(
+    () => getRecommendedCatalogAssets(assetRecommendation),
+    [assetRecommendation]
+  );
+  const recommendedAssetKeys = useMemo(
+    () => new Set(recommendedAssets.map(getAssetDedupKey).filter(Boolean)),
+    [recommendedAssets]
+  );
+  const visibleAssets = useMemo(
+    () => assets.filter((asset) => !recommendedAssetKeys.has(getAssetDedupKey(asset))),
+    [assets, recommendedAssetKeys]
+  );
 
   useEffect(() => {
     const query = searchTerm.trim();
@@ -229,6 +276,7 @@ export function StudioAssetCatalog({
   const activeCategoryPolicyBadge = categorySummaries[activeCategory?.id]?.policyBadge ?? "asset";
   const showAssetApiOffline =
     normalizedSearch.length >= 2 && assetApiSearch.query === searchTerm.trim() && assetApiSearch.status === "offline";
+  const visibleAssetCount = visibleAssets.length + recommendedAssets.length;
 
   return (
     <section
@@ -254,7 +302,7 @@ export function StudioAssetCatalog({
           <div className="studio-catalog-browser-bar">
             <StudioAssetCatalogSearchHeader
               activeCategoryPolicyBadge={activeCategoryPolicyBadge}
-              assetCount={assets.length}
+              assetCount={visibleAssetCount}
               categoryPolicySummary={categoryPolicySummary}
               crumbLabel={crumbLabel}
               onSearchTermChange={setSearchTerm}
@@ -267,6 +315,7 @@ export function StudioAssetCatalog({
               onDragAssetStart={onDragAssetStart}
               onGenerateAsset={onGenerateAsset}
               onGenerateSceneFromBrief={onGenerateSceneFromBrief}
+              onRecommendationChange={setAssetRecommendation}
               onSourceFilterChange={setSourceFilter}
               searchTerm={searchTerm}
             />
@@ -284,7 +333,21 @@ export function StudioAssetCatalog({
               onGenerateSceneFromBrief={onGenerateSceneFromBrief}
               prompt={searchTerm}
             />
-            {assets.map((asset) => {
+            {recommendedAssets.map((asset) => {
+              const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
+              return (
+                <StudioAssetCatalogCard
+                  asset={asset}
+                  categoryLabel={category?.label}
+                  isActive={asset.id === activeAssetId}
+                  key={`recommendation-${asset.id}`}
+                  onAssetPick={onAssetPick}
+                  onDragAssetStart={onDragAssetStart}
+                  searchActive
+                />
+              );
+            })}
+            {visibleAssets.map((asset) => {
               const category = STUDIO_CATALOG_CATEGORIES.find((item) => item.id === asset.categoryId);
               return (
                 <StudioAssetCatalogCard
