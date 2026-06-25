@@ -83,6 +83,29 @@ try {
     minOpeningCount: 6,
     minRoomCount: 2
   });
+
+  assert.equal(typeof payload.data.assetRecommendations, "object");
+  assert.equal(payload.data.assetRecommendations.method, "brief-slot-keyword-rag");
+  assert.equal(Array.isArray(payload.data.assetRecommendations.attachedSlots), true);
+  assert.equal(payload.data.assetRecommendations.attachedSlots.includes("house-shell"), true);
+  assert.equal(payload.data.assetRecommendations.attachedSlots.includes("roof"), true);
+  assert.equal(typeof payload.data.assetRecommendations.slots["house-shell"].recommendations[0].asset.id, "string");
+  assert.equal(typeof payload.data.assetRecommendations.slots.roof.recommendations[0].asset.modelUrl, "string");
+  assert.equal(typeof payload.data.decisionAudit.assetRecommendation, "object");
+  assert.equal(payload.data.decisionAudit.assetRecommendation.method, "brief-slot-keyword-rag");
+
+  const room = payload.data.objects.find((object) => object.type === "room");
+  assert.equal(room.metadata.assetRecommendationSlots.includes("house-shell"), true);
+  assert.equal(typeof room.metadata.recommendedAssets["house-shell"].asset.id, "string");
+  assert.equal(typeof room.metadata.recommendedAssets["house-shell"].asset.modelUrl, "string");
+
+  const openings = payload.data.objects.flatMap((object) => object.room?.openings ?? []);
+  const recommendedDoor = openings.find((opening) => opening.type === "door" && opening.assetRecommendation);
+  const recommendedWindow = openings.find((opening) => opening.type === "window" && opening.assetRecommendation);
+  assert.equal(recommendedDoor.assetRecommendation.slot, "door");
+  assert.equal(recommendedWindow.assetRecommendation.slot, "window");
+  assert.equal(typeof recommendedDoor.assetRecommendation.asset.id, "string");
+  assert.equal(typeof recommendedWindow.assetRecommendation.asset.thumbnailSrc, "string");
 } finally {
   await server.close();
 }

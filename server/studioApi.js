@@ -1,4 +1,5 @@
 import { createBriefScene } from "./briefSceneGenerator.js";
+import { enrichBriefSceneWithAssetRecommendations } from "./briefSceneRecommendationEnricher.js";
 import { recommendAssets } from "./assetRecommendationEngine.js";
 import { searchAssetCatalog } from "./assetCatalogSearch.js";
 import { readProject, writeProject } from "./projectStore.js";
@@ -44,13 +45,15 @@ export function installStudioApi(server, env = {}) {
 
     try {
       if (req.method === "GET") {
-        sendJson(res, 200, { ok: true, data: createBriefScene({ brief }) });
+        const scene = createBriefScene({ brief });
+        sendJson(res, 200, { ok: true, data: await enrichBriefSceneWithAssetRecommendations(scene, { brief }) });
         return;
       }
 
       if (req.method === "POST") {
         const payload = await readJsonBody(req);
-        sendJson(res, 200, { ok: true, data: createBriefScene(payload) });
+        const scene = createBriefScene(payload);
+        sendJson(res, 200, { ok: true, data: await enrichBriefSceneWithAssetRecommendations(scene, payload) });
         return;
       }
 
