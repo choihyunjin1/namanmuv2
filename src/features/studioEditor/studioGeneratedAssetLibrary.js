@@ -57,6 +57,8 @@ export function createGeneratedCatalogAssetFromJob(job) {
       cadScriptFormat: sourceAsset.cadScriptFormat ?? "openscad",
       engine: job.engine?.adapter ?? sourceAsset.engine ?? "ploton-text-to-cad",
       promptHash: job.promptHash,
+      scenePlan: job.scenePlan ?? sourceAsset.metadata?.scenePlan ?? null,
+      scenePlanSummary: sourceAsset.metadata?.scenePlanSummary ?? job.scenePlanSummary ?? null,
       sourceJobId: job.id,
       workerMode: job.engine?.mode
     },

@@ -3177,6 +3177,8 @@ export function StudioEditorPage() {
         runtime: asset.runtime,
         cost: asset.cost,
         componentKind: asset.componentKind,
+        scenePlan: asset.metadata?.scenePlan ?? asset.scenePlan,
+        scenePlanSummary: asset.metadata?.scenePlanSummary,
         stair: stairObjectMetadata,
         stairRun: asset.stairRun,
         stairRise: asset.stairRise,
