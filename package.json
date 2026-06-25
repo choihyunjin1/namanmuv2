@@ -23,6 +23,7 @@
     "test:brief-scene-generator": "node scripts/test_brief_scene_generator.mjs",
     "test:studio-brief-scene-ui": "node scripts/test_studio_brief_scene_ui.mjs",
     "test:studio-asset-recommendation-ui": "node scripts/test_studio_asset_recommendation_ui.mjs",
+    "test:studio-catalog-source-recent-ui": "node scripts/test_studio_catalog_source_recent_ui.mjs",
     "test:studio-generated-scene-plan": "node scripts/test_studio_generated_scene_plan.mjs",
     "test:studio-text-to-cad-ui": "node scripts/test_studio_text_to_cad_ui.mjs",
     "test:studio-project-io": "node scripts/test_studio_editor_project_io.mjs",

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Clock3, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { getAssetTaxonomy } from "./assetTaxonomyRules.js";
 import { getAllowedHostKinds } from "./hostEligibilityRules.js";
 import {
@@ -8,6 +8,8 @@ import {
   getCatalogAssetsByCategory
 } from "./studioCatalog.js";
 import { StudioAssetGenerationControls } from "./StudioAssetGenerationControls.jsx";
+import { CATALOG_SOURCE_TABS, StudioAssetCatalogSourceTabs } from "./StudioAssetCatalogSourceTabs.jsx";
+import { StudioAssetRecentStrip } from "./StudioAssetRecentStrip.jsx";
 
 const PASCAL_ICON_BASE = "/assets/pascal-icons";
 const STUDIO_CATALOG_HOME_ICON_SRC = `${PASCAL_ICON_BASE}/build.webp`;
@@ -83,14 +85,6 @@ const PLACEMENT_HINTS = {
   "wall-attached": "벽 위 위치를 지정해 부착한다",
   "wall-opening": "벽 위 위치를 지정해 개구부를 만든다"
 };
-const CATALOG_SOURCE_TABS = [
-  { id: "all", label: "All" },
-  { id: "pascal", label: "Pascal" },
-  { id: "generated", label: "Generated" },
-  { id: "mine", label: "Mine" },
-  { id: "community", label: "Community" }
-];
-
 const ASSET_PREVIEW_BY_CATEGORY = {
   column: { accent: "#ebe1c6", kind: "column", materialLabel: "support", trim: "#9f9275" },
   door: { accent: "#f0d3a2", kind: "door", materialLabel: "entry", trim: "#594435" },
@@ -647,31 +641,12 @@ export function StudioAssetCatalog({
               onSourceFilterChange={setSourceFilter}
               searchTerm={searchTerm}
             />
-            <div className="studio-catalog-source-tabs" aria-label="자산 소스">
-              {CATALOG_SOURCE_TABS.map((source) => (
-                <button
-                  aria-pressed={sourceFilter === source.id}
-                  className={sourceFilter === source.id ? "is-active" : ""}
-                  key={source.id}
-                  onClick={() => setSourceFilter(source.id)}
-                  title={`${source.label} · ${sourceCounts[source.id] ?? 0} assets`}
-                  type="button"
-                >
-                  <span>{source.label}</span>
-                  <em>{sourceCounts[source.id] ?? 0}</em>
-                </button>
-              ))}
-            </div>
-            {recentAssets.length ? (
-              <div className="studio-catalog-recent" aria-label="최근 사용 자산">
-                <Clock3 size={14} />
-                {recentAssets.map((asset) => (
-                  <button key={asset.id} onClick={() => onAssetPick(asset)} title={asset.label} type="button">
-                    {asset.label}
-                  </button>
-                ))}
-              </div>
-            ) : null}
+            <StudioAssetCatalogSourceTabs
+              onSourceFilterChange={setSourceFilter}
+              sourceCounts={sourceCounts}
+              sourceFilter={sourceFilter}
+            />
+            <StudioAssetRecentStrip onAssetPick={onAssetPick} recentAssets={recentAssets} />
           </div>
 
           <div className="studio-catalog-assets" aria-label="카테고리 자산">
