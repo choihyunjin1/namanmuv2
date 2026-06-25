@@ -3652,6 +3652,96 @@
   align-items: center;
 }
 
+.studio-editor-hidden-file-input {
+  position: fixed;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.studio-editor-project-menu {
+  position: relative;
+  z-index: 30;
+}
+
+.studio-editor-project-menu summary {
+  height: 34px;
+  min-width: 82px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 950;
+  list-style: none;
+}
+
+.studio-editor-project-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.studio-editor-project-menu summary::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.72;
+}
+
+.studio-editor-project-menu[open] summary {
+  border-color: rgba(216, 243, 106, 0.28);
+  background: rgba(216, 243, 106, 0.09);
+  color: #d8f36a;
+}
+
+.studio-editor-project-menu-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 216px;
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 10px;
+  background: rgba(19, 22, 22, 0.96);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(14px);
+}
+
+.studio-editor-project-menu-list button {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: left;
+}
+
+.studio-editor-project-menu-list button:hover,
+.studio-editor-project-menu-list button:focus-visible {
+  background: rgba(216, 243, 106, 0.12);
+  color: #f5ffd5;
+  outline: none;
+}
+
 .studio-editor-save-state {
   min-width: 94px;
   height: 30px;
@@ -5208,6 +5298,21 @@
   .studio-editor-header-actions .studio-editor-save {
     min-width: 34px;
     padding: 0 8px;
+  }
+
+  .studio-editor-project-menu summary {
+    min-width: 34px;
+    padding: 0 9px;
+    font-size: 0;
+  }
+
+  .studio-editor-project-menu summary::before {
+    content: "P";
+    font-size: 11px;
+  }
+
+  .studio-editor-project-menu-list {
+    right: -56px;
   }
 
   .studio-editor-header-actions .studio-editor-save span {

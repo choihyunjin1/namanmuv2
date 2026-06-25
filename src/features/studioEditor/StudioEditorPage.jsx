@@ -69,6 +69,7 @@ const CATALOG_WIDTH_MAX = 520;
 const STUDIO_EDITOR_PROJECT_ID = "studio-editor-default";
 const STUDIO_EDITOR_STORAGE_KEY = "ploton:studio-editor:default";
 const STUDIO_EDITOR_SCHEMA_VERSION = 2;
+const STUDIO_PROJECT_EXPORT_SCHEMA_VERSION = 1;
 const PASCAL_ICON_BASE = "/assets/pascal-icons";
 const PASCAL_TOOL_ICONS = {
   select: `${PASCAL_ICON_BASE}/select.webp`,
@@ -178,6 +179,50 @@ function ToolGlyph({ icon: Icon, iconSrc }) {
 
 function clampCatalogWidth(value) {
   return Math.min(CATALOG_WIDTH_MAX, Math.max(CATALOG_WIDTH_MIN, value));
+}
+
+function formatExportTimestamp(date = new Date()) {
+  return date.toISOString().replace(/[:.]/g, "-");
+}
+
+function downloadJsonFile(filename, payload) {
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function readFileText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(reader.error ?? new Error("파일을 읽지 못했습니다."));
+    reader.readAsText(file, "utf-8");
+  });
+}
+
+function createProjectExportEnvelope(kind, data) {
+  return {
+    data,
+    exportedAt: new Date().toISOString(),
+    exporter: "ploton-studio-editor",
+    kind,
+    projectId: STUDIO_EDITOR_PROJECT_ID,
+    schemaVersion: STUDIO_PROJECT_EXPORT_SCHEMA_VERSION
+  };
+}
+
+function unwrapImportedScenePayload(payload) {
+  if (payload?.kind === "ploton-studio-scene" && payload?.data) return payload.data;
+  if (payload?.exporter === "ploton-studio-editor" && payload?.kind === "ploton-studio-scene" && payload?.data) {
+    return payload.data;
+  }
+  return payload;
 }
 
 function areSameIdLists(first = [], second = []) {
@@ -1417,6 +1462,7 @@ export function StudioEditorPage() {
   const [wallViewMode, setWallViewMode] = useState("cutaway");
   const [lastSavedAt, setLastSavedAt] = useState(null);
   const [saveStatus, setSaveStatus] = useState("idle");
+  const sceneImportInputRef = useRef(null);
   const historyTransactionRef = useRef(null);
   const buildable = useMemo(() => getBuildableFootprint(), []);
   const activeFloorBaseY = useMemo(() => getFloorBaseY(activeFloor), [activeFloor]);
@@ -1670,6 +1716,48 @@ export function StudioEditorPage() {
         localStorage.removeItem(STUDIO_EDITOR_STORAGE_KEY);
         setSaveStatus("error");
       }
+    }
+  };
+
+  const exportSceneJson = () => {
+    const payload = createScenePayload();
+    const envelope = createProjectExportEnvelope("ploton-studio-scene", payload);
+    downloadJsonFile(`ploton-studio-scene-${formatExportTimestamp()}.json`, envelope);
+    setSaveStatus("local");
+  };
+
+  const exportPascalSceneGraphJson = () => {
+    const envelope = createProjectExportEnvelope("ploton-pascal-scene-graph", pascalSceneGraph);
+    downloadJsonFile(`ploton-pascal-scene-graph-${formatExportTimestamp()}.json`, envelope);
+  };
+
+  const exportFloorplanInteropJson = () => {
+    const envelope = createProjectExportEnvelope("ploton-floorplan-interop", floorplanInterop);
+    downloadJsonFile(`ploton-floorplan-interop-${formatExportTimestamp()}.json`, envelope);
+  };
+
+  const requestSceneFileImport = () => {
+    sceneImportInputRef.current?.click();
+  };
+
+  const importSceneFile = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setSaveStatus("loading");
+    try {
+      const text = await readFileText(file);
+      const payload = unwrapImportedScenePayload(JSON.parse(text));
+      if (!Array.isArray(payload?.objects)) {
+        throw new Error("PLOT:ON Studio 씬 JSON이 아닙니다.");
+      }
+      applyScenePayload(payload);
+      localStorage.setItem(STUDIO_EDITOR_STORAGE_KEY, JSON.stringify(payload));
+      setSaveStatus("local");
+    } catch (error) {
+      console.error(error);
+      setSaveStatus("error");
     }
   };
 
@@ -4613,6 +4701,10 @@ export function StudioEditorPage() {
         clipboardCount={editorClipboard?.sources?.length ?? 0}
         lastSavedAt={lastSavedAt}
         objectCount={objects.length}
+        onExportFloorplanInterop={exportFloorplanInteropJson}
+        onExportPascalSceneGraph={exportPascalSceneGraphJson}
+        onExportScene={exportSceneJson}
+        onImportSceneFile={requestSceneFileImport}
         onLoadScene={loadScene}
         onSaveScene={saveScene}
         roomCount={roomCount}
@@ -4620,6 +4712,14 @@ export function StudioEditorPage() {
         selectedLabel={selectedHudLabel}
         snapEnabled={snapEnabled}
         wallViewMode={wallViewMode}
+      />
+      <input
+        ref={sceneImportInputRef}
+        accept="application/json,.json"
+        className="studio-editor-hidden-file-input"
+        onChange={importSceneFile}
+        tabIndex={-1}
+        type="file"
       />
 
       <div

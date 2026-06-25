@@ -72,6 +72,10 @@ export function StudioEditorHeader({
   clipboardCount,
   lastSavedAt,
   objectCount,
+  onExportFloorplanInterop,
+  onExportPascalSceneGraph,
+  onExportScene,
+  onImportSceneFile,
   onLoadScene,
   onSaveScene,
   roomCount,
@@ -120,6 +124,15 @@ export function StudioEditorHeader({
           <strong>{saveMeta.label}</strong>
           {savedTime ? <em>{savedTime}</em> : null}
         </div>
+        <details className="studio-editor-project-menu">
+          <summary title="프로젝트 가져오기/내보내기">Project</summary>
+          <div className="studio-editor-project-menu-list" role="menu" aria-label="프로젝트 입출력">
+            <button onClick={onImportSceneFile} role="menuitem" type="button">JSON 가져오기</button>
+            <button onClick={onExportScene} role="menuitem" type="button">씬 JSON 내보내기</button>
+            <button onClick={onExportPascalSceneGraph} role="menuitem" type="button">Pascal Graph 내보내기</button>
+            <button onClick={onExportFloorplanInterop} role="menuitem" type="button">Floorplan 내보내기</button>
+          </div>
+        </details>
         <button className="studio-editor-save is-icon" onClick={onLoadScene} type="button" title="저장된 씬 불러오기">
           <PascalImageIcon src={PASCAL_ACTION_ICONS.load} />
           <span>불러오기</span>
