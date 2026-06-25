@@ -2344,6 +2344,37 @@
   white-space: nowrap;
 }
 
+.studio-catalog-recommendations {
+  min-height: 32px;
+  border-color: rgba(216, 243, 106, 0.16);
+  background:
+    linear-gradient(90deg, rgba(216, 243, 106, 0.09), rgba(255, 255, 255, 0.045)),
+    rgba(255, 255, 255, 0.045);
+}
+
+.studio-catalog-recommendations > button:first-of-type {
+  border-color: rgba(216, 243, 106, 0.32);
+  background: rgba(216, 243, 106, 0.16);
+  color: rgba(246, 255, 216, 0.96);
+}
+
+.studio-catalog-recommendations > button:first-of-type:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.studio-catalog-recommendations > span {
+  flex: 0 0 auto;
+  max-width: 176px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .studio-catalog-source-tabs button {
   min-width: 0;
   min-height: 28px;

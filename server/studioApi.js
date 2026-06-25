@@ -1,3 +1,4 @@
+import { recommendAssets } from "./assetRecommendationEngine.js";
 import { searchAssetCatalog } from "./assetCatalogSearch.js";
 import { readProject, writeProject } from "./projectStore.js";
 import { listTextToCadJobs, readTextToCadJob, submitTextToCadJob } from "./textToCadGenerator.js";
@@ -36,6 +37,42 @@ function readJsonBody(req) {
 }
 
 export function installStudioApi(server, env = {}) {
+  server.middlewares.use("/api/assets/recommend", async (req, res) => {
+    const url = new URL(req.url ?? "", "http://127.0.0.1");
+    const prompt = url.searchParams.get("prompt") ?? url.searchParams.get("q") ?? url.searchParams.get("query") ?? "";
+
+    try {
+      if (req.method === "GET") {
+        sendJson(res, 200, await recommendAssets({
+          limit: url.searchParams.get("limit"),
+          parcel: {
+            areaM2: url.searchParams.get("areaM2"),
+            maxBuildingCoverageRatio: url.searchParams.get("bcr"),
+            maxFloorAreaRatio: url.searchParams.get("far"),
+            zone: url.searchParams.get("zone")
+          },
+          prompt
+        }));
+        return;
+      }
+
+      if (req.method === "POST") {
+        const payload = await readJsonBody(req);
+        sendJson(res, 200, await recommendAssets(payload));
+        return;
+      }
+
+      sendJson(res, 405, { ok: false, message: "GET 또는 POST만 지원합니다." });
+    } catch (error) {
+      sendJson(res, error.statusCode ?? 200, {
+        ok: false,
+        code: "ASSET_RECOMMENDATION_ERROR",
+        message: error.message,
+        data: { recommendations: [] }
+      });
+    }
+  });
+
   server.middlewares.use("/api/assets/search", async (req, res) => {
     const url = new URL(req.url ?? "", "http://127.0.0.1");
     const query = url.searchParams.get("q") ?? url.searchParams.get("query") ?? "";

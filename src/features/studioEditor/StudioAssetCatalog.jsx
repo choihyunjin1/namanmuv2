@@ -7,6 +7,7 @@ import {
   STUDIO_CATALOG_CATEGORIES,
   getCatalogAssetsByCategory
 } from "./studioCatalog.js";
+import { EDITOR_GRID } from "./editorDefaults.js";
 
 const PASCAL_ICON_BASE = "/assets/pascal-icons";
 const STUDIO_CATALOG_HOME_ICON_SRC = `${PASCAL_ICON_BASE}/build.webp`;
@@ -89,6 +90,15 @@ const CATALOG_SOURCE_TABS = [
   { id: "mine", label: "Mine" },
   { id: "community", label: "Community" }
 ];
+const DEFAULT_RECOMMENDATION_LIMIT = 5;
+const DEFAULT_RECOMMENDATION_PARCEL = {
+  areaM2: EDITOR_GRID.parcelWidth * EDITOR_GRID.parcelDepth,
+  depthM: EDITOR_GRID.parcelDepth,
+  maxBuildingCoverageRatio: 0.6,
+  maxFloorAreaRatio: 1,
+  widthM: EDITOR_GRID.parcelWidth,
+  zone: "제1종일반주거지역"
+};
 
 const ASSET_PREVIEW_BY_CATEGORY = {
   column: { accent: "#ebe1c6", kind: "column", materialLabel: "support", trim: "#9f9275" },
@@ -332,8 +342,37 @@ function getAssetApiResults(payload) {
   return [];
 }
 
+function getAssetRecommendations(payload) {
+  const recommendations = Array.isArray(payload?.data?.recommendations)
+    ? payload.data.recommendations
+    : Array.isArray(payload?.recommendations)
+      ? payload.recommendations
+      : Array.isArray(payload)
+        ? payload
+        : [];
+
+  return recommendations
+    .map((recommendation) => {
+      const asset = recommendation?.asset ?? recommendation;
+      if (!asset?.id) return null;
+
+      return {
+        asset,
+        fit: recommendation?.fit ?? null,
+        reasons: Array.isArray(recommendation?.reasons) ? recommendation.reasons : [],
+        score: Number.isFinite(Number(recommendation?.score)) ? Number(recommendation.score) : null
+      };
+    })
+    .filter(Boolean);
+}
+
 function getAssetDedupKey(asset) {
   return asset?.assetSourceId ?? asset?.metadata?.sourceAssetId ?? asset?.id ?? "";
+}
+
+function getRecommendationScoreLabel(score) {
+  if (!Number.isFinite(score)) return null;
+  return `score ${Number(score.toFixed(2))}`;
 }
 
 export function StudioAssetCatalog({
@@ -354,6 +393,12 @@ export function StudioAssetCatalog({
   const [assetApiSearch, setAssetApiSearch] = useState({
     query: "",
     results: [],
+    status: "idle"
+  });
+  const [assetRecommendation, setAssetRecommendation] = useState({
+    message: "",
+    prompt: "",
+    recommendations: [],
     status: "idle"
   });
   const [sourceFilter, setSourceFilter] = useState("all");
@@ -538,6 +583,18 @@ export function StudioAssetCatalog({
   const showAssetApiOffline =
     normalizedSearch.length >= 2 && assetApiSearch.query === searchTerm.trim() && assetApiSearch.status === "offline";
   const canGenerateAsset = Boolean(onGenerateAsset) && generationPrompt.trim().length > 0 && generationStatus?.state !== "loading";
+  const recommendationPrompt = generationPrompt.trim() || searchTerm.trim();
+  const recommendationParcelLabel = `${DEFAULT_RECOMMENDATION_PARCEL.zone} · ${DEFAULT_RECOMMENDATION_PARCEL.widthM}x${DEFAULT_RECOMMENDATION_PARCEL.depthM}m · BCR ${Math.round(DEFAULT_RECOMMENDATION_PARCEL.maxBuildingCoverageRatio * 100)}% · FAR ${Math.round(DEFAULT_RECOMMENDATION_PARCEL.maxFloorAreaRatio * 100)}%`;
+  const recommendationStatusLabel = assetRecommendation.status === "loading"
+    ? "프롬프트/토지조건 기반 추천 중"
+    : assetRecommendation.status === "ready"
+      ? `${assetRecommendation.recommendations.length}개 추천 · 프롬프트/토지조건 기반`
+      : assetRecommendation.status === "empty"
+        ? "추천 결과 없음 · 기존 카탈로그 사용 가능"
+        : assetRecommendation.status === "offline"
+          ? "추천 API offline · 기존 카탈로그 사용 가능"
+          : "프롬프트/토지조건 기반 추천";
+  const canRecommendAssets = recommendationPrompt.length > 0 && assetRecommendation.status !== "loading";
 
   const handleGenerateSubmit = async (event) => {
     event.preventDefault();
@@ -547,6 +604,52 @@ export function StudioAssetCatalog({
     if (result?.ok !== false) {
       setGenerationPrompt("");
       setSourceFilter("generated");
+    }
+  };
+
+  const handleRecommendAssets = async () => {
+    const prompt = recommendationPrompt;
+    if (!prompt) return;
+
+    setAssetRecommendation({
+      message: "",
+      prompt,
+      recommendations: [],
+      status: "loading"
+    });
+
+    try {
+      const response = await fetch("/api/assets/recommend", {
+        body: JSON.stringify({
+          limit: DEFAULT_RECOMMENDATION_LIMIT,
+          parcel: DEFAULT_RECOMMENDATION_PARCEL,
+          prompt
+        }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "POST"
+      });
+      if (!response.ok) throw new Error(`Asset recommendation failed: ${response.status}`);
+
+      const payload = await response.json();
+      if (payload?.ok === false) throw new Error(payload.message ?? "Asset recommendation failed");
+
+      const recommendations = getAssetRecommendations(payload);
+      setAssetRecommendation({
+        message: payload?.data?.rationale?.summary ?? "",
+        prompt,
+        recommendations,
+        status: recommendations.length ? "ready" : "empty"
+      });
+    } catch (error) {
+      setAssetRecommendation({
+        message: error?.message ?? "추천 자산을 불러오지 못했습니다.",
+        prompt,
+        recommendations: [],
+        status: "offline"
+      });
     }
   };
 
@@ -665,6 +768,41 @@ export function StudioAssetCatalog({
               </button>
               {generationStatus?.message ? <span>{generationStatus.message}</span> : null}
             </form>
+            <div
+              className="studio-catalog-recent studio-catalog-recommendations"
+              aria-label="프롬프트와 토지조건 기반 추천 자산"
+              data-state={assetRecommendation.status}
+              title={`프롬프트: ${recommendationPrompt || "입력 필요"} · 토지조건: ${recommendationParcelLabel}`}
+            >
+              <WandSparkles size={14} />
+              <button disabled={!canRecommendAssets} onClick={handleRecommendAssets} type="button">
+                {assetRecommendation.status === "loading" ? "추천중" : "추천"}
+              </button>
+              <span role="status">
+                {recommendationStatusLabel}
+              </span>
+              {assetRecommendation.recommendations.map((recommendation) => {
+                const { asset } = recommendation;
+                const reason = recommendation.reasons[0];
+                const scoreLabel = getRecommendationScoreLabel(recommendation.score);
+                return (
+                  <button
+                    key={asset.id}
+                    onClick={() => onAssetPick(asset)}
+                    title={[
+                      asset.label ?? asset.id,
+                      scoreLabel,
+                      reason,
+                      assetRecommendation.prompt ? `prompt: ${assetRecommendation.prompt}` : null,
+                      `parcel: ${recommendationParcelLabel}`
+                    ].filter(Boolean).join(" · ")}
+                    type="button"
+                  >
+                    {asset.label ?? asset.id}
+                  </button>
+                );
+              })}
+            </div>
             <div className="studio-catalog-source-tabs" aria-label="자산 소스">
               {CATALOG_SOURCE_TABS.map((source) => (
                 <button
