@@ -46,6 +46,7 @@ import {
 } from "./studioGeneratedAssetLibrary.js";
 import { STUDIO_CATALOG_ASSETS, STUDIO_CATALOG_CATEGORIES, getCatalogAsset } from "./studioCatalog.js";
 import { loadStudioGlbCatalog } from "./studioGlbCatalog.js";
+import { useStudioEditorState } from "./useStudioEditorState.js";
 import {
   collectJoinableWalls,
   getWallEndpoints,
@@ -1512,18 +1513,30 @@ function StudioSelectionActionBar({
 }
 
 export function StudioEditorPage() {
-  const [activeTool, setActiveTool] = useState("select");
-  const [activeCategoryId, setActiveCategoryId] = useState("roof");
-  const [activeWorkflowMode, setActiveWorkflowMode] = useState("build");
+  const {
+    activeCategoryId,
+    activeFloor,
+    activeTool,
+    activeWorkflowMode,
+    cameraView,
+    gridVisible,
+    setActiveCategoryId,
+    setActiveFloor,
+    setActiveTool,
+    setActiveWorkflowMode,
+    setCameraView,
+    setGridVisible,
+    setSnapEnabled,
+    setWallViewMode,
+    snapEnabled,
+    wallViewMode
+  } = useStudioEditorState();
   const [activeBuildAsset, setActiveBuildAsset] = useState(null);
   const [catalogCollapsed, setCatalogCollapsed] = useState(false);
   const [catalogWidth, setCatalogWidth] = useState(360);
-  const [activeFloor, setActiveFloor] = useState(1);
-  const [cameraView, setCameraView] = useState("orbit");
   const [draggedAsset, setDraggedAsset] = useState(null);
   const [dropRequest, setDropRequest] = useState(null);
   const [editorClipboard, setEditorClipboard] = useState(null);
-  const [gridVisible, setGridVisible] = useState(true);
   const [movingAttachment, setMovingAttachment] = useState(null);
   const [movingOpening, setMovingOpening] = useState(null);
   const [generatedAssets, setGeneratedAssets] = useState(() => loadStudioGeneratedAssets());
@@ -1536,12 +1549,10 @@ export function StudioEditorPage() {
   const [selectedOpening, setSelectedOpening] = useState(null);
   const [selectedObjectId, setSelectedObjectId] = useState(null);
   const [selectedObjectIds, setSelectedObjectIds] = useState([]);
-  const [snapEnabled, setSnapEnabled] = useState(true);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [wallAttachmentPreview, setWallAttachmentPreview] = useState(null);
   const [wallDraft, setWallDraft] = useState(null);
   const [wallOpeningPreview, setWallOpeningPreview] = useState(null);
-  const [wallViewMode, setWallViewMode] = useState("cutaway");
   const [lastSavedAt, setLastSavedAt] = useState(null);
   const [saveStatus, setSaveStatus] = useState("idle");
   const sceneImportInputRef = useRef(null);

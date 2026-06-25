@@ -2,6 +2,13 @@ import { searchAssetCatalog } from "./assetCatalogSearch.js";
 
 const DEFAULT_LIMIT = 6;
 const MAX_LIMIT = 20;
+const RATIONALE_USED_SIGNALS = [
+  "prompt keywords",
+  "asset tags and BIM metadata",
+  "GLB readiness",
+  "procurement cost mapping",
+  "parcel zone/BCR/FAR constraints"
+];
 
 function normalizeText(value) {
   return String(value ?? "").normalize("NFKC").toLocaleLowerCase("ko-KR").replace(/\s+/g, " ").trim();
@@ -223,16 +230,14 @@ function scoreRecommendation(asset, searchScore, intent, parcel) {
 
 function buildRecommendationRationale(recommendations) {
   const top = recommendations[0];
+  const topReason = top?.reasons?.[0] ?? "추천 후보 없음";
+  const primarySignals = RATIONALE_USED_SIGNALS.slice(0, 3).join(", ");
+
   return {
     method: "keyword-metadata-cost-constraint-ranker",
-    topReason: top?.reasons?.[0] ?? "추천 후보 없음",
-    usedSignals: [
-      "prompt keywords",
-      "asset tags and BIM metadata",
-      "GLB readiness",
-      "procurement cost mapping",
-      "parcel zone/BCR/FAR constraints"
-    ]
+    summary: `주요 신호(${primarySignals})로 후보를 정렬했습니다. 최상위 근거: ${topReason}`,
+    topReason,
+    usedSignals: RATIONALE_USED_SIGNALS
   };
 }
 

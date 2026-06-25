@@ -21,6 +21,13 @@ function assertSuccessfulRecommendationResponse(response) {
   assert.ok(Array.isArray(response.data.recommendations), "data.recommendations should be an array");
   assert.equal(typeof response.data.constraints, "object", "data.constraints should describe applied constraints");
   assert.equal(typeof response.data.rationale, "object", "data.rationale should describe recommendation rationale");
+  assert.equal(typeof response.data.rationale.summary, "string", "data.rationale.summary should be a string");
+  assert.equal(response.data.rationale.summary.length > 0, true, "data.rationale.summary should not be empty");
+  assert.equal(
+    response.data.rationale.summary.includes(response.data.rationale.topReason),
+    true,
+    "data.rationale.summary should include the top recommendation reason"
+  );
 }
 
 function findNestedValueByKey(value, key) {
