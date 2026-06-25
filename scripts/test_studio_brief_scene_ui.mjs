@@ -39,6 +39,7 @@ try {
   assert.equal(payload.ok, true);
   assert.equal(payload.data.summary.floorCount, 2);
   assert.equal(payload.data.summary.roomCount, 2);
+  assert.equal(payload.data.decisionAudit.semanticCommandValidation.ok, true);
 
   await page.getByText(/집 초안 생성 완료/).waitFor({ state: "visible" });
   const generationAudit = page.getByLabel("AI 생성 작업 내역");
@@ -51,6 +52,7 @@ try {
   await generationAudit.getByText(/pascal-style-tool-command-plan/).waitFor({ state: "visible" });
   await generationAudit.getByText("validated", { exact: true }).waitFor({ state: "visible" });
   await generationAudit.getByText(/count verified/).waitFor({ state: "visible" });
+  await generationAudit.getByText(/command gate/).waitFor({ state: "visible" });
   await generationAudit.getByText(/scene validated/).waitFor({ state: "visible" });
   await generationAuditChips.getByText("2F", { exact: true }).waitFor({ state: "visible" });
   await generationAuditChips.getByText("2 rooms", { exact: true }).waitFor({ state: "visible" });
@@ -79,6 +81,7 @@ try {
     catalogTilePayload.data.decisionAudit.semanticCommandPlan.strategy,
     "pascal-style-tool-command-plan"
   );
+  assert.equal(catalogTilePayload.data.decisionAudit.semanticCommandValidation.ok, true);
   await page.getByText(/집 초안 생성 완료/).waitFor({ state: "visible" });
 
   assert.deepEqual(

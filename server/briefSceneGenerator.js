@@ -1,4 +1,8 @@
 import { createHash, randomUUID } from "node:crypto";
+import {
+  assertValidBriefSceneCommandPlan,
+  compactBriefSceneCommandValidation
+} from "./briefSceneCommandValidation.js";
 import { compactBriefSceneCommand, createBriefSceneCommandPlan } from "./briefSceneSemanticCommands.js";
 
 const SCHEMA_VERSION = 3;
@@ -227,8 +231,12 @@ function materializeBriefSceneCommand(command) {
   return [];
 }
 
-function materializeBriefSceneCommandPlan(commandPlan) {
-  return commandPlan.commands.flatMap(materializeBriefSceneCommand);
+export function applyBriefSceneCommandPlan(commandPlan) {
+  const validation = assertValidBriefSceneCommandPlan(commandPlan);
+  return {
+    objects: commandPlan.commands.flatMap(materializeBriefSceneCommand),
+    validation
+  };
 }
 
 function createStarterObjects(brief, intent, seed) {
@@ -238,10 +246,8 @@ function createStarterObjects(brief, intent, seed) {
     intent,
     seed
   });
-  return {
-    commandPlan,
-    objects: materializeBriefSceneCommandPlan(commandPlan)
-  };
+  const { objects, validation } = applyBriefSceneCommandPlan(commandPlan);
+  return { commandPlan, commandValidation: validation, objects };
 }
 
 export function createBriefScene(payload = {}) {
@@ -254,7 +260,7 @@ export function createBriefScene(payload = {}) {
   const intent = parseBriefIntent(brief);
   const selectedTemplate = selectTemplate(intent);
   const seed = `${briefHash(brief)}-${randomUUID().slice(0, 6)}`;
-  const { commandPlan, objects } = createStarterObjects(brief, intent, seed);
+  const { commandPlan, commandValidation, objects } = createStarterObjects(brief, intent, seed);
   const createdAt = new Date().toISOString();
   const generatedObjectIds = objects.map((object) => object.id);
 
@@ -279,6 +285,7 @@ export function createBriefScene(payload = {}) {
         strategy: commandPlan.strategy,
         summary: commandPlan.summary
       },
+      semanticCommandValidation: compactBriefSceneCommandValidation(commandValidation),
       selectedTemplate
     },
     generator: {

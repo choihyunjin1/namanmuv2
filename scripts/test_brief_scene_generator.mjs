@@ -34,8 +34,15 @@ function assertBriefScene(scene, { floorCount, minRoomCount, minOpeningCount, or
   assert.equal(typeof scene.decisionAudit.semanticCommandPlan, "object");
   assert.equal(scene.decisionAudit.semanticCommandPlan.source, "ploton-brief-semantic-command-plan");
   assert.equal(scene.decisionAudit.semanticCommandPlan.strategy, "pascal-style-tool-command-plan");
+  assert.equal(typeof scene.decisionAudit.semanticCommandValidation, "object");
+  assert.equal(scene.decisionAudit.semanticCommandValidation.ok, true);
+  assert.equal(scene.decisionAudit.semanticCommandValidation.errorCount, 0);
   assert.equal(
     scene.decisionAudit.semanticCommandPlan.summary.commandCount,
+    scene.decisionAudit.plannedActions.length
+  );
+  assert.equal(
+    scene.decisionAudit.semanticCommandValidation.commandCount,
     scene.decisionAudit.plannedActions.length
   );
   assert.equal(

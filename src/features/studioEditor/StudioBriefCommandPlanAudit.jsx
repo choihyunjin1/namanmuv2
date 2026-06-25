@@ -18,11 +18,16 @@ function getGenerationAudit(status) {
   const clientValidation = audit.clientValidation && typeof audit.clientValidation === "object"
     ? audit.clientValidation
     : null;
+  const commandValidation = audit.semanticCommandValidation && typeof audit.semanticCommandValidation === "object"
+    ? audit.semanticCommandValidation
+    : null;
   const commandCount = summary.commandCount ?? actions.length;
   const knownActionCount = actions.filter((action) => KNOWN_ACTION_TYPES.has(action.type)).length;
   const actionCountMatches = commandCount === actions.length;
   const validationState = clientValidation
     ? clientValidation.ok ? "validated" : "blocked"
+    : commandValidation
+      ? commandValidation.ok ? "validated" : "review"
     : actionCountMatches && knownActionCount === actions.length ? "validated" : "review";
 
   return {
@@ -30,6 +35,8 @@ function getGenerationAudit(status) {
     actionCountMatches,
     attachedSlots,
     commandCount,
+    commandGateOk: commandValidation?.ok ?? null,
+    commandGateErrorCount: commandValidation?.errorCount ?? null,
     floorCount: summary.floorCount ?? null,
     issueCount: clientValidation?.issueCount ?? null,
     knownActionCount,
@@ -54,6 +61,7 @@ export function StudioBriefCommandPlanAudit({ status }) {
       <div className="studio-generation-audit-chips">
         <em>{audit.validationState}</em>
         {audit.actionCountMatches ? <em>count verified</em> : <em>count review</em>}
+        {audit.commandGateOk ? <em>command gate</em> : audit.commandGateErrorCount ? <em>{audit.commandGateErrorCount} command errors</em> : null}
         {audit.issueCount === 0 ? <em>scene validated</em> : audit.issueCount ? <em>{audit.issueCount} issues</em> : null}
         {audit.warningCount ? <em>{audit.warningCount} warnings</em> : null}
         {audit.floorCount ? <em>{audit.floorCount}F</em> : null}

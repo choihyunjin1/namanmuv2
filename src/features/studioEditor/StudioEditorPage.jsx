@@ -979,7 +979,8 @@ export function StudioEditorPage() {
           clientValidation: sceneValidation,
           plannedActions: result.data?.decisionAudit?.plannedActions ?? [],
           selectedTemplate: result.data?.decisionAudit?.selectedTemplate ?? null,
-          semanticCommandPlan: result.data?.decisionAudit?.semanticCommandPlan ?? null
+          semanticCommandPlan: result.data?.decisionAudit?.semanticCommandPlan ?? null,
+          semanticCommandValidation: result.data?.decisionAudit?.semanticCommandValidation ?? null
         },
         message: `집 초안 생성 완료 · ${result.data?.summary?.roomCount ?? 0} rooms`,
         state: "ready"
