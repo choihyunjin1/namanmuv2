@@ -21,6 +21,7 @@
     "test:asset-recommendation-api": "node scripts/test_asset_recommendation_api.mjs",
     "test:studio-asset-recommendation-ui": "node scripts/test_studio_asset_recommendation_ui.mjs",
     "test:studio-generated-scene-plan": "node scripts/test_studio_generated_scene_plan.mjs",
+    "test:studio-text-to-cad-ui": "node scripts/test_studio_text_to_cad_ui.mjs",
     "test:studio-project-io": "node scripts/test_studio_editor_project_io.mjs",
     "test:text-to-cad-generator": "node scripts/test_text_to_cad_generator.mjs"
   },

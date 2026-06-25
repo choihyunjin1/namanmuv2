@@ -129,3 +129,15 @@ npm run assets:export-ifc-components
 ```bash
 npm run test:catalog-policy-rules
 ```
+
+에디터/AI 자산 흐름 스모크 테스트:
+
+```bash
+npm run test:studio-glb-flow
+npm run test:asset-recommendation
+npm run test:asset-recommendation-api
+npm run test:studio-asset-recommendation-ui
+npm run test:text-to-cad-generator
+npm run test:studio-generated-scene-plan
+npm run test:studio-text-to-cad-ui
+```
