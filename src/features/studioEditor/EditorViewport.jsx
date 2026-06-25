@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ContactShadows, Edges, Html, OrbitControls, OrthographicCamera, PerspectiveCamera, useGLTF } from "@react-three/drei";
+import { ContactShadows, Edges, Html, OrbitControls, OrthographicCamera, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { EDITOR_GRID } from "./editorDefaults.js";
@@ -7,6 +7,9 @@ import { EditorGround } from "./EditorGround.jsx";
 import { getEditorInteractionMode } from "./editorInteractionMode.js";
 import { buildBoundsTreesForScene, installStudioEditorRaycastAcceleration } from "./editorRaycastAcceleration.js";
 import { isObjectHidden, isObjectLocked } from "./editorObjectState.js";
+import { GlbAssetRenderer } from "./viewportRenderers/GlbAssetRenderer.jsx";
+import { PrimitiveAssetRenderer, createGableGeometry } from "./viewportRenderers/PrimitiveAssetRenderer.jsx";
+import { ScenePlanAssetRenderer, getObjectScenePlan } from "./viewportRenderers/ScenePlanAssetRenderer.jsx";
 import { VIEWPORT_RENDERER_TYPES, getViewportRendererType } from "./viewportRenderers/viewportRendererRegistry.js";
 import { getWallEndpoints, getWallSegment, isStructuralWallObject } from "./wallJoinRules.js";
 
@@ -628,192 +631,6 @@ function RaycastAccelerationRuntime({
   ]);
 
   return null;
-}
-
-function createGableGeometry([width = 1, height = 1, depth = 1], skew = 0) {
-  const halfWidth = width / 2;
-  const halfHeight = height / 2;
-  const halfDepth = depth / 2;
-  const ridgeX = skew * halfWidth;
-  const vertices = new Float32Array([
-    -halfWidth, -halfHeight, halfDepth,
-    halfWidth, -halfHeight, halfDepth,
-    ridgeX, halfHeight, halfDepth,
-    -halfWidth, -halfHeight, -halfDepth,
-    halfWidth, -halfHeight, -halfDepth,
-    ridgeX, halfHeight, -halfDepth
-  ]);
-  const indices = [
-    0, 1, 2,
-    5, 4, 3,
-    3, 4, 1, 3, 1, 0,
-    0, 2, 5, 0, 5, 3,
-    2, 1, 4, 2, 4, 5
-  ];
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-  return geometry;
-}
-
-function AssetGeometry({ object }) {
-  const size = object.size ?? [1, 1, 1];
-  const roofGeometry = useMemo(() => {
-    if (object.shape === "gable") return createGableGeometry(size);
-    if (object.shape === "hip") return createGableGeometry(size, -0.32);
-    if (object.shape === "shed") return createGableGeometry(size, 0.6);
-    return null;
-  }, [object.shape, size]);
-
-  if (roofGeometry) return <primitive attach="geometry" object={roofGeometry} />;
-  return <boxGeometry args={size} />;
-}
-
-function createRenderableGlbScene(sourceScene) {
-  const scene = sourceScene.clone(true);
-  scene.traverse((node) => {
-    if (!node.isMesh) return;
-    node.castShadow = true;
-    node.receiveShadow = true;
-  });
-  return scene;
-}
-
-function getNormalizedGlbTransform(scene, size) {
-  const box = new THREE.Box3().setFromObject(scene);
-  const sourceSize = box.getSize(new THREE.Vector3());
-  const sourceCenter = box.getCenter(new THREE.Vector3());
-  const targetSize = new THREE.Vector3(size[0] ?? 1, size[1] ?? 1, size[2] ?? 1);
-  const scaleCandidates = [
-    targetSize.x / Math.max(sourceSize.x, 0.001),
-    targetSize.y / Math.max(sourceSize.y, 0.001),
-    targetSize.z / Math.max(sourceSize.z, 0.001)
-  ].filter((value) => Number.isFinite(value) && value > 0);
-  const scale = Math.min(...scaleCandidates, 1);
-  const offset = sourceCenter.multiplyScalar(-scale);
-  return {
-    offset: [offset.x, offset.y, offset.z],
-    scale
-  };
-}
-
-function GlbAssetFallback({ dragging, floorMode, object, selected }) {
-  const isBelow = floorMode === "below";
-  return (
-    <mesh castShadow receiveShadow>
-      <AssetGeometry object={object} />
-      <meshStandardMaterial
-        color={dragging ? "#f6c879" : selected ? "#f0b45f" : "#9fb8b0"}
-        metalness={0.02}
-        opacity={floorMode === "current" ? 0.42 : isBelow ? 0.28 : 0.18}
-        roughness={0.72}
-        transparent
-      />
-      <Edges color={selected || dragging ? "#1b2f2a" : "#42615a"} lineWidth={selected || dragging ? 2 : 1} />
-    </mesh>
-  );
-}
-
-function GlbAssetBody({ dragging, floorMode, object, selected }) {
-  const size = object.size ?? [1, 1, 1];
-  const gltf = useGLTF(object.modelUrl);
-  const { offset, scale, scene } = useMemo(() => {
-    const renderableScene = createRenderableGlbScene(gltf.scene);
-    return {
-      scene: renderableScene,
-      ...getNormalizedGlbTransform(renderableScene, size)
-    };
-  }, [gltf.scene, size]);
-  const opacity = floorMode === "current" ? 1 : floorMode === "below" ? 0.48 : 0.22;
-
-  return (
-    <group>
-      <primitive object={scene} position={offset} scale={scale} />
-      {floorMode !== "current" ? (
-        <mesh>
-          <boxGeometry args={size} />
-          <meshBasicMaterial color="#d5ded8" opacity={0.08} transparent />
-        </mesh>
-      ) : null}
-      {selected || dragging ? (
-        <mesh>
-          <boxGeometry args={size} />
-          <meshBasicMaterial color={dragging ? "#f6c879" : "#f0b45f"} opacity={0.08} transparent />
-          <Edges color={dragging ? "#6c4a16" : "#1b2f2a"} lineWidth={2} />
-        </mesh>
-      ) : null}
-      {opacity < 1 ? (
-        <mesh>
-          <boxGeometry args={size} />
-          <meshBasicMaterial color="#d5ded8" opacity={1 - opacity} transparent />
-        </mesh>
-      ) : null}
-    </group>
-  );
-}
-
-function getObjectScenePlan(object) {
-  const scenePlan = object?.metadata?.scenePlan ?? object?.metadata?.sourceAssetMetadata?.scenePlan ?? object?.scenePlan;
-  if (!scenePlan || !Array.isArray(scenePlan.primitives) || scenePlan.primitives.length === 0) return null;
-  return scenePlan;
-}
-
-function ScenePlanPrimitive({ dragging = false, floorMode = "current", primitive, selected = false }) {
-  const size = Array.isArray(primitive.size) && primitive.size.length >= 3 ? primitive.size : [1, 1, 1];
-  const position = Array.isArray(primitive.position) && primitive.position.length >= 3 ? primitive.position : [0, 0, 0];
-  const rotation = Array.isArray(primitive.rotation) && primitive.rotation.length >= 3 ? primitive.rotation : [0, 0, 0];
-  const isGlass = /glass|glazing/i.test([primitive.kind, primitive.material, primitive.role].filter(Boolean).join(" "));
-  const opacityBase = isGlass ? 0.48 : 1;
-  const opacity = floorMode === "current" ? opacityBase : floorMode === "below" ? Math.min(opacityBase, 0.46) : Math.min(opacityBase, 0.22);
-  const color = dragging ? "#f6c879" : selected ? primitive.color ?? "#f0b45f" : primitive.color ?? "#9fb8b0";
-  const isCylinder = primitive.type === "cylinder" || /column|shaft/i.test(primitive.kind ?? "");
-  const radius = Math.max(0.03, Math.max(size[0] ?? 0.2, size[2] ?? 0.2) / 2);
-  const height = Math.max(0.04, size[1] ?? 1);
-
-  return (
-    <mesh castShadow position={position} receiveShadow rotation={rotation}>
-      {isCylinder ? (
-        <cylinderGeometry args={[radius, radius, height, 24]} />
-      ) : (
-        <boxGeometry args={size} />
-      )}
-      <meshStandardMaterial
-        color={color}
-        metalness={isGlass ? 0.05 : 0.02}
-        opacity={opacity}
-        roughness={isGlass ? 0.16 : 0.66}
-        transparent={opacity < 1}
-      />
-      {selected || dragging ? <Edges color={dragging ? "#6c4a16" : "#1b2f2a"} lineWidth={1.5} /> : null}
-    </mesh>
-  );
-}
-
-function ScenePlanAssetBody({ dragging = false, floorMode = "current", object, selected = false }) {
-  const scenePlan = getObjectScenePlan(object);
-  if (!scenePlan) return <GlbAssetFallback dragging={dragging} floorMode={floorMode} object={object} selected={selected} />;
-
-  return (
-    <group>
-      {scenePlan.primitives.map((primitive, index) => (
-        <ScenePlanPrimitive
-          dragging={dragging}
-          floorMode={floorMode}
-          key={primitive.id ?? `${primitive.kind ?? "primitive"}-${index}`}
-          primitive={primitive}
-          selected={selected}
-        />
-      ))}
-      {selected || dragging ? (
-        <mesh>
-          <boxGeometry args={object.size ?? scenePlan.bounds?.size ?? [1, 1, 1]} />
-          <meshBasicMaterial color={dragging ? "#f6c879" : "#f0b45f"} opacity={0.06} transparent />
-          <Edges color={dragging ? "#6c4a16" : "#1b2f2a"} lineWidth={2} />
-        </mesh>
-      ) : null}
-    </group>
-  );
 }
 
 function getStairSpec(object) {
@@ -2850,23 +2667,11 @@ function PlacedEditorBox({
       ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.STAIR ? (
         <StairAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
       ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.SCENE_PLAN ? (
-        <ScenePlanAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
+        <ScenePlanAssetRenderer dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
       ) : viewportRendererType === VIEWPORT_RENDERER_TYPES.GLB ? (
-        <React.Suspense fallback={<GlbAssetFallback dragging={dragging} floorMode={floorMode} object={object} selected={selected} />}>
-          <GlbAssetBody dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
-        </React.Suspense>
+        <GlbAssetRenderer dragging={dragging} floorMode={floorMode} object={object} selected={selected} />
       ) : (
-        <mesh castShadow receiveShadow>
-          <AssetGeometry object={object} />
-          <meshStandardMaterial
-            color={dragging ? "#f6c879" : selected ? "#f0b45f" : isJoinedWall ? "#6cbcaf" : object.color ?? "#7fb6a8"}
-            metalness={0.02}
-            opacity={floorMode === "current" ? 1 : floorMode === "below" ? 0.58 : 0.28}
-            roughness={0.68}
-            transparent={floorMode !== "current"}
-          />
-          <Edges color={selected || dragging ? "#1b2f2a" : isJoinedWall ? "#0f6f64" : "#315b52"} lineWidth={selected || dragging || isJoinedWall ? 2 : 1} />
-        </mesh>
+        <PrimitiveAssetRenderer dragging={dragging} floorMode={floorMode} isJoinedWall={isJoinedWall} object={object} selected={selected} />
       )}
       {primarySelected && !planMode ? (
         <Html
